@@ -23,14 +23,15 @@
                         aria-expanded="false"
                         aria-controls="collapseLayouts" >
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Layouts
+                        Master Data
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     </div>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion" >
                         <nav class="sb-sidenav-menu-nested nav">
                             <div class="nav-link-ku">
-                            <router-link :to="{name:'categories'}" class="nav-link" exact>Categories</router-link>
+                                <router-link :to="{name:'categories'}" class="nav-link" exact>Categories</router-link>
+                                <router-link :to="{name:'data-items'}" class="nav-link" exact>Data Items</router-link>
                             </div>
                         </nav>
                     </div>

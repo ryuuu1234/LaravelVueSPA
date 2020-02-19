@@ -18,8 +18,11 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['prefix' => 'auth'], function() {
-    Route::post('register', 'AuthController@register');
+    Route::post('register', 'AuthController@register'); // ini untuk alamat api/auth/register
     Route::post('login', 'AuthController@login');
+
+    
+    Route::post('addtoreg', 'RegistrationController@addtoreg'); // ini alamat untuk user selain root dan admin (api/auth/addtoreg)
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
@@ -47,3 +50,6 @@ Route::group(['prefix' => 'user'], function () {
 });
 
 Route::resource('categories', 'CategoryController');
+
+//sementara
+Route::get('/items', 'ItemController@index');

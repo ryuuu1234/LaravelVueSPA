@@ -4034,20 +4034,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
@@ -4103,6 +4089,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -84818,6 +84805,15 @@ var render = function() {
                           attrs: { to: { name: "categories" }, exact: "" }
                         },
                         [_vm._v("Categories")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: { name: "data-items" }, exact: "" }
+                        },
+                        [_vm._v("Data Items")]
                       )
                     ],
                     1
@@ -84862,7 +84858,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "sb-nav-link-icon" }, [
             _c("i", { staticClass: "fas fa-columns" })
           ]),
-          _vm._v("\n                    Layouts\n                    "),
+          _vm._v("\n                    Master Data\n                    "),
           _c("div", { staticClass: "sb-sidenav-collapse-arrow" }, [
             _c("i", { staticClass: "fas fa-angle-down" })
           ])
@@ -101405,13 +101401,19 @@ var routes = [{
     path: '',
     name: 'dashboard',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
+      return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
     }
   }, {
     path: 'categories',
     name: 'categories',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./views/Categories.vue */ "./resources/js/views/Categories.vue"));
+      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/Categories.vue */ "./resources/js/views/Categories.vue"));
+    }
+  }, {
+    path: 'data-items',
+    name: 'data-items',
+    component: function component() {
+      return Promise.all(/*! import() */[__webpack_require__.e(6), __webpack_require__.e(0)]).then(__webpack_require__.bind(null, /*! ./views/ItemsViewPage.vue */ "./resources/js/views/ItemsViewPage.vue"));
     }
   }],
   beforeEnter: function beforeEnter(to, from, next) {
@@ -101425,13 +101427,13 @@ var routes = [{
   path: '/register',
   name: 'register',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/authentication/Register.vue */ "./resources/js/views/authentication/Register.vue"));
+    return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/authentication/Register.vue */ "./resources/js/views/authentication/Register.vue"));
   }
 }, {
   path: '/login',
   name: 'login',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/authentication/Login.vue */ "./resources/js/views/authentication/Login.vue"));
+    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/authentication/Login.vue */ "./resources/js/views/authentication/Login.vue"));
   },
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_3__["isLoggedIn"]()) {
@@ -101444,7 +101446,7 @@ var routes = [{
   path: '/reset-password',
   name: 'reset-password',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/authentication/ResetPassword.vue */ "./resources/js/views/authentication/ResetPassword.vue"));
+    return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/authentication/ResetPassword.vue */ "./resources/js/views/authentication/ResetPassword.vue"));
   }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({

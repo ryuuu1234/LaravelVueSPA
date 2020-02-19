@@ -22,6 +22,11 @@ const routes = [
                 name: 'categories',
                 component: () => import('./views/Categories.vue')
             },
+            {
+                path: 'data-items',
+                name: 'data-items',
+                component: () => import('./views/ItemsViewPage.vue')
+            },
             
         ],
         beforeEnter(to, from, next) {
