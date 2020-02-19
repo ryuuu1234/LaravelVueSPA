@@ -1,12 +1,13 @@
 <template>
   <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="index.html">{{$store.state.profile.name}}</a>
     <button v-on:click="hideSidebar" class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" >
       <i class="fas fa-bars"></i>
     </button>
+    <span class="navbar-brand" >{{$store.state.profile.name}}</span>
+    
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-      <div class="input-group">
+      <!-- <div class="input-group">
         <input
           class="form-control"
           type="text"
@@ -19,6 +20,10 @@
             <i class="fas fa-search"></i>
           </button>
         </div>
+      </div> -->
+      <div class="form-group has-search">
+        <span class="fa fa-search form-control-feedback"></span>
+        <input type="text" class="form-control-search" placeholder="Search">
       </div>
     </form>
     <!-- Navbar-->
@@ -33,7 +38,10 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <i class="fas fa-user fa-fw"></i>
+            <span class="mega-image">
+                <img :src="`${$store.state.serverPath}/storage/galleries_images/nouser.png`" alt="example image">               
+            </span>
+          
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
           <a class="dropdown-item" href="#">Settings</a>

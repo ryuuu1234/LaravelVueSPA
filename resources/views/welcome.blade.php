@@ -14,7 +14,7 @@
         <!-- ubahan/add 2 -->
         <link rel="stylesheet" href="{{asset('css/app.css')}}" />
     </head>
-    <body class="sb-nav-fixed">
+    <body class="sb-nav-fixed sb-sidenav-toggled">
 
         <div id="app"></div>        
         <!-- ubahan/add 1 -->
