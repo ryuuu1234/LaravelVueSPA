@@ -1,0 +1,13 @@
+//install composer laravel
+
+composer create-project --prefer-dist laravel/laravel laravelVueSPA
+
+//install javascript scafolding css
+
+composer require laravel/ui --dev
+php artisan ui vue                  //package.json akan berubah isinya
+
+//lalu instal npm
+
+npm install
+npm run dev     //untuk compile dan jalankan npm
