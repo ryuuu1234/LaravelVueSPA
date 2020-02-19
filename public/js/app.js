@@ -101294,7 +101294,7 @@ var routes = [{
     path: '',
     name: 'dashboard',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
+      return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
     }
   }, {
     path: 'categories',
@@ -101314,13 +101314,13 @@ var routes = [{
   path: '/register',
   name: 'register',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./views/authentication/Register.vue */ "./resources/js/views/authentication/Register.vue"));
+    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/authentication/Register.vue */ "./resources/js/views/authentication/Register.vue"));
   }
 }, {
   path: '/login',
   name: 'login',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./views/authentication/Login.vue */ "./resources/js/views/authentication/Login.vue"));
+    return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/authentication/Login.vue */ "./resources/js/views/authentication/Login.vue"));
   },
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_3__["isLoggedIn"]()) {
@@ -101333,7 +101333,7 @@ var routes = [{
   path: '/reset-password',
   name: 'reset-password',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/authentication/ResetPassword.vue */ "./resources/js/views/authentication/ResetPassword.vue"));
+    return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./views/authentication/ResetPassword.vue */ "./resources/js/views/authentication/ResetPassword.vue"));
   }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
