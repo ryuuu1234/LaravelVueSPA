@@ -35,13 +35,13 @@ Route::group(['prefix' => 'user'], function () {
             return response()->json([
                 'meesage' => 'Admin Access', 'status_code'=>200
             ],200);
-        })->middleware('scope:do_anything');
+        })->middleware('scope:Root');
 
         Route::post('create-category', function () {
             return response()->json([
                 'meesage' => 'Everyone Access', 'status_code'=>200
             ],200);
-        })->middleware('scope:do_anything,can_create');
+        })->middleware('scope:Root,Admin');
 
     });
 });
