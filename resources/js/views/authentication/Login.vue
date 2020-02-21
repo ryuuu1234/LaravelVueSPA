@@ -20,6 +20,7 @@
                         type="email"
                         placeholder="Enter email address"
                         v-model="user.email"
+                        autocomplete="off"
                       />
                       <div class="invalid-feedback" v-if="errors.email">{{ errors.email[0] }}</div>  
                     </div>

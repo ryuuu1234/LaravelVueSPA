@@ -93,6 +93,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -171,6 +175,60 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      isInputActive: false
+    };
+  },
+  props: ["value"],
+  computed: {
+    displayValue: {
+      get: function get() {
+        if (this.isInputActive) {
+          // Cursor is inside the input field. unformat display value for user
+          return this.value.toString();
+        } else {
+          // User is not modifying now. Format display value for user interface
+          return "Rp " + this.value.toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+        }
+      },
+      set: function set(modifiedValue) {
+        // Recalculate value after ignoring "$" and "," in user input
+        var newValue = parseFloat(modifiedValue.replace(/[^\d\.]/g, "")); // Ensure that it is not NaN
+
+        if (isNaN(newValue)) {
+          newValue = 0;
+        } // Note: we cannot set this.value as it is a "prop". It needs to be passed to parent component
+        // $emit the event so that parent component gets it
+
+
+        this.$emit('input', newValue);
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ItemsViewPage.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ItemsViewPage.vue?vue&type=script&lang=js& ***!
@@ -183,7 +241,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/khusus/Datatable.vue */ "./resources/js/components/khusus/Datatable.vue");
-/* harmony import */ var _services_items_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/items_service */ "./resources/js/services/items_service.js");
+/* harmony import */ var _components_khusus_MyCurrencyInput_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/khusus/MyCurrencyInput.vue */ "./resources/js/components/khusus/MyCurrencyInput.vue");
+/* harmony import */ var _services_items_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/items_service */ "./resources/js/services/items_service.js");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -265,11 +324,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT COMPONENT DATATABLENYA
-// import axios from 'axios';
+
+ // import axios from 'axios';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    'app-datatable': _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    //REGISTER COMPONENT DATATABLE
+    'my-currency-input': _components_khusus_MyCurrencyInput_vue__WEBPACK_IMPORTED_MODULE_2__["default"] //REGISTER COMPONENT DATATABLE
+
+  },
   //KETIKA COMPONENT INI DILOAD
   created: function created() {
     //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
@@ -282,14 +370,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'nama',
         sortable: true
       }, {
-        key: 'harga_beli',
+        key: 'unit.nama',
+        label: 'Satuan',
         sortable: true
       }, {
-        key: 'satuan',
-        sortable: true
+        key: 'harga_beli',
+        label: 'Harga',
+        formatter: function formatter(value, key, item) {
+          return new Intl.NumberFormat().format(item.harga_beli);
+        },
+        sortable: true,
+        "class": 'text-right'
       }, {
         key: 'stok_awal',
-        sortable: true
+        sortable: true,
+        "class": 'text-right'
       }, {
         key: 'actions',
         label: 'Actions',
@@ -312,11 +407,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: []
     };
   },
-  components: {
-    'app-datatable': _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__["default"] //REGISTER COMPONENT DATATABLE
-
-  },
+  computed: {},
   methods: {
+    // format angka
+    formatPrice: function formatPrice(value) {
+      return new Intl.NumberFormat().format(value);
+    },
     //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
     loadItemsData: function () {
       var _loadItemsData = _asyncToGenerator(
@@ -341,13 +437,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 };
                 _context.prev = 3;
                 _context.next = 6;
-                return _services_items_service__WEBPACK_IMPORTED_MODULE_2__["loadData"](params);
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["loadData"](params);
 
               case 6:
                 response = _context.sent;
                 // console.log(response);
                 getData = response.data.data;
                 this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                // console.log(this.items[0].nama);
                 //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
 
                 this.meta = {
@@ -357,18 +454,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context.next = 15;
+                _context.next = 16;
                 break;
 
               case 12:
                 _context.prev = 12;
                 _context.t0 = _context["catch"](3);
+                console.log('' + _context.t0);
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
 
-              case 15:
+              case 16:
               case "end":
                 return _context.stop();
             }
@@ -425,7 +523,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 _context2.prev = 2;
                 _context2.next = 5;
-                return _services_items_service__WEBPACK_IMPORTED_MODULE_2__["deleteItem"](item.id);
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["deleteItem"](item.id);
 
               case 5:
                 this.items = this.items.filter(function (obj) {
@@ -491,7 +589,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-4 mb-2" }, [
+    _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "form-inline" }, [
         _c("label", { staticClass: "mr-2" }, [_vm._v("Showing")]),
         _vm._v(" "),
@@ -506,7 +604,7 @@ var render = function() {
                 expression: "meta.per_page"
               }
             ],
-            staticClass: "form-control-sm",
+            staticClass: "custom-select custom-select-sm",
             on: {
               change: [
                 function($event) {
@@ -545,7 +643,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-4 offset-md-4" }, [
+    _c("div", { staticClass: "col-md-4 offset-md-4 mb-3" }, [
       _c("div", { staticClass: "form-inline float-right has-search" }, [
         _c("span", { staticClass: "fa fa-search form-control-feedback" }),
         _vm._v(" "),
@@ -594,14 +692,14 @@ var render = function() {
                   _c(
                     "b-button",
                     {
-                      attrs: { size: "sm", variant: "outline-warning" },
+                      attrs: { size: "sm", variant: "outline-info" },
                       on: {
                         click: function($event) {
                           return _vm.editData(row.item)
                         }
                       }
                     },
-                    [_c("span", { staticClass: "fa fa-eye" })]
+                    [_c("span", { staticClass: "fa fa-pencil-alt" })]
                   ),
                   _vm._v(" "),
                   _c(
@@ -669,6 +767,55 @@ var render = function() {
       1
     )
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.displayValue,
+        expression: "displayValue"
+      }
+    ],
+    attrs: { type: "text" },
+    domProps: { value: _vm.displayValue },
+    on: {
+      blur: function($event) {
+        _vm.isInputActive = false
+      },
+      focus: function($event) {
+        _vm.isInputActive = true
+      },
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.displayValue = $event.target.value
+      }
+    }
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -746,46 +893,92 @@ var render = function() {
                 }
               },
               [
-                _c("div", { staticClass: "form-group-sm" }, [
-                  _c("label", { attrs: { for: "nama" } }, [
-                    _vm._v("Enter Name")
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group-sm mb-2" }, [
+                      _c("label", { attrs: { for: "nama" } }, [
+                        _vm._v("Masukkan Nama Item")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.editItemData.nama,
+                            expression: "editItemData.nama"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          type: "text",
+                          id: "nama",
+                          placeholder: "Enter Item Name"
+                        },
+                        domProps: { value: _vm.editItemData.nama },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.editItemData,
+                              "nama",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.nama
+                        ? _c("div", { staticClass: "invalid-feedback" }, [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(_vm.errors.nama[0]) +
+                                "\n                                "
+                            )
+                          ])
+                        : _vm._e()
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.editItemData.nama,
-                        expression: "editItemData.nama"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      id: "nama",
-                      placeholder: "Enter Item Name"
-                    },
-                    domProps: { value: _vm.editItemData.nama },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.editItemData, "nama", $event.target.value)
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.errors.nama
-                    ? _c("div", { staticClass: "invalid-feedback" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.errors.nama[0]) +
-                            "\n                        "
-                        )
-                      ])
-                    : _vm._e()
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group-sm" },
+                      [
+                        _c("label", { attrs: { for: "harga_beli" } }, [
+                          _vm._v("Harga Beli")
+                        ]),
+                        _vm._v(" "),
+                        _c("my-currency-input", {
+                          staticClass: "form-control form-control-sm",
+                          attrs: {
+                            id: "harga_beli",
+                            placeholder: "Masukkan Harga Beli Item"
+                          },
+                          model: {
+                            value: _vm.editItemData.harga_beli,
+                            callback: function($$v) {
+                              _vm.$set(_vm.editItemData, "harga_beli", $$v)
+                            },
+                            expression: "editItemData.harga_beli"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.harga_beli
+                          ? _c("div", { staticClass: "invalid-feedback" }, [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(_vm.errors.harga_beli[0]) +
+                                  "\n                                "
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("hr"),
@@ -906,6 +1099,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Datatable_vue_vue_type_template_id_6925cb99___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Datatable_vue_vue_type_template_id_6925cb99___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/MyCurrencyInput.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/khusus/MyCurrencyInput.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MyCurrencyInput.vue?vue&type=template&id=09f17a3c& */ "./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c&");
+/* harmony import */ var _MyCurrencyInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MyCurrencyInput.vue?vue&type=script&lang=js& */ "./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MyCurrencyInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/khusus/MyCurrencyInput.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyCurrencyInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./MyCurrencyInput.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MyCurrencyInput_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./MyCurrencyInput.vue?vue&type=template&id=09f17a3c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/MyCurrencyInput.vue?vue&type=template&id=09f17a3c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MyCurrencyInput_vue_vue_type_template_id_09f17a3c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

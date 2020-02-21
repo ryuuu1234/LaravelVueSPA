@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Item;
+use App\unit;
 
 class ItemController extends Controller
 {
@@ -25,6 +26,17 @@ class ItemController extends Controller
                     ->orWhere('harga_beli', 'LIKE', '%' . request()->q . '%');
                     // ->orWhere('category', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+
+        $items->load('unit:id,nama');
+        return response()->json(
+            ['status' => 'success', 'data' => $items]
+        );
+    }
+
+    public function test()
+    {
+        $items = Item::with(['unit'])->orderBy('created_at', 'DESC')->get();
+        // $items->load('unit');
         return response()->json(
             ['status' => 'success', 'data' => $items]
         );

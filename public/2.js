@@ -88,6 +88,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "login",
@@ -239,7 +240,8 @@ var render = function() {
                             attrs: {
                               id: "email",
                               type: "email",
-                              placeholder: "Enter email address"
+                              placeholder: "Enter email address",
+                              autocomplete: "off"
                             },
                             domProps: { value: _vm.user.email },
                             on: {

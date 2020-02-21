@@ -242,7 +242,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 response = _context.sent;
-                this.categories = response.data.data; // ini untuk pagination dalam hal ini load more
+                this.categories = response.data.data; // console.log(response.data.id)
+                // ini untuk pagination dalam hal ini load more
 
                 if (response.data.current_page < response.data.last_page) {
                   this.moreExist = true;

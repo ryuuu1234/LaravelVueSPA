@@ -1,12 +1,11 @@
 <template>
     <div class="row">
-      
       	<!-- BLOCK INI AKAN MENGHANDLE LOAD DATA PERPAGE, DENGAN DEFAULT ADALAH 10 DATA -->
-        <div class="col-md-4 mb-2">
+        <div class="col-md-4">
             <div class="form-inline">
                 <label class="mr-2">Showing</label>
                 <!-- KETIKA SELECT BOXNYA DIGANTI, MAKA AKAN MENJALANKAN FUNGSI loadPerPage -->
-                <select class="form-control-sm" v-model="meta.per_page" @change="loadPerPage">
+                <select class="custom-select custom-select-sm" v-model="meta.per_page" @change="loadPerPage">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -18,7 +17,7 @@
         </div>
       
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
-        <div class="col-md-4 offset-md-4">
+        <div class="col-md-4 offset-md-4 mb-3">
             <div class="form-inline float-right has-search">
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
                 
@@ -35,14 +34,19 @@
             <!-- :ITEMS ADALAH DATA YANG AKAN DITAMPILKAN -->
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
-            <b-table striped hover small :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
+            <b-table striped hover small 
+            :items="items" 
+            :fields="fields" 
+            :sort-by.sync="sortBy" 
+            :sort-desc.sync="sortDesc" 
+            show-empty>
             <template v-slot:cell(actions)="row">
                 <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
                 Info modal
                 </b-button> -->
-                <b-button size="sm" @click="editData(row.item)" variant="outline-warning">
+                <b-button size="sm" @click="editData(row.item)" variant="outline-info">
                 <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
-                <span class="fa fa-eye"></span>
+                <span class="fa fa-pencil-alt"></span>
                 </b-button>
                 <b-button size="sm" @click="removeData(row.item)" variant="outline-danger">
                 <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->

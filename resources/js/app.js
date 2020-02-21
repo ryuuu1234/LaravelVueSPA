@@ -15,6 +15,10 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(FlashMessage);
 
+Vue.filter('currency', function (money) {
+    return accounting.formatMoney(money, "Rp ", 2, ".", ",")
+})
+
 new Vue({
     el: "#app",
     router,

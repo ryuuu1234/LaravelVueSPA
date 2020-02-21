@@ -101226,6 +101226,9 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_7__["BootstrapVue"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_7__["IconsPlugin"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_smartweb_vue_flash_message__WEBPACK_IMPORTED_MODULE_8___default.a);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('currency', function (money) {
+  return accounting.formatMoney(money, "Rp ", 2, ".", ",");
+});
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: "#app",
   router: _router_js__WEBPACK_IMPORTED_MODULE_2__["default"],

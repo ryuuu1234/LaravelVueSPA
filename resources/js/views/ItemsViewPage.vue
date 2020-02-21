@@ -32,18 +32,40 @@
                 ref="editDataModal" hide-footer title="Edit Item">
                 <div class="d-block">
                     <form v-on:submit.prevent="updateData">
-                        <div class="form-group-sm">
-                            <label for="nama">Enter Name</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="nama"
-                                placeholder="Enter Item Name"
-                                v-model="editItemData.nama"
-                            />
-                            <div class="invalid-feedback" v-if="errors.nama">
-                                {{ errors.nama[0] }}
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group-sm mb-2">
+                                    <label for="nama">Masukkan Nama Item</label>
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        id="nama"
+                                        placeholder="Enter Item Name"
+                                        v-model="editItemData.nama"
+                                    />
+                                    <div class="invalid-feedback" v-if="errors.nama">
+                                        {{ errors.nama[0] }}
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="col-md-6">
+                                <div class="form-group-sm">
+                                    <label for="harga_beli">Harga Beli</label>
+                                    <my-currency-input 
+                                        class="form-control form-control-sm" 
+                                        id="harga_beli"
+                                        placeholder="Masukkan Harga Beli Item"
+                                        v-model="editItemData.harga_beli"
+                                    >
+                                    </my-currency-input>
+                                    <div class="invalid-feedback" v-if="errors.harga_beli">
+                                        {{ errors.harga_beli[0] }}
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                        
                         <hr />
@@ -69,10 +91,16 @@
 
 <script>
 import Datatable from '../components/khusus/Datatable.vue' //IMPORT COMPONENT DATATABLENYA
+import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 // import axios from 'axios';
 import * as itemService from "../services/items_service";
 
+
 export default {
+    components: {
+        'app-datatable': Datatable, //REGISTER COMPONENT DATATABLE
+        'my-currency-input': MyCurrencyInput //REGISTER COMPONENT DATATABLE
+    },
     //KETIKA COMPONENT INI DILOAD
     created() {
         //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
@@ -81,11 +109,14 @@ export default {
     data() {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
+            
             fields: [
                 {key: 'nama', sortable: true},
-                {key: 'harga_beli', sortable: true},
-                {key: 'satuan', sortable: true},
-                {key: 'stok_awal', sortable: true},
+                {key: 'unit.nama', label:'Satuan', sortable: true},
+                {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
+                            return new Intl.NumberFormat().format(item.harga_beli)
+                            }, sortable: true, class:'text-right'},
+                {key: 'stok_awal', sortable: true, class:'text-right'},
                 {key: 'actions', label: 'Actions', class:'text-right'}
 
             ],
@@ -101,10 +132,17 @@ export default {
             errors:[],
         }
     },
-    components: {
-        'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
+    computed:{
+        
     },
+
+    
     methods: {
+        // format angka
+        
+        formatPrice(value) {
+            return new Intl.NumberFormat().format(value)
+        },
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
         loadItemsData: async function() {
             let current_page = this.search == ''? this.current_page:1;
@@ -122,6 +160,7 @@ export default {
                 // console.log(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                // console.log(this.items[0].nama);
                 //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
                 this.meta = {
                     total: getData.total,
@@ -131,6 +170,7 @@ export default {
                     to: getData.to 
                 }
             } catch (error) {
+                    console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000

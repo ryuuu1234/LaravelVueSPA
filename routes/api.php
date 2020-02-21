@@ -53,3 +53,6 @@ Route::resource('categories', 'CategoryController');
 
 //sementara
 Route::resource('items', 'ItemController');
+
+// untuk test
+Route::get('/test', 'ItemController@test');
