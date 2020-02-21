@@ -67,6 +67,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -133,7 +159,13 @@ __webpack_require__.r(__webpack_exports__);
     search: lodash__WEBPACK_IMPORTED_MODULE_0___default.a.debounce(function (e) {
       //KIRIM EMIT DENGAN NAMA SEARCH DAN VALUE SESUAI YANG DIKETIKKAN OLEH USER
       this.$emit('search', e.target.value);
-    }, 500)
+    }, 500),
+    removeData: function removeData(index) {
+      this.$emit('removedData', index); // kirim event removedTodo parent (itemnya)
+    },
+    editData: function editData(index) {
+      this.$emit('editedData', index); // kirim event removedTodo parent (itemnya)
+    }
   }
 });
 
@@ -148,10 +180,63 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/khusus/Datatable.vue */ "./resources/js/components/khusus/Datatable.vue");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/khusus/Datatable.vue */ "./resources/js/components/khusus/Datatable.vue");
 /* harmony import */ var _services_items_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/items_service */ "./resources/js/services/items_service.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -181,7 +266,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
  //IMPORT COMPONENT DATATABLENYA
-
+// import axios from 'axios';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -203,8 +288,9 @@ __webpack_require__.r(__webpack_exports__);
         key: 'stok_awal',
         sortable: true
       }, {
-        key: 'created_at',
-        sortable: true
+        key: 'actions',
+        label: 'Actions',
+        "class": 'text-right'
       }],
       items: [],
       //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
@@ -212,50 +298,87 @@ __webpack_require__.r(__webpack_exports__);
       //JUGA BERLAKU UNTUK META
       current_page: 1,
       //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-      per_page: 10,
-      //DEFAULT LOAD PERPAGE ADALAH 10
+      per_page: 5,
+      //DEFAULT LOAD PERPAGE ADALAH 5
       search: '',
       sortBy: 'created_at',
       //DEFAULT SORTNYA ADALAH CREATED_AT
-      sortByDesc: false //ASCEDING
-
+      sortByDesc: false,
+      //ASCEDING
+      editItemData: {},
+      errors: []
     };
   },
   components: {
-    'app-datatable': _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_0__["default"] //REGISTER COMPONENT DATATABLE
+    'app-datatable': _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__["default"] //REGISTER COMPONENT DATATABLE
 
   },
   methods: {
     //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
-    loadItemsData: function loadItemsData() {
-      var _this = this;
+    loadItemsData: function () {
+      var _loadItemsData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var current_page, sorting, params, response, getData;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                current_page = this.search == '' ? this.current_page : 1;
+                sorting = this.sortByDesc ? 'DESC' : 'ASC'; // let
 
-      var current_page = this.search == '' ? this.current_page : 1; //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
+                params = {
+                  params: {
+                    page: current_page,
+                    per_page: this.per_page,
+                    q: this.search,
+                    sortby: this.sortBy,
+                    sortbydesc: sorting
+                  }
+                };
+                _context.prev = 3;
+                _context.next = 6;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_2__["loadData"](params);
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/items", {
-        //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
-        params: {
-          page: current_page,
-          per_page: this.per_page,
-          q: this.search,
-          sortby: this.sortBy,
-          sortbydesc: this.sortByDesc ? 'DESC' : 'ASC'
-        }
-      }).then(function (response) {
-        //JIKA RESPONSENYA DITERIMA
-        var getData = response.data.data;
-        _this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
-        //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+              case 6:
+                response = _context.sent;
+                // console.log(response);
+                getData = response.data.data;
+                this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
 
-        _this.meta = {
-          total: getData.total,
-          current_page: getData.current_page,
-          per_page: getData.per_page,
-          from: getData.from,
-          to: getData.to
-        };
-      });
-    },
+                this.meta = {
+                  total: getData.total,
+                  current_page: getData.current_page,
+                  per_page: getData.per_page,
+                  from: getData.from,
+                  to: getData.to
+                };
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context["catch"](3);
+                this.flashMessage.error({
+                  message: "Some error occured, Please Refresh!",
+                  time: 5000
+                });
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[3, 12]]);
+      }));
+
+      function loadItemsData() {
+        return _loadItemsData.apply(this, arguments);
+      }
+
+      return loadItemsData;
+    }(),
     //JIKA ADA EMIT TERKAIT LOAD PERPAGE, MAKA FUNGSI INI AKAN DIJALANKAN
     handlePerPage: function handlePerPage(val) {
       this.per_page = val; //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
@@ -280,6 +403,69 @@ __webpack_require__.r(__webpack_exports__);
       this.sortBy = val.sortBy;
       this.sortByDesc = val.sortDesc;
       this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
+    },
+    removeData: function () {
+      var _removeData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (window.confirm("Are you sure you want to delete ".concat(item.name, " ?"))) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return");
+
+              case 2:
+                _context2.prev = 2;
+                _context2.next = 5;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_2__["deleteItem"](item.id);
+
+              case 5:
+                this.items = this.items.filter(function (obj) {
+                  return obj.id != item.id;
+                });
+                this.flashMessage.success({
+                  message: "Item DELETED successfully!",
+                  time: 5000
+                });
+                _context2.next = 12;
+                break;
+
+              case 9:
+                _context2.prev = 9;
+                _context2.t0 = _context2["catch"](2);
+                this.flashMessage.error({
+                  message: _context2.t0.response.data.message,
+                  time: 5000
+                });
+
+              case 12:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[2, 9]]);
+      }));
+
+      function removeData(_x) {
+        return _removeData.apply(this, arguments);
+      }
+
+      return removeData;
+    }(),
+    editData: function editData(item) {
+      this.editItemData = _objectSpread({}, item);
+      this.showEditDataModal();
+    },
+    showEditDataModal: function showEditDataModal() {
+      this.$refs.editDataModal.show();
+    },
+    hideEditDataModal: function hideEditDataModal() {
+      this.$refs.editDataModal.hide();
     }
   }
 });
@@ -317,7 +503,7 @@ var render = function() {
                 expression: "meta.per_page"
               }
             ],
-            staticClass: "form-control",
+            staticClass: "form-control-sm",
             on: {
               change: [
                 function($event) {
@@ -357,12 +543,12 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-md-4 offset-md-4" }, [
-      _c("div", { staticClass: "form-inline float-right" }, [
-        _c("label", { staticClass: "mr-2" }, [_vm._v("Search")]),
+      _c("div", { staticClass: "form-inline float-right has-search" }, [
+        _c("span", { staticClass: "fa fa-search form-control-feedback" }),
         _vm._v(" "),
         _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text" },
+          staticClass: "form-control-search",
+          attrs: { type: "text", placeholder: "Search" },
           on: { input: _vm.search }
         })
       ])
@@ -376,6 +562,7 @@ var render = function() {
           attrs: {
             striped: "",
             hover: "",
+            small: "",
             items: _vm.items,
             fields: _vm.fields,
             "sort-by": _vm.sortBy,
@@ -395,7 +582,41 @@ var render = function() {
             "update:sort-desc": function($event) {
               _vm.sortDesc = $event
             }
-          }
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "cell(actions)",
+              fn: function(row) {
+                return [
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { size: "sm", variant: "outline-warning" },
+                      on: {
+                        click: function($event) {
+                          return _vm.editData(row.item)
+                        }
+                      }
+                    },
+                    [_c("span", { staticClass: "fa fa-eye" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    {
+                      attrs: { size: "sm", variant: "outline-danger" },
+                      on: {
+                        click: function($event) {
+                          return _vm.removeData(row.item)
+                        }
+                      }
+                    },
+                    [_c("span", { staticClass: "fa fa-trash" })]
+                  )
+                ]
+              }
+            }
+          ])
         })
       ],
       1
@@ -420,11 +641,17 @@ var render = function() {
       { staticClass: "col-md-6" },
       [
         _c("b-pagination", {
+          staticClass: "mt-4",
           attrs: {
             "total-rows": _vm.meta.total,
             "per-page": _vm.meta.per_page,
             align: "right",
-            "aria-controls": "dw-datatable"
+            "aria-controls": "dw-datatable",
+            size: "sm",
+            "first-text": "First",
+            "prev-text": "⏪",
+            "next-text": "⏩",
+            "last-text": "Last"
           },
           on: { change: _vm.changePage },
           model: {
@@ -464,7 +691,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container", staticStyle: { "padding-top": "30px" } },
+    { staticClass: "container", staticStyle: { "padding-top": "20px" } },
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
@@ -485,7 +712,9 @@ var render = function() {
                     per_page: _vm.handlePerPage,
                     pagination: _vm.handlePagination,
                     search: _vm.handleSearch,
-                    sort: _vm.handleSort
+                    sort: _vm.handleSort,
+                    removedData: _vm.removeData,
+                    editedData: _vm.editData
                   }
                 })
               ],
@@ -493,8 +722,105 @@ var render = function() {
             )
           ])
         ])
-      ])
-    ]
+      ]),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          ref: "editDataModal",
+          attrs: { "hide-footer": "", title: "Edit Item" }
+        },
+        [
+          _c("div", { staticClass: "d-block" }, [
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.updateData($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "form-group-sm" }, [
+                  _c("label", { attrs: { for: "nama" } }, [
+                    _vm._v("Enter Name")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.editItemData.nama,
+                        expression: "editItemData.nama"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "nama",
+                      placeholder: "Enter Item Name"
+                    },
+                    domProps: { value: _vm.editItemData.nama },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.editItemData, "nama", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.nama
+                    ? _c("div", { staticClass: "invalid-feedback" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.errors.nama[0]) +
+                            "\n                        "
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("div", { staticClass: "text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-dark btn-sm",
+                      attrs: { type: "button" },
+                      on: { click: _vm.hideEditDataModal }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Cancel\n                        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary btn-sm",
+                      attrs: { type: "submit" }
+                    },
+                    [
+                      _c("span", { staticClass: "fa fa-check" }),
+                      _vm._v(" Update\n                        ")
+                    ]
+                  )
+                ])
+              ]
+            )
+          ])
+        ]
+      )
+    ],
+    1
   )
 }
 var staticRenderFns = [
@@ -503,7 +829,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h5", { staticClass: "card-title" }, [_vm._v("VueJS Datatables")])
+      _c("h5", { staticClass: "card-title" }, [_vm._v("Management Items")])
     ])
   }
 ]
@@ -586,14 +912,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************!*\
   !*** ./resources/js/services/items_service.js ***!
   \************************************************/
-/*! exports provided: createCategory, loadCategories, deleteCategory, updateCategory, loadMore */
+/*! exports provided: createCategory, loadData, deleteItem, updateCategory, loadMore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCategory", function() { return createCategory; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadCategories", function() { return loadCategories; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteCategory", function() { return deleteCategory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadData", function() { return loadData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteItem", function() { return deleteItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateCategory", function() { return updateCategory; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadMore", function() { return loadMore; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
@@ -601,11 +927,11 @@ __webpack_require__.r(__webpack_exports__);
 function createCategory(data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
-function loadCategories() {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/items'); //ini diambil  dari Route items laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+function loadData(params) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/items', params); //ini diambil  dari Route items laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
-function deleteCategory(id) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/categories/".concat(id)); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+function deleteItem(id) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/items/".concat(id)); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 function updateCategory(id, data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("/categories/".concat(id), data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)

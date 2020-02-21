@@ -6,7 +6,7 @@
             <div class="form-inline">
                 <label class="mr-2">Showing</label>
                 <!-- KETIKA SELECT BOXNYA DIGANTI, MAKA AKAN MENJALANKAN FUNGSI loadPerPage -->
-                <select class="form-control" v-model="meta.per_page" @change="loadPerPage">
+                <select class="form-control-sm" v-model="meta.per_page" @change="loadPerPage">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
@@ -19,10 +19,14 @@
       
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
         <div class="col-md-4 offset-md-4">
-            <div class="form-inline float-right">
-                <label class="mr-2">Search</label>
+            <div class="form-inline float-right has-search">
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
-                <input type="text" class="form-control" @input="search">
+                
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control-search" placeholder="Search"  @input="search">
+     
+                <!-- <label class="mr-2">Search</label>
+                <input type="text" class="form-control-sm" @input="search"> -->
             </div>
         </div>
       
@@ -31,7 +35,23 @@
             <!-- :ITEMS ADALAH DATA YANG AKAN DITAMPILKAN -->
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
-            <b-table striped hover :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty></b-table>   
+            <b-table striped hover small :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" show-empty>
+            <template v-slot:cell(actions)="row">
+                <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+                Info modal
+                </b-button> -->
+                <b-button size="sm" @click="editData(row.item)" variant="outline-warning">
+                <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
+                <span class="fa fa-eye"></span>
+                </b-button>
+                <b-button size="sm" @click="removeData(row.item)" variant="outline-danger">
+                <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
+                <span class="fa fa-trash"></span>
+                </b-button>
+            </template>
+            
+            </b-table> 
+            
         </div>
       
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
@@ -49,6 +69,12 @@
                 align="right"
                 @change="changePage"
                 aria-controls="dw-datatable"
+                size="sm"
+                first-text="First"
+                prev-text="⏪"
+                next-text="⏩"
+                last-text="Last"
+                class="mt-4"
             ></b-pagination>
         </div>
     </div>
@@ -120,6 +146,15 @@ export default {
             //KIRIM EMIT DENGAN NAMA SEARCH DAN VALUE SESUAI YANG DIKETIKKAN OLEH USER
             this.$emit('search', e.target.value)
         }, 500),
+
+        removeData(index) {
+        this.$emit('removedData', index)  // kirim event removedTodo parent (itemnya)
+        },
+
+        editData(index) {
+        this.$emit('editedData', index)  // kirim event removedTodo parent (itemnya)
+        },
+
     }
 }
 </script>

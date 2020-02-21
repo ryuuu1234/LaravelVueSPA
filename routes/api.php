@@ -22,7 +22,7 @@ Route::group(['prefix' => 'auth'], function() {
     Route::post('login', 'AuthController@login');
 
     
-    Route::post('addtoreg', 'RegistrationController@addtoreg'); // ini alamat untuk user selain root dan admin (api/auth/addtoreg)
+    // Route::post('addtoreg', 'RegistrationController@addtoreg'); // ini alamat untuk user selain root dan admin (api/auth/addtoreg)
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
@@ -52,4 +52,4 @@ Route::group(['prefix' => 'user'], function () {
 Route::resource('categories', 'CategoryController');
 
 //sementara
-Route::get('/items', 'ItemController@index');
+Route::resource('items', 'ItemController');

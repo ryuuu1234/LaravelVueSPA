@@ -6,9 +6,13 @@ import store from "./store.js";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap";
 
-import BootstrapVue from "bootstrap-vue";
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import FlashMessage from '@smartweb/vue-flash-message';
+
+
 Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
 Vue.use(FlashMessage);
 
 new Vue({

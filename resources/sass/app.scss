@@ -11236,6 +11236,17 @@ img.table-image {
     width: 100px;
 }
 
+table.b-table > thead > tr > th[aria-sort="ascending"]::after,
+table.b-table > tfoot > tr > th[aria-sort="ascending"]::after {
+  content: "\2191" ;
+}
+
+table.b-table > thead > tr > th[aria-sort][aria-sort="descending"]::after,
+table.b-table > tfoot > tr > th[aria-sort][aria-sort="descending"]::after {
+opacity: 1;
+content: "\2193"; // down arrow
+}
+
 // ==============================================================================FORM-LABEL-GROUPS
 // .form-label-group {
 //     position: relative;

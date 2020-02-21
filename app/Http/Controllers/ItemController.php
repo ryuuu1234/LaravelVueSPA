@@ -21,8 +21,8 @@ class ItemController extends Controller
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($items) {
                 //MAKA FUNGSI FILTER AKAN DIJALANKAN
-                $items = $items->where('nama', 'LIKE', '%' . request()->q . '%');
-                    // ->orWhere('author', 'LIKE', '%' . request()->q . '%')
+                $items = $items->where('nama', 'LIKE', '%' . request()->q . '%')
+                    ->orWhere('harga_beli', 'LIKE', '%' . request()->q . '%');
                     // ->orWhere('category', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
         return response()->json(
@@ -91,8 +91,19 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Item $item)
     {
-        //
+        if ($item->delete()) {
+            // Storage::delete($item->image);
+            return response()->json([
+                'message' => 'delete category successfully',
+                'status_code' => 200,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'some error occured, please try again',
+                'status_code' => 500,
+            ], 500);
+        }
     }
 }
