@@ -285,6 +285,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'harga_beli',
         sortable: true
       }, {
+        key: 'satuan',
+        sortable: true
+      }, {
         key: 'stok_awal',
         sortable: true
       }, {
