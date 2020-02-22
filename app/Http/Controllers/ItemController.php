@@ -64,7 +64,24 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama'=>'required|min:3',
+            'unit_id'=>'required|numeric',
+            'harga_beli'=>'required|numeric',
+            'stok_awal'=>'required|numeric',
+        ]);
+
+        $item = new Item();
+        $item->nama = $request->nama;
+        $item->unit_id = $request->unit_id;
+        $item->harga_beli = $request->harga_beli;
+        $item->stok_awal = $request->stok_awal;
+
+        if ($item->save()) {
+            return response()->json($item, 200);
+        }else {
+            return response()->json($item, 500);
+        }
     }
 
     /**

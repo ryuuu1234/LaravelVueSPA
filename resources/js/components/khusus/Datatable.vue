@@ -1,7 +1,7 @@
 <template>
     <div class="row">
       	<!-- BLOCK INI AKAN MENGHANDLE LOAD DATA PERPAGE, DENGAN DEFAULT ADALAH 10 DATA -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-inline">
                 <label class="mr-2">Showing</label>
                 <!-- KETIKA SELECT BOXNYA DIGANTI, MAKA AKAN MENJALANKAN FUNGSI loadPerPage -->
@@ -13,19 +13,27 @@
                     <option value="100">100</option>
                 </select>
                 <label class="ml-2">Entries</label>
+                <span>
+                <b-button 
+                    pill 
+                    variant="outline-secondary" 
+                    size="sm" 
+                    class="ml-2"
+                    @click="addNew"
+                    >
+                <i class="fa fa-plus"></i> Create New</b-button>
+            </span>
             </div>
+            
         </div>
       
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
-        <div class="col-md-4 offset-md-4 mb-3">
+        <div class="col-md-6 mb-3">
             <div class="form-inline float-right has-search">
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
                 
                 <span class="fa fa-search form-control-feedback"></span>
                 <input type="text" class="form-control-search" placeholder="Search"  @input="search">
-     
-                <!-- <label class="mr-2">Search</label>
-                <input type="text" class="form-control-sm" @input="search"> -->
             </div>
         </div>
       
@@ -34,7 +42,7 @@
             <!-- :ITEMS ADALAH DATA YANG AKAN DITAMPILKAN -->
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
-            <b-table striped hover small 
+            <b-table striped hover small dark no-border-collapse
             :items="items" 
             :fields="fields" 
             :sort-by.sync="sortBy" 
@@ -44,13 +52,13 @@
                 <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
                 Info modal
                 </b-button> -->
-                <b-button size="sm" @click="editData(row.item)" variant="outline-info">
+                <b-button pill size="sm" @click="editData(row.item)" variant="info" v-b-tooltip.hover title="Edit Data">
                 <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
-                <span class="fa fa-pencil-alt"></span>
+                    <span class="fa fa-pencil-alt"></span>
                 </b-button>
-                <b-button size="sm" @click="removeData(row.item)" variant="outline-danger">
+                <b-button pill size="sm" @click="removeData(row.item)" variant="danger" v-b-tooltip.hover title="Hapus Data">
                 <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
-                <span class="fa fa-trash"></span>
+                    <span class="fa fa-trash"></span>
                 </b-button>
             </template>
             
@@ -156,7 +164,11 @@ export default {
         },
 
         editData(index) {
-        this.$emit('editedData', index)  // kirim event removedTodo parent (itemnya)
+        this.$emit('editedData', index)  // kirim event editedData parent (itemnya)
+        },
+
+        addNew() {
+        this.$emit('createdData')  // kirim event createdData parent (itemnya)
         },
 
     }

@@ -20,6 +20,7 @@
                             @sort="handleSort"
                             @removedData="removeData"
                             @editedData="editData"
+                            @createdData="addData"
                         />
                         
                     </div>
@@ -27,133 +28,145 @@
             </div>
         </div>
 
-                <!-- Edit Modal form -->
-            <b-modal
-                ref="editDataModal" hide-footer title="Edit Item">
-                <div class="d-block">
-                    <form v-on:submit.prevent="updateData">
-                        <div class="row">
+        <!-- Edit Modal form -->
+        <b-modal
+            ref="editDataModal" hide-footer title="Edit Item">
+            <div class="d-block">
+                <form v-on:submit.prevent="updateData">
+                    <div class="row">
 
-                            <div class="col-md-6">
-                                <div class="form-group-sm mb-2">
-                                    <label for="nama">Nama Item</label>
-                                    <input
-                                        type="text"
-                                        class="form-control form-control-sm"
-                                        id="nama"
-                                        placeholder="Enter Item Name"
-                                        v-model="editItemData.nama"
-                                    />
-                                    <div class="invalid-feedback" v-if="errors.nama">
-                                        {{ errors.nama[0] }}
-                                    </div>
-                                </div>
-                            </div> 
-
-                            <div class="col-md-6">
-                                <div class="form-group-sm">
-                                    <label for="harga_beli">Harga Beli {{editItemData.harga_beli | numeralFormat }}</label>
-                                    
-                                        <input
-                                            class="form-control form-control-sm" 
-                                            id="harga_beli"
-                                            placeholder="Masukkan Harga Beli Item"
-                                            v-model="editItemData.harga_beli"
-                                            @blur="isInputActive = false" 
-                                            @focus="isInputActive = true"
-                                        >
-                                        
-                                       
-                                    <div class="invalid-feedback" v-if="errors.harga_beli">
-                                        {{ errors.harga_beli[0] }}
-                                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group-sm mb-2">
+                                <label for="nama">Nama Item</label>
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="nama"
+                                    placeholder="Enter Item Name"
+                                    v-model="editItemData.nama"
+                                />
+                                <div class="invalid-feedback" v-if="errors.nama">
+                                    {{ errors.nama[0] }}
                                 </div>
                             </div>
+                        </div> 
 
-                            <div class="col-md-6">
-                                <div class="form-group-sm mb-2">
-                                    <label for="unit_id">Satuan</label>
-                                    <select 
-                                        name="unit_id" id="unit_id"
-                                        class="form-control form-control-sm"
-                                        v-model="editItemData.unit_id"
+                        <div class="col-md-6">
+                            <div class="form-group-sm">
+                                <label for="harga_beli">Harga Beli </label>
+                                
+                                    <input-number
+                                        class="form-control form-control-sm" 
+                                        id="harga_beli"
+                                        placeholder="Masukkan Harga Beli Item"
+                                        v-model="currencyInput"
                                     >
-                                        <option value="">Pilih Satuan</option>
-                                        <option v-for="unit in units" :key="unit.id" 
-                                            :value="unit.id"
-                                            >{{ unit.nama }}
-                                        </option>
-                                    </select>
-                                    <div class="invalid-feedback" v-if="errors.unit_id">
-                                        {{ errors.unit_id[0] }}
-                                    </div>
+                                
+                                    </input-number>   
+                                    
+                                    
+                                <div class="invalid-feedback" v-if="errors.harga_beli">
+                                    {{ errors.harga_beli[0] }}
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group-sm">
-                                    <label for="stok_awal">Stok Awal</label>
-                                    <input 
-                                        type="number"
-                                        class="form-control form-control-sm"
-                                        placeholder="masukkan stok awal"
-                                        v-model="editItemData.stok_awal"
-                                    />
-                                    <div class="invalid-feedback" v-if="errors.stok_awal">
-                                        {{ errors.stok_awal[0] }}
-                                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group-sm mb-2">
+                                <label for="unit_id">Satuan</label>
+                                <select 
+                                    name="unit_id" id="unit_id"
+                                    class="form-control form-control-sm"
+                                    v-model="editItemData.unit_id"
+                                >
+                                    <option value="">Pilih Satuan</option>
+                                    <option v-for="unit in units" :key="unit.id" 
+                                        :value="unit.id"
+                                        >{{ unit.nama }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback" v-if="errors.unit_id">
+                                    {{ errors.unit_id[0] }}
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group-sm">
+                                <label for="stok_awal">Stok Awal</label>
+                                <input 
+                                    type="number"
+                                    class="form-control form-control-sm"
+                                    placeholder="masukkan stok awal"
+                                    v-model="editItemData.stok_awal"
+                                />
+                                <div class="invalid-feedback" v-if="errors.stok_awal">
+                                    {{ errors.stok_awal[0] }}
+                                </div>
+                            </div>
                         </div>
-                       
-                        <hr />
-                        <div class="text-right">
-                            <button
-                                type="button"
-                                class="btn btn-dark btn-sm"
-                                v-on:click="hideEditDataModal"
-                            >
-                                Cancel
-                            </button>
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <span class="fa fa-check"></span> Update
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </b-modal>
+
+                    </div>
+                    
+                    <hr />
+                    <div class="text-right">
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            v-on:click="hideEditDataModal"
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-dark btn-sm">
+                            <span class="fa fa-check"></span> {{textButton}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </b-modal>
+
+        
 
 
     </div>
 </template>
 
+
+
 <script>
 import Datatable from '../components/khusus/Datatable.vue' //IMPORT COMPONENT DATATABLENYA
-import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
+// import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
+import InputNumber from '../components/khusus/InputNumber.vue'
 // import axios from 'axios';
 import * as itemService from "../services/items_service";
 
-
 export default {
+
+    
+    
     components: {
         'app-datatable': Datatable, //REGISTER COMPONENT DATATABLE
-        'my-currency-input': MyCurrencyInput //REGISTER COMPONENT DATATABLE
+        // 'my-currency-input': MyCurrencyInput, //REGISTER COMPONENT DATATABLE
+        'input-number' : InputNumber    
     },
     //KETIKA COMPONENT INI DILOAD
     created() {
         //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
         this.loadItemsData()
+        this.kosongkanForm()
     },
+    
     data() {
         return {
             //UNTUK VARIABLE FIELDS, DEFINISIKAN KEY UNTUK MASING-MASING DATA DAN SORTABLE BERNILAI TRUE JIKA INGIN MENAKTIFKAN FITUR SORTING DAN FALSE JIKA TIDAK INGIN MENGAKTIFKAN
-            
+            // input:"10000",
+            methodForms: "Add",
+            // labelButton: "",
             fields: [
                 {key: 'nama', sortable: true},
-                {key: 'unit.nama', label:'Satuan', sortable: true},
+                // {key: 'unit.nama', label:'Satuan'},
                 {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
-                            return new Intl.NumberFormat().format(item.harga_beli)
+                            return "Rp " + new Intl.NumberFormat().format(item.harga_beli) + " / "+ item.unit.nama
                             }, sortable: true, class:'text-right'},
                 {key: 'stok_awal', sortable: true, class:'text-right'},
                 {key: 'actions', label: 'Actions', class:'text-right'}
@@ -170,38 +183,17 @@ export default {
 
             editItemData: {},
             errors:[],
-            // currencyInput: '',
+            currencyInput: '', // husus input angka
             isInputActive: false,
         }
     },
     
     computed: {
-        // currencyInput: {
-        //     // get: function() {
-        //     //     return this.editItemData.harga_beli;
-        //     // },
-        //     // set: function(newValue) {
-        //     //     if (newValue.length > 2) {
-        //     //         newValue = newValue.replace(".", "");
-        //     //         this.editItemData.harga_beli =
-        //     //         newValue.substr(0, newValue.length - 3) +
-        //     //         "." +
-        //     //         newValue.substr(newValue.length - 3);
-        //     //     } else {
-        //     //         this.editItemData.harga_beli = newValue;
-        //     //     }
-        //     // },
-        //     // get: function() {
-        //     //     if (this.isInputActive) {
-        //     //         // ini jika focus
-        //     //         return this.editItemData.harga_beli = "focus";
-        //     //     } else {
-        //     //         // ini jika lost focus
-        //     //         return this.editItemData.harga_beli = "lost focus";
-        //     //     }
-        //     // },
-        // }
+        textButton: function() {
+           return this.methodForms == "Add"? "Save":"Update"
+        },
     },
+
     methods: {
         // format angka
         
@@ -295,7 +287,15 @@ export default {
 
         editData(item) {
             this.editItemData = {...item};
-            this.currencyInput = this.editItemData.harga_beli;
+            // this.currencyInput = this.editItemData.harga_beli;
+            this.currencyInput = String(this.editItemData.harga_beli);
+            this.methodForms = "Edit";
+            this.showEditDataModal();
+        },
+
+         addData() {        
+            this.methodForms = "Add";
+            this.kosongkanForm();
             this.showEditDataModal();
         },
 
@@ -307,37 +307,77 @@ export default {
             this.$refs.editDataModal.hide();
         },
 
+        kosongkanForm() {
+            this.editItemData.nama = "";
+            this.editItemData.unit_id = "";
+            this.editItemData.harga_beli = "";
+            this.editItemData.stok_awal = "";
+            this.currencyInput ="";
+        },
+
         updateData: async function(item){
+
             const formData = new FormData();
             formData.append("nama", this.editItemData.nama);
-            formData.append("harga_beli", this.editItemData.harga_beli);
+            formData.append("harga_beli", this.currencyInput);
             formData.append("unit_id", this.editItemData.unit_id);
             formData.append("stok_awal", this.editItemData.stok_awal);
-            formData.append('_method', 'put');
-            // console.log(this.editItemData.id);
-            try {
-                const response = await itemService.updateItem(this.editItemData.id, formData)
-                this.items.map(item => {
-                    if (item.id === response.data.id) {
-                        for (let key in response.data) {
-                            item[key] = response.data[key];
-                        }
-                    }
-                })
 
-                // jika success tutup modal dan munculkan pesan
-                this.hideEditDataModal();
-                this.flashMessage.success({
-                    message: "Item Updated successfully!",
-                    time: 5000
-                });
-            } catch (error) {
-                 this.flashMessage.error({
-                    message: error.response.data.message,
-                    time: 5000
-                });
+            if (this.methodForms == 'Add') {
+                // ini untuk Add data
+                try {
+                   const response = await itemService.createItem(formData) 
+                //    jika sukses
+                   this.items.unshift(response.data);
+                   this.hideEditDataModal();
+                   this.kosongkanForm();
+                   this.flashMessage.success({
+                        message: "Category stored successfully!",
+                        time: 5000
+                    });
+                } catch (error) {
+                    switch (error.response.status) {
+                    case 422:
+                        this.errors = error.response.data.errors;
+                        break;
+
+                    default:
+                        this.flashMessage.error({
+                            message: "Some error occured, Please Try Again!",
+                            time: 5000
+                        });
+                        break;
+                }
+                }
+            }else{
+                // ini untuk edit data
+                formData.append('_method', 'put');
+                try {
+                    const response = await itemService.updateItem(this.editItemData.id, formData)
+                    this.items.map(item => {
+                        if (item.id === response.data.id) {
+                            for (let key in response.data) {
+                                item[key] = response.data[key];
+                            }
+                        }
+                    })
+
+                    // jika success tutup modal dan munculkan pesan
+                    this.hideEditDataModal();
+                    this.flashMessage.success({
+                        message: "Item Updated successfully!",
+                        time: 5000
+                    });
+                } catch (error) {
+                    this.flashMessage.error({
+                        message: error.response.data.message,
+                        time: 5000
+                    });
+                }
             }
-        }
+            
+            
+        },
     }
 }
 

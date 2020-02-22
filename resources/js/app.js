@@ -10,14 +10,22 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import FlashMessage from '@smartweb/vue-flash-message';
 
+import vueNumeralFilterInstaller from 'vue-numeral-filter';
+
+
+
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(FlashMessage);
 
-Vue.filter('currency', function (money) {
-    return accounting.formatMoney(money, "Rp ", 2, ".", ",")
-})
+// Vue.filter('currency', function (money) {
+//     return accounting.formatMoney(money, "Rp ", 2, ".", ",")
+// })
+
+Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
+
+
 
 new Vue({
     el: "#app",
