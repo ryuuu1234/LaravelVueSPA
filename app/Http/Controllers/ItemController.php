@@ -28,8 +28,12 @@ class ItemController extends Controller
         })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
 
         $items->load('unit:id,nama');
-        return response()->json(
-            ['status' => 'success', 'data' => $items]
+        $unit = Unit::all();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $items,
+            'data_unit' => $unit
+            ]
         );
     }
 
@@ -92,9 +96,31 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, Item $item)
+    {   
+        // return response()->json($request,200);
+        $request->validate([
+            'nama'=>'required',
+            'harga_beli'=>'required|numeric',
+            'unit_id'=>'required|numeric',
+            'stok_awal'=>'required'
+        ]);
+
+        $item->nama = $request->nama;
+        $item->harga_beli = $request->harga_beli;
+        $item->unit_id = $request->unit_id;
+        $item->stok_awal = $request->stok_awal;
+
+        if ($item->save()) {
+            return response()->json($item,200);
+        } else {
+            
+            $message = [
+                'message'=>'some errors occured, Please try again',
+                'status_code'=>500
+            ];
+            return response()->json($message,500);
+        }
     }
 
     /**

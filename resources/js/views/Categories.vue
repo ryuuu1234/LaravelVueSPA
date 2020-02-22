@@ -331,7 +331,7 @@ export default {
             reader.readAsDataURL(this.editCategoryData.image);
         },
         //edit dan update data
-        updateCategory: async function() {
+        updateCategory: async function(category) {
             const formData = new FormData();
             formData.append("name", this.editCategoryData.name);
             formData.append("image", this.editCategoryData.image);

@@ -13,7 +13,7 @@ export function deleteCategory(id) {
 }
 
 export function updateCategory(id, data) {
-    return httpFile().post(`/categories/${id}`, data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+    return httpFile().put(`/categories/${id}`, data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 
 export function loadMore(page) {

@@ -193,6 +193,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -346,6 +349,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT COMPONENT DATATABLENYA
 
  // import axios from 'axios';
@@ -392,6 +434,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }],
       items: [],
       //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
+      units: [],
+      //DATA UNIT
       meta: [],
       //JUGA BERLAKU UNTUK META
       current_page: 1,
@@ -404,10 +448,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       sortByDesc: false,
       //ASCEDING
       editItemData: {},
-      errors: []
+      errors: [],
+      // currencyInput: '',
+      isInputActive: false
     };
   },
-  computed: {},
+  computed: {// currencyInput: {
+    //     // get: function() {
+    //     //     return this.editItemData.harga_beli;
+    //     // },
+    //     // set: function(newValue) {
+    //     //     if (newValue.length > 2) {
+    //     //         newValue = newValue.replace(".", "");
+    //     //         this.editItemData.harga_beli =
+    //     //         newValue.substr(0, newValue.length - 3) +
+    //     //         "." +
+    //     //         newValue.substr(newValue.length - 3);
+    //     //     } else {
+    //     //         this.editItemData.harga_beli = newValue;
+    //     //     }
+    //     // },
+    //     // get: function() {
+    //     //     if (this.isInputActive) {
+    //     //         // ini jika focus
+    //     //         return this.editItemData.harga_beli = "focus";
+    //     //     } else {
+    //     //         // ini jika lost focus
+    //     //         return this.editItemData.harga_beli = "lost focus";
+    //     //     }
+    //     // },
+    // }
+  },
   methods: {
     // format angka
     formatPrice: function formatPrice(value) {
@@ -444,6 +515,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // console.log(response);
                 getData = response.data.data;
                 this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+
+                this.units = response.data.data_unit; // console.log(this.units)
                 // console.log(this.items[0].nama);
                 //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
 
@@ -454,11 +527,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context.next = 16;
+                _context.next = 17;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](3);
                 console.log('' + _context.t0);
                 this.flashMessage.error({
@@ -466,12 +539,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   time: 5000
                 });
 
-              case 16:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[3, 12]]);
+        }, _callee, this, [[3, 13]]);
       }));
 
       function loadItemsData() {
@@ -560,6 +633,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     editData: function editData(item) {
       this.editItemData = _objectSpread({}, item);
+      this.currencyInput = this.editItemData.harga_beli;
       this.showEditDataModal();
     },
     showEditDataModal: function showEditDataModal() {
@@ -567,7 +641,67 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     hideEditDataModal: function hideEditDataModal() {
       this.$refs.editDataModal.hide();
-    }
+    },
+    updateData: function () {
+      var _updateData = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
+        var formData, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                formData = new FormData();
+                formData.append("nama", this.editItemData.nama);
+                formData.append("harga_beli", this.editItemData.harga_beli);
+                formData.append("unit_id", this.editItemData.unit_id);
+                formData.append("stok_awal", this.editItemData.stok_awal);
+                formData.append('_method', 'put'); // console.log(this.editItemData.id);
+
+                _context3.prev = 6;
+                _context3.next = 9;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["updateItem"](this.editItemData.id, formData);
+
+              case 9:
+                response = _context3.sent;
+                this.items.map(function (item) {
+                  if (item.id === response.data.id) {
+                    for (var key in response.data) {
+                      item[key] = response.data[key];
+                    }
+                  }
+                }); // jika success tutup modal dan munculkan pesan
+
+                this.hideEditDataModal();
+                this.flashMessage.success({
+                  message: "Item Updated successfully!",
+                  time: 5000
+                });
+                _context3.next = 18;
+                break;
+
+              case 15:
+                _context3.prev = 15;
+                _context3.t0 = _context3["catch"](6);
+                this.flashMessage.error({
+                  message: _context3.t0.response.data.message,
+                  time: 5000
+                });
+
+              case 18:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this, [[6, 15]]);
+      }));
+
+      function updateData(_x2) {
+        return _updateData.apply(this, arguments);
+      }
+
+      return updateData;
+    }()
   }
 });
 
@@ -790,32 +924,34 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("input", {
-    directives: [
-      {
-        name: "model",
-        rawName: "v-model",
-        value: _vm.displayValue,
-        expression: "displayValue"
-      }
-    ],
-    attrs: { type: "text" },
-    domProps: { value: _vm.displayValue },
-    on: {
-      blur: function($event) {
-        _vm.isInputActive = false
-      },
-      focus: function($event) {
-        _vm.isInputActive = true
-      },
-      input: function($event) {
-        if ($event.target.composing) {
-          return
+  return _c("keep-alive", [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.displayValue,
+          expression: "displayValue"
         }
-        _vm.displayValue = $event.target.value
+      ],
+      attrs: { type: "text" },
+      domProps: { value: _vm.displayValue },
+      on: {
+        blur: function($event) {
+          _vm.isInputActive = false
+        },
+        focus: function($event) {
+          _vm.isInputActive = true
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.displayValue = $event.target.value
+        }
       }
-    }
-  })
+    })
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -897,7 +1033,7 @@ var render = function() {
                   _c("div", { staticClass: "col-md-6" }, [
                     _c("div", { staticClass: "form-group-sm mb-2" }, [
                       _c("label", { attrs: { for: "nama" } }, [
-                        _vm._v("Masukkan Nama Item")
+                        _vm._v("Nama Item")
                       ]),
                       _vm._v(" "),
                       _c("input", {
@@ -943,41 +1079,182 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
-                    _c(
-                      "div",
-                      { staticClass: "form-group-sm" },
-                      [
-                        _c("label", { attrs: { for: "harga_beli" } }, [
-                          _vm._v("Harga Beli")
-                        ]),
-                        _vm._v(" "),
-                        _c("my-currency-input", {
-                          staticClass: "form-control form-control-sm",
-                          attrs: {
-                            id: "harga_beli",
-                            placeholder: "Masukkan Harga Beli Item"
-                          },
-                          model: {
+                    _c("div", { staticClass: "form-group-sm" }, [
+                      _c("label", { attrs: { for: "harga_beli" } }, [
+                        _vm._v(
+                          "Harga Beli " +
+                            _vm._s(
+                              _vm._f("numeralFormat")(
+                                _vm.editItemData.harga_beli
+                              )
+                            )
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
                             value: _vm.editItemData.harga_beli,
-                            callback: function($$v) {
-                              _vm.$set(_vm.editItemData, "harga_beli", $$v)
-                            },
                             expression: "editItemData.harga_beli"
                           }
-                        }),
-                        _vm._v(" "),
-                        _vm.errors.harga_beli
-                          ? _c("div", { staticClass: "invalid-feedback" }, [
-                              _vm._v(
-                                "\n                                    " +
-                                  _vm._s(_vm.errors.harga_beli[0]) +
-                                  "\n                                "
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          id: "harga_beli",
+                          placeholder: "Masukkan Harga Beli Item"
+                        },
+                        domProps: { value: _vm.editItemData.harga_beli },
+                        on: {
+                          blur: function($event) {
+                            _vm.isInputActive = false
+                          },
+                          focus: function($event) {
+                            _vm.isInputActive = true
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.editItemData,
+                              "harga_beli",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.harga_beli
+                        ? _c("div", { staticClass: "invalid-feedback" }, [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(_vm.errors.harga_beli[0]) +
+                                "\n                                "
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group-sm mb-2" }, [
+                      _c("label", { attrs: { for: "unit_id" } }, [
+                        _vm._v("Satuan")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.editItemData.unit_id,
+                              expression: "editItemData.unit_id"
+                            }
+                          ],
+                          staticClass: "form-control form-control-sm",
+                          attrs: { name: "unit_id", id: "unit_id" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.editItemData,
+                                "unit_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               )
-                            ])
-                          : _vm._e()
-                      ],
-                      1
-                    )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Pilih Satuan")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.units, function(unit) {
+                            return _c(
+                              "option",
+                              { key: unit.id, domProps: { value: unit.id } },
+                              [
+                                _vm._v(
+                                  _vm._s(unit.nama) +
+                                    "\n                                    "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _vm.errors.unit_id
+                        ? _c("div", { staticClass: "invalid-feedback" }, [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(_vm.errors.unit_id[0]) +
+                                "\n                                "
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "form-group-sm" }, [
+                      _c("label", { attrs: { for: "stok_awal" } }, [
+                        _vm._v("Stok Awal")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.editItemData.stok_awal,
+                            expression: "editItemData.stok_awal"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: {
+                          type: "number",
+                          placeholder: "masukkan stok awal"
+                        },
+                        domProps: { value: _vm.editItemData.stok_awal },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.editItemData,
+                              "stok_awal",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.errors.stok_awal
+                        ? _c("div", { staticClass: "invalid-feedback" }, [
+                            _vm._v(
+                              "\n                                    " +
+                                _vm._s(_vm.errors.stok_awal[0]) +
+                                "\n                                "
+                            )
+                          ])
+                        : _vm._e()
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
@@ -1177,32 +1454,32 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************!*\
   !*** ./resources/js/services/items_service.js ***!
   \************************************************/
-/*! exports provided: createCategory, loadData, deleteItem, updateCategory, loadMore */
+/*! exports provided: createItem, loadData, deleteItem, updateItem, loadMore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCategory", function() { return createCategory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createItem", function() { return createItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadData", function() { return loadData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteItem", function() { return deleteItem; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateCategory", function() { return updateCategory; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateItem", function() { return updateItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadMore", function() { return loadMore; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 
-function createCategory(data) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+function createItem(data) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('user/items', data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function loadData(params) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/items', params); //ini diambil  dari Route items laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('user/items', params); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function deleteItem(id) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/items/".concat(id)); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("user/items/".concat(id)); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
-function updateCategory(id, data) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("/categories/".concat(id), data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+function updateItem(id, data) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("user/items/".concat(id), data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function loadMore(page) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("/categories?page=".concat(page));
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("user/items?page=".concat(page));
 }
 
 /***/ }),

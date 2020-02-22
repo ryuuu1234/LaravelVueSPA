@@ -36,7 +36,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group-sm mb-2">
-                                    <label for="nama">Masukkan Nama Item</label>
+                                    <label for="nama">Nama Item</label>
                                     <input
                                         type="text"
                                         class="form-control form-control-sm"
@@ -52,16 +52,55 @@
 
                             <div class="col-md-6">
                                 <div class="form-group-sm">
-                                    <label for="harga_beli">Harga Beli</label>
-                                    <my-currency-input 
-                                        class="form-control form-control-sm" 
-                                        id="harga_beli"
-                                        placeholder="Masukkan Harga Beli Item"
-                                        v-model="editItemData.harga_beli"
-                                    >
-                                    </my-currency-input>
+                                    <label for="harga_beli">Harga Beli {{editItemData.harga_beli | numeralFormat }}</label>
+                                    
+                                        <input
+                                            class="form-control form-control-sm" 
+                                            id="harga_beli"
+                                            placeholder="Masukkan Harga Beli Item"
+                                            v-model="editItemData.harga_beli"
+                                            @blur="isInputActive = false" 
+                                            @focus="isInputActive = true"
+                                        >
+                                        
+                                       
                                     <div class="invalid-feedback" v-if="errors.harga_beli">
                                         {{ errors.harga_beli[0] }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sm mb-2">
+                                    <label for="unit_id">Satuan</label>
+                                    <select 
+                                        name="unit_id" id="unit_id"
+                                        class="form-control form-control-sm"
+                                        v-model="editItemData.unit_id"
+                                    >
+                                        <option value="">Pilih Satuan</option>
+                                        <option v-for="unit in units" :key="unit.id" 
+                                            :value="unit.id"
+                                            >{{ unit.nama }}
+                                        </option>
+                                    </select>
+                                    <div class="invalid-feedback" v-if="errors.unit_id">
+                                        {{ errors.unit_id[0] }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sm">
+                                    <label for="stok_awal">Stok Awal</label>
+                                    <input 
+                                        type="number"
+                                        class="form-control form-control-sm"
+                                        placeholder="masukkan stok awal"
+                                        v-model="editItemData.stok_awal"
+                                    />
+                                    <div class="invalid-feedback" v-if="errors.stok_awal">
+                                        {{ errors.stok_awal[0] }}
                                     </div>
                                 </div>
                             </div>
@@ -121,6 +160,7 @@ export default {
 
             ],
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
+            units: [], //DATA UNIT
             meta: [], //JUGA BERLAKU UNTUK META
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
             per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
@@ -130,13 +170,38 @@ export default {
 
             editItemData: {},
             errors:[],
+            // currencyInput: '',
+            isInputActive: false,
         }
     },
-    computed:{
-        
-    },
-
     
+    computed: {
+        // currencyInput: {
+        //     // get: function() {
+        //     //     return this.editItemData.harga_beli;
+        //     // },
+        //     // set: function(newValue) {
+        //     //     if (newValue.length > 2) {
+        //     //         newValue = newValue.replace(".", "");
+        //     //         this.editItemData.harga_beli =
+        //     //         newValue.substr(0, newValue.length - 3) +
+        //     //         "." +
+        //     //         newValue.substr(newValue.length - 3);
+        //     //     } else {
+        //     //         this.editItemData.harga_beli = newValue;
+        //     //     }
+        //     // },
+        //     // get: function() {
+        //     //     if (this.isInputActive) {
+        //     //         // ini jika focus
+        //     //         return this.editItemData.harga_beli = "focus";
+        //     //     } else {
+        //     //         // ini jika lost focus
+        //     //         return this.editItemData.harga_beli = "lost focus";
+        //     //     }
+        //     // },
+        // }
+    },
     methods: {
         // format angka
         
@@ -160,6 +225,8 @@ export default {
                 // console.log(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                this.units = response.data.data_unit
+                // console.log(this.units)
                 // console.log(this.items[0].nama);
                 //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
                 this.meta = {
@@ -228,6 +295,7 @@ export default {
 
         editData(item) {
             this.editItemData = {...item};
+            this.currencyInput = this.editItemData.harga_beli;
             this.showEditDataModal();
         },
 
@@ -238,6 +306,38 @@ export default {
         hideEditDataModal() {
             this.$refs.editDataModal.hide();
         },
+
+        updateData: async function(item){
+            const formData = new FormData();
+            formData.append("nama", this.editItemData.nama);
+            formData.append("harga_beli", this.editItemData.harga_beli);
+            formData.append("unit_id", this.editItemData.unit_id);
+            formData.append("stok_awal", this.editItemData.stok_awal);
+            formData.append('_method', 'put');
+            // console.log(this.editItemData.id);
+            try {
+                const response = await itemService.updateItem(this.editItemData.id, formData)
+                this.items.map(item => {
+                    if (item.id === response.data.id) {
+                        for (let key in response.data) {
+                            item[key] = response.data[key];
+                        }
+                    }
+                })
+
+                // jika success tutup modal dan munculkan pesan
+                this.hideEditDataModal();
+                this.flashMessage.success({
+                    message: "Item Updated successfully!",
+                    time: 5000
+                });
+            } catch (error) {
+                 this.flashMessage.error({
+                    message: error.response.data.message,
+                    time: 5000
+                });
+            }
+        }
     }
 }
 

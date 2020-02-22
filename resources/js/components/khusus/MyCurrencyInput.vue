@@ -1,10 +1,13 @@
 <template>
+ <keep-alive>
     <input 
+        
         type="text" 
         v-model="displayValue" 
         @blur="isInputActive = false" 
         @focus="isInputActive = true"
         />
+  </keep-alive>       
 </template>
 
 <script>
@@ -38,7 +41,8 @@ export default {
                 this.$emit('input', newValue)
             }
         }
-    }
+    },
+    
 }
 </script>
 

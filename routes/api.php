@@ -34,17 +34,21 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
 
-        Route::post('edit-category', function () {
-            return response()->json([
-                'meesage' => 'Admin Access', 'status_code'=>200
-            ],200);
-        })->middleware('scope:Root');
+        // Route::post('edit-category', function () {
+        //     return response()->json([
+        //         'meesage' => 'Admin Access', 'status_code'=>200
+        //     ],200);
+        // })->middleware('scope:Root');
 
-        Route::post('create-category', function () {
-            return response()->json([
-                'meesage' => 'Everyone Access', 'status_code'=>200
-            ],200);
-        })->middleware('scope:Root,Admin');
+        // Route::post('create-category', function () {
+        //     return response()->json([
+        //         'meesage' => 'Everyone Access', 'status_code'=>200
+        //     ],200);
+
+        // })->middleware('scope:Root,Admin');
+        
+        
+        Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
 
     });
 });
@@ -52,7 +56,7 @@ Route::group(['prefix' => 'user'], function () {
 Route::resource('categories', 'CategoryController');
 
 //sementara
-Route::resource('items', 'ItemController');
+
 
 // untuk test
 Route::get('/test', 'ItemController@test');
