@@ -115,7 +115,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {   
-        // return response()->json($request,200);
+        dd($request->all());
         $request->validate([
             'nama'=>'required',
             'harga_beli'=>'required|numeric',
@@ -147,7 +147,8 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Item $item)
-    {
+    {   
+        dd($item->all());
         if ($item->delete()) {
             // Storage::delete($item->image);
             return response()->json([

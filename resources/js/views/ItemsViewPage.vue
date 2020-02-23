@@ -21,13 +21,16 @@
                             @removedData="removeData"
                             @editedData="editData"
                             @createdData="addData"
+                            @removedSelected="hapusDataTerseleksi"
+                            @selectedId="selectedDataId"
                         />
                         
                     </div>
                 </div>
             </div>
         </div>
-
+        
+       {{selectedRowsId}}
         <!-- Edit Modal form -->
         <b-modal
             ref="editDataModal" hide-footer title="Edit Item">
@@ -125,7 +128,7 @@
             </div>
         </b-modal>
 
-        
+        <!-- test -->
 
 
     </div>
@@ -163,6 +166,7 @@ export default {
             methodForms: "Add",
             // labelButton: "",
             fields: [
+                {key: 'selected', label:'#'},
                 {key: 'nama', sortable: true},
                 // {key: 'unit.nama', label:'Satuan'},
                 {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
@@ -185,6 +189,8 @@ export default {
             errors:[],
             currencyInput: '', // husus input angka
             isInputActive: false,
+
+            selectedRowsId:[],
         }
     },
     
@@ -195,11 +201,36 @@ export default {
     },
 
     methods: {
-        // format angka
-        
-        formatPrice(value) {
-            return new Intl.NumberFormat().format(value)
+
+        selectedDataId: function(item){
+            this.selectedRowsId = item.id;
+
         },
+        // remove select
+       hapusDataTerseleksi: function(val) {
+        //    const params = {params: {'id': 
+        //         val}}
+        //         console.log(params)
+           console.log(val)
+            // try {
+            //     await itemService.deleteItem(items);
+
+            //     this.items = this.items.filter(obj => {
+            //         return obj.id != item.id;
+            //     });
+
+            //     this.flashMessage.success({
+            //         message: "Item DELETED successfully!",
+            //         time: 5000
+            //     });
+            // } catch (error) {
+            //     this.flashMessage.error({
+            //         message: error.response.data.message,
+            //         time: 5000
+            //     });
+            // }
+       },
+        
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
         loadItemsData: async function() {
             let current_page = this.search == ''? this.current_page:1;
@@ -212,6 +243,7 @@ export default {
                 sortby: this.sortBy,
                 sortbydesc: sorting
             }};
+            console.log(params);
             try {
                 const response = await itemService.loadData(params); 
                 // console.log(response);
@@ -262,7 +294,8 @@ export default {
         },
 
         removeData: async function(item) {
-            if (!window.confirm(`Are you sure you want to delete ${item.name} ?` )) {
+            
+            if (!window.confirm(`Are you sure you want to delete ${item.nama} ?` )) {
                 return;
             }
 
@@ -315,6 +348,7 @@ export default {
             this.currencyInput ="";
         },
 
+        // create dan update data
         updateData: async function(item){
 
             const formData = new FormData();
@@ -322,13 +356,14 @@ export default {
             formData.append("harga_beli", this.currencyInput);
             formData.append("unit_id", this.editItemData.unit_id);
             formData.append("stok_awal", this.editItemData.stok_awal);
-
+            
             if (this.methodForms == 'Add') {
                 // ini untuk Add data
                 try {
                    const response = await itemService.createItem(formData) 
                 //    jika sukses
-                   this.items.unshift(response.data);
+                //    this.items.unshift(response.data);
+                    this.loadItemsData();
                    this.hideEditDataModal();
                    this.kosongkanForm();
                    this.flashMessage.success({

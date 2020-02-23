@@ -43,11 +43,34 @@
             <!-- :FIELDS AKAN MENJADI HEADER DARI TABLE, MAKA BERISI FIELD YANG SALING BERKORELASI DENGAN ITEMS -->
             <!-- :sort-by.sync & :sort-desc.sync AKAN MENGHANDLE FITUR SORTING -->
             <b-table striped hover small dark no-border-collapse
+            ref="selectableTable"
+            selectable
+            :select-mode="selectMode"
             :items="items" 
             :fields="fields" 
             :sort-by.sync="sortBy" 
             :sort-desc.sync="sortDesc" 
-            show-empty>
+            @row-selected="onRowSelected"
+            show-empty
+            responsive="sm"
+            >
+            <!-- Example scoped slot for select state illustrative purposes -->
+             <template v-slot:cell(selected)="row">
+                    <input type="checkbox" v-model="row.item.selected" />
+            </template>
+            <!-- <template v-slot:cell(id)="{ rowSelected }">
+                <template v-if="rowSelected">
+                    <span aria-hidden="true">&check;</span>
+                    <span class="sr-only">Selected</span>
+                </template>
+                <template v-else>
+                    <span aria-hidden="true">&nbsp;</span>
+                    <span class="sr-only">Not selected</span>
+                </template>
+            </template> -->
+           
+
+            <!-- Example scoped button tambahan -->
             <template v-slot:cell(actions)="row">
                 <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
                 Info modal
@@ -62,10 +85,13 @@
                 </b-button>
             </template>
             
-            </b-table> 
+            </b-table>
+            <b-button size="sm" @click="selectAllRows">Select all</b-button>
+            <b-button size="sm" @click="clearSelected">Clear selected</b-button> 
+            <b-button size="sm" @click="removeSelected(items)">Hapus</b-button> 
             
         </div>
-      
+        <br>
       	<!-- BAGIAN INI AKAN MENAMPILKAN JUMLAH DATA YANG DI-LOAD -->
         <div class="col-md-6">
             <p>Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} items</p>
@@ -88,7 +114,10 @@
                 last-text="Last"
                 class="mt-4"
             ></b-pagination>
+             Selected Rows:<br>
+      {{ selected }}
         </div>
+        
     </div>
 </template>
 
@@ -111,13 +140,21 @@ export default {
         //ADAPUN META, TYPENYA ADALAH OBJECT YANG BERISI INFORMASI MENGENAL CURRENT PAGE, LOAD PERPAGE, TOTAL DATA, DAN LAIN SEBAGAINYA.
         meta: {
             required: true
-        }
+        },
+
+        // completed: {
+        //     type:Boolean
+        // }
     },
     data() {
         return {
+
             //VARIABLE INI AKAN MENGHADLE SORTING DATA
             sortBy: null, //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
-            sortDesc: false //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
+            sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
+            selectMode: 'multi',
+            selected: [],
+            checkedId:[]
         }
     },
     watch: {
@@ -141,6 +178,25 @@ export default {
         }
     },
     methods: {
+        // selectId(items){
+        //     this.$emit('selectedId', items)
+        // },
+        removeSelected(items){
+            // this.items = this.items.filter(item => item.selected)
+            this.selected = items
+            this.$emit('removedSelected', items);
+        },
+        onRowSelected(items) {
+        this.selected = items
+        // this.id = items
+        // this.$emit('selectedId', items);
+        },
+        selectAllRows() {
+            this.$refs.selectableTable.selectAllRows()
+        },
+        clearSelected() {
+            this.$refs.selectableTable.clearSelected()
+        },
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
@@ -170,6 +226,10 @@ export default {
         addNew() {
         this.$emit('createdData')  // kirim event createdData parent (itemnya)
         },
+
+        // selectId(index) {
+        //     this.$emit('selectedId', index);
+        // }
 
     }
 }

@@ -105,6 +105,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -123,15 +152,21 @@ __webpack_require__.r(__webpack_exports__);
     //ADAPUN META, TYPENYA ADALAH OBJECT YANG BERISI INFORMASI MENGENAL CURRENT PAGE, LOAD PERPAGE, TOTAL DATA, DAN LAIN SEBAGAINYA.
     meta: {
       required: true
-    }
+    } // completed: {
+    //     type:Boolean
+    // }
+
   },
   data: function data() {
     return {
       //VARIABLE INI AKAN MENGHADLE SORTING DATA
       sortBy: null,
       //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
-      sortDesc: false //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
-
+      sortDesc: false,
+      //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
+      selectMode: 'multi',
+      selected: [],
+      checkedId: []
     };
   },
   watch: {
@@ -155,6 +190,24 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    // selectId(items){
+    //     this.$emit('selectedId', items)
+    // },
+    removeSelected: function removeSelected(items) {
+      // this.items = this.items.filter(item => item.selected)
+      this.selected = items;
+      this.$emit('removedSelected', items);
+    },
+    onRowSelected: function onRowSelected(items) {
+      this.selected = items; // this.id = items
+      // this.$emit('selectedId', items);
+    },
+    selectAllRows: function selectAllRows() {
+      this.$refs.selectableTable.selectAllRows();
+    },
+    clearSelected: function clearSelected() {
+      this.$refs.selectableTable.clearSelected();
+    },
     //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
     loadPerPage: function loadPerPage(val) {
       //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
@@ -180,7 +233,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     addNew: function addNew() {
       this.$emit('createdData'); // kirim event createdData parent (itemnya)
-    }
+    } // selectId(index) {
+    //     this.$emit('selectedId', index);
+    // }
+
   }
 });
 
@@ -385,6 +441,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
  //IMPORT COMPONENT DATATABLENYA
 // import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 
@@ -411,6 +470,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       methodForms: "Add",
       // labelButton: "",
       fields: [{
+        key: 'selected',
+        label: '#'
+      }, {
         key: 'nama',
         sortable: true
       }, // {key: 'unit.nama', label:'Satuan'},
@@ -450,7 +512,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: [],
       currencyInput: '',
       // husus input angka
-      isInputActive: false
+      isInputActive: false,
+      selectedRowsId: []
     };
   },
   computed: {
@@ -459,9 +522,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
-    // format angka
-    formatPrice: function formatPrice(value) {
-      return new Intl.NumberFormat().format(value);
+    selectedDataId: function selectedDataId(item) {
+      this.selectedRowsId = item.id;
+    },
+    // remove select
+    hapusDataTerseleksi: function hapusDataTerseleksi(val) {
+      //    const params = {params: {'id': 
+      //         val}}
+      //         console.log(params)
+      console.log(val); // try {
+      //     await itemService.deleteItem(items);
+      //     this.items = this.items.filter(obj => {
+      //         return obj.id != item.id;
+      //     });
+      //     this.flashMessage.success({
+      //         message: "Item DELETED successfully!",
+      //         time: 5000
+      //     });
+      // } catch (error) {
+      //     this.flashMessage.error({
+      //         message: error.response.data.message,
+      //         time: 5000
+      //     });
+      // }
     },
     //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
     loadItemsData: function () {
@@ -485,11 +568,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     sortbydesc: sorting
                   }
                 };
-                _context.prev = 3;
-                _context.next = 6;
+                console.log(params);
+                _context.prev = 4;
+                _context.next = 7;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["loadData"](params);
 
-              case 6:
+              case 7:
                 response = _context.sent;
                 // console.log(response);
                 getData = response.data.data;
@@ -506,24 +590,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context.next = 17;
+                _context.next = 18;
                 break;
 
-              case 13:
-                _context.prev = 13;
-                _context.t0 = _context["catch"](3);
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](4);
                 console.log('' + _context.t0);
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
 
-              case 17:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[3, 13]]);
+        }, _callee, this, [[4, 14]]);
       }));
 
       function loadItemsData() {
@@ -565,7 +649,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (window.confirm("Are you sure you want to delete ".concat(item.name, " ?"))) {
+                if (window.confirm("Are you sure you want to delete ".concat(item.nama, " ?"))) {
                   _context2.next = 2;
                   break;
                 }
@@ -635,6 +719,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editItemData.stok_awal = "";
       this.currencyInput = "";
     },
+    // create dan update data
     updateData: function () {
       var _updateData = _asyncToGenerator(
       /*#__PURE__*/
@@ -663,7 +748,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 9:
                 response = _context3.sent;
                 //    jika sukses
-                this.items.unshift(response.data);
+                //    this.items.unshift(response.data);
+                this.loadItemsData();
                 this.hideEditDataModal();
                 this.kosongkanForm();
                 this.flashMessage.success({
@@ -850,17 +936,21 @@ var render = function() {
       { staticClass: "col-md-12" },
       [
         _c("b-table", {
+          ref: "selectableTable",
           attrs: {
             striped: "",
             hover: "",
             small: "",
             dark: "",
             "no-border-collapse": "",
+            selectable: "",
+            "select-mode": _vm.selectMode,
             items: _vm.items,
             fields: _vm.fields,
             "sort-by": _vm.sortBy,
             "sort-desc": _vm.sortDesc,
-            "show-empty": ""
+            "show-empty": "",
+            responsive: "sm"
           },
           on: {
             "update:sortBy": function($event) {
@@ -874,9 +964,57 @@ var render = function() {
             },
             "update:sort-desc": function($event) {
               _vm.sortDesc = $event
-            }
+            },
+            "row-selected": _vm.onRowSelected
           },
           scopedSlots: _vm._u([
+            {
+              key: "cell(selected)",
+              fn: function(row) {
+                return [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: row.item.selected,
+                        expression: "row.item.selected"
+                      }
+                    ],
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(row.item.selected)
+                        ? _vm._i(row.item.selected, null) > -1
+                        : row.item.selected
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = row.item.selected,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(row.item, "selected", $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                row.item,
+                                "selected",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(row.item, "selected", $$c)
+                        }
+                      }
+                    }
+                  })
+                ]
+              }
+            },
             {
               key: "cell(actions)",
               fn: function(row) {
@@ -934,10 +1072,37 @@ var render = function() {
               }
             }
           ])
-        })
+        }),
+        _vm._v(" "),
+        _c(
+          "b-button",
+          { attrs: { size: "sm" }, on: { click: _vm.selectAllRows } },
+          [_vm._v("Select all")]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-button",
+          { attrs: { size: "sm" }, on: { click: _vm.clearSelected } },
+          [_vm._v("Clear selected")]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-button",
+          {
+            attrs: { size: "sm" },
+            on: {
+              click: function($event) {
+                return _vm.removeSelected(_vm.items)
+              }
+            }
+          },
+          [_vm._v("Hapus")]
+        )
       ],
       1
     ),
+    _vm._v(" "),
+    _c("br"),
     _vm._v(" "),
     _c("div", { staticClass: "col-md-6" }, [
       _c("p", [
@@ -978,7 +1143,10 @@ var render = function() {
             },
             expression: "meta.current_page"
           }
-        })
+        }),
+        _vm._v("\n         Selected Rows:"),
+        _c("br"),
+        _vm._v("\n  " + _vm._s(_vm.selected) + "\n    ")
       ],
       1
     )
@@ -1075,7 +1243,9 @@ var render = function() {
                     sort: _vm.handleSort,
                     removedData: _vm.removeData,
                     editedData: _vm.editData,
-                    createdData: _vm.addData
+                    createdData: _vm.addData,
+                    removedSelected: _vm.hapusDataTerseleksi,
+                    selectedId: _vm.selectedDataId
                   }
                 })
               ],
@@ -1084,6 +1254,7 @@ var render = function() {
           ])
         ])
       ]),
+      _vm._v("\n    \n   " + _vm._s(_vm.selectedRowsId) + "\n    "),
       _vm._v(" "),
       _c(
         "b-modal",
