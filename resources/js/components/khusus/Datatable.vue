@@ -70,6 +70,7 @@
                 </template> -->
                 <label class="custom-control material-checkbox">
                         <input type="checkbox" class="material-control-input"
+                        ref="checkboxTable"
                         id="checkbox"
                         v-model="row.item.selected"
                         v-on:click="checkboxVal(row.index, $event)" 
@@ -229,11 +230,10 @@ export default {
         },
 
         myRowClickHandler: function(record, index) {
-            // console.log(index);
+            this.$refs.checkboxTable.checked;
         },
         
         onRowSelected(e, index) {
-        // this.selected = items // ini yg awal
             this.selected = [];
             if (e.length > 0) {
                 this.selected = e.map(val=>val)
@@ -241,7 +241,8 @@ export default {
             }else {
                 this.allSelected = false;
             }
-
+            
+        // this.selected = items // ini yg awal
             
         },
         removeSelected(items){

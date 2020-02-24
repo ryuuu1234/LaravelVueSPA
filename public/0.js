@@ -164,6 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -235,10 +236,10 @@ __webpack_require__.r(__webpack_exports__);
         this.$refs.selectableTable.unselectRow(index);
       }
     },
-    myRowClickHandler: function myRowClickHandler(record, index) {// console.log(index);
+    myRowClickHandler: function myRowClickHandler(record, index) {
+      this.$refs.checkboxTable.checked;
     },
     onRowSelected: function onRowSelected(e, index) {
-      // this.selected = items // ini yg awal
       this.selected = [];
 
       if (e.length > 0) {
@@ -248,7 +249,8 @@ __webpack_require__.r(__webpack_exports__);
         this.allSelected = true;
       } else {
         this.allSelected = false;
-      }
+      } // this.selected = items // ini yg awal
+
     },
     removeSelected: function removeSelected(items) {
       this.$emit('removedSelected', this.selected);
@@ -1072,6 +1074,7 @@ var render = function() {
                             expression: "row.item.selected"
                           }
                         ],
+                        ref: "checkboxTable",
                         staticClass: "material-control-input",
                         attrs: { type: "checkbox", id: "checkbox" },
                         domProps: {
