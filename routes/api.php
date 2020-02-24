@@ -49,6 +49,7 @@ Route::group(['prefix' => 'user'], function () {
         
         
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
+        Route::post('items/delete', 'ItemController@deleteAll');
 
     });
 });

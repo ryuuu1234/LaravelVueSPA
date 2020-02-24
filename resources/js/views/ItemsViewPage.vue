@@ -30,7 +30,6 @@
             </div>
         </div>
         
-       {{selectedRowsId}}
         <!-- Edit Modal form -->
         <b-modal
             ref="editDataModal" hide-footer title="Edit Item">
@@ -128,8 +127,6 @@
             </div>
         </b-modal>
 
-        <!-- test -->
-
 
     </div>
 </template>
@@ -207,28 +204,27 @@ export default {
 
         },
         // remove select
-       hapusDataTerseleksi: function(val) {
-        //    const params = {params: {'id': 
-        //         val}}
-        //         console.log(params)
-           console.log(val)
-            // try {
-            //     await itemService.deleteItem(items);
+       hapusDataTerseleksi: async function(items) {
+           const params = {'items': items}
+            try {
+                await itemService.deleteAllSelected(params);
 
-            //     this.items = this.items.filter(obj => {
-            //         return obj.id != item.id;
-            //     });
+                items.map(val => {
+                    const index = this.items.indexOf(val)
+                    this.items.splice(index,1)
+                });
 
-            //     this.flashMessage.success({
-            //         message: "Item DELETED successfully!",
-            //         time: 5000
-            //     });
-            // } catch (error) {
-            //     this.flashMessage.error({
-            //         message: error.response.data.message,
-            //         time: 5000
-            //     });
-            // }
+                // this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
+                this.flashMessage.success({
+                    message: "Item DELETED successfully!",
+                    time: 5000
+                });
+            } catch (error) {
+                this.flashMessage.error({
+                    message: error.response.data.message,
+                    time: 5000
+                });
+            }
        },
         
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
@@ -243,7 +239,6 @@ export default {
                 sortby: this.sortBy,
                 sortbydesc: sorting
             }};
-            console.log(params);
             try {
                 const response = await itemService.loadData(params); 
                 // console.log(response);
@@ -302,9 +297,10 @@ export default {
             try {
                 await itemService.deleteItem(item.id);
 
-                this.items = this.items.filter(obj => {
-                    return obj.id != item.id;
-                });
+                // this.items = this.items.filter(obj => {
+                //     return obj.id != item.id;
+                // });
+                this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
 
                 this.flashMessage.success({
                     message: "Item DELETED successfully!",

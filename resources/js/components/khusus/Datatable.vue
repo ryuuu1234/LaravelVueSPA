@@ -14,15 +14,15 @@
                 </select>
                 <label class="ml-2">Entries</label>
                 <span>
-                <b-button 
-                    pill 
-                    variant="outline-secondary" 
-                    size="sm" 
-                    class="ml-2"
-                    @click="addNew"
-                    >
-                <i class="fa fa-plus"></i> Create New</b-button>
-            </span>
+                    <b-button 
+                        pill 
+                        variant="outline-secondary" 
+                        size="sm" 
+                        class="ml-2"
+                        @click="addNew"
+                        >
+                    <i class="fa fa-plus"></i> Create New</b-button>
+                </span>
             </div>
             
         </div>
@@ -51,44 +51,76 @@
             :sort-by.sync="sortBy" 
             :sort-desc.sync="sortDesc" 
             @row-selected="onRowSelected"
+             @row-clicked="myRowClickHandler"
             show-empty
             responsive="sm"
             >
             <!-- Example scoped slot for select state illustrative purposes -->
-             <template v-slot:cell(selected)="row">
+             <!-- <template v-slot:cell(selected)="row">
                     <input type="checkbox" v-model="row.item.selected" />
-            </template>
-            <!-- <template v-slot:cell(id)="{ rowSelected }">
-                <template v-if="rowSelected">
+            </template> -->
+            <template v-slot:cell(selected)="row"> <!-- { rowSelected }-->
+                <!-- <template v-if="rowSelected">
                     <span aria-hidden="true">&check;</span>
                     <span class="sr-only">Selected</span>
                 </template>
                 <template v-else>
                     <span aria-hidden="true">&nbsp;</span>
                     <span class="sr-only">Not selected</span>
-                </template>
-            </template> -->
+                </template> -->
+                <label class="custom-control material-checkbox">
+                        <input type="checkbox" class="material-control-input"
+                        id="checkbox"
+                        v-model="row.item.selected"
+                        v-on:click="checkboxVal(row.index, $event)" 
+                        >
+                        <span class="material-control-indicator"></span>
+                </label>
+            </template>
            
 
             <!-- Example scoped button tambahan -->
             <template v-slot:cell(actions)="row">
-                <!-- <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-                Info modal
-                </b-button> -->
-                <b-button pill size="sm" @click="editData(row.item)" variant="info" v-b-tooltip.hover title="Edit Data">
-                <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
-                    <span class="fa fa-pencil-alt"></span>
-                </b-button>
-                <b-button pill size="sm" @click="removeData(row.item)" variant="danger" v-b-tooltip.hover title="Hapus Data">
-                <!-- {{ row.detailsShowing ? 'Hide' : 'Details' }} -->
+                <button class="tombol-di-table" @click="editData(row.item)" v-b-tooltip.hover title="Edit Data">
+                    <span class="fa fa-edit"></span>
+                </button>
+                <button class="tombol-di-table" @click="removeData(row.item)" v-b-tooltip.hover title="Hapus Data">
                     <span class="fa fa-trash"></span>
-                </b-button>
+                </button>
             </template>
             
             </b-table>
-            <b-button size="sm" @click="selectAllRows">Select all</b-button>
-            <b-button size="sm" @click="clearSelected">Clear selected</b-button> 
-            <b-button size="sm" @click="removeSelected(items)">Hapus</b-button> 
+            <!-- <b-button size="sm" @click="selectAllRows">Select all</b-button>
+            <b-button size="sm" @click="clearSelected">Clear selected</b-button>  -->
+            <div class="box-bw-table">
+                <!-- <div class="custom-control custom-checkbox custom-control-sm">
+                    <input type="checkbox"  
+                        id="customCheck1" 
+                        v-model="allSelected"
+                        @change="togleAll" 
+                        class="custom-control-input"
+                        >
+                    <label class="custom-control-label" for="customCheck1" style="color:white;">
+                        {{ allSelected? 'Select All : With selected  ': 'Select All'}}</label>
+                    <span>
+                        <button 
+                            class="tombol-di-bw-table"
+                            @click="removeSelected(items)"
+                            >
+                        <i class="fa fa-trash"></i> Delete</button>
+                    </span> 
+                </div> -->
+                <label class="custom-control material-checkbox">
+                    <input type="checkbox" class="material-control-input"
+                            v-model="allSelected"
+                            @change="togleAll" 
+                    >
+                    <span class="material-control-indicator"></span>
+                    <span class="material-control-description" style="color:white;">Select All</span>
+                </label>
+
+            </div>
+            
             
         </div>
         <br>
@@ -114,8 +146,6 @@
                 last-text="Last"
                 class="mt-4"
             ></b-pagination>
-             Selected Rows:<br>
-      {{ selected }}
         </div>
         
     </div>
@@ -125,6 +155,12 @@
 import _ from 'lodash' //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 export default {
+   
+    computed: {
+        remaining() {
+            console.dir(this.selected);
+        }
+    },
     //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
     props: {
         //ITEMS STRUKTURNYA ADALAH ARRAY, KARENA BAGIAN INI BERISI DATA YANG AKAN DITAMPILKAN DAN SIFATNYA WAJIB DIKIRIMKAN KETIKA COMPONENT INI DIGUNAKAN
@@ -154,7 +190,11 @@ export default {
             sortDesc: false, //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
             selectMode: 'multi',
             selected: [],
-            checkedId:[]
+            checkedId:[],
+
+            allSelected: false,
+            selectedRow: false,
+            booleanValue: false,
         }
     },
     watch: {
@@ -178,18 +218,38 @@ export default {
         }
     },
     methods: {
-        // selectId(items){
-        //     this.$emit('selectedId', items)
-        // },
-        removeSelected(items){
-            // this.items = this.items.filter(item => item.selected)
-            this.selected = items
-            this.$emit('removedSelected', items);
+        checkboxVal : function(index, event) {
+            if (event.target.checked) {
+                this.$refs.selectableTable.selectRow(index)
+                
+            }else {
+                this.$refs.selectableTable.unselectRow(index)
+            }
+            
         },
-        onRowSelected(items) {
-        this.selected = items
-        // this.id = items
-        // this.$emit('selectedId', items);
+
+        myRowClickHandler: function(record, index) {
+            // console.log(index);
+        },
+        
+        onRowSelected(e, index) {
+        // this.selected = items // ini yg awal
+            this.selected = [];
+            if (e.length > 0) {
+                this.selected = e.map(val=>val)
+                this.allSelected = true;
+            }else {
+                this.allSelected = false;
+            }
+
+            
+        },
+        removeSelected(items){
+            this.$emit('removedSelected', this.selected);
+        },
+
+        togleAll() {
+           return this.allSelected?this.selectAllRows():this.clearSelected();
         },
         selectAllRows() {
             this.$refs.selectableTable.selectAllRows()

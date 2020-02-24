@@ -134,9 +134,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    remaining: function remaining() {
+      console.dir(this.selected);
+    }
+  },
   //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
   props: {
     //ITEMS STRUKTURNYA ADALAH ARRAY, KARENA BAGIAN INI BERISI DATA YANG AKAN DITAMPILKAN DAN SIFATNYA WAJIB DIKIRIMKAN KETIKA COMPONENT INI DIGUNAKAN
@@ -166,7 +201,10 @@ __webpack_require__.r(__webpack_exports__);
       //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
       selectMode: 'multi',
       selected: [],
-      checkedId: []
+      checkedId: [],
+      allSelected: false,
+      selectedRow: false,
+      booleanValue: false
     };
   },
   watch: {
@@ -190,17 +228,33 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    // selectId(items){
-    //     this.$emit('selectedId', items)
-    // },
-    removeSelected: function removeSelected(items) {
-      // this.items = this.items.filter(item => item.selected)
-      this.selected = items;
-      this.$emit('removedSelected', items);
+    checkboxVal: function checkboxVal(index, event) {
+      if (event.target.checked) {
+        this.$refs.selectableTable.selectRow(index);
+      } else {
+        this.$refs.selectableTable.unselectRow(index);
+      }
     },
-    onRowSelected: function onRowSelected(items) {
-      this.selected = items; // this.id = items
-      // this.$emit('selectedId', items);
+    myRowClickHandler: function myRowClickHandler(record, index) {// console.log(index);
+    },
+    onRowSelected: function onRowSelected(e, index) {
+      // this.selected = items // ini yg awal
+      this.selected = [];
+
+      if (e.length > 0) {
+        this.selected = e.map(function (val) {
+          return val;
+        });
+        this.allSelected = true;
+      } else {
+        this.allSelected = false;
+      }
+    },
+    removeSelected: function removeSelected(items) {
+      this.$emit('removedSelected', this.selected);
+    },
+    togleAll: function togleAll() {
+      return this.allSelected ? this.selectAllRows() : this.clearSelected();
     },
     selectAllRows: function selectAllRows() {
       this.$refs.selectableTable.selectAllRows();
@@ -441,9 +495,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
  //IMPORT COMPONENT DATATABLENYA
 // import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 
@@ -526,35 +577,69 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.selectedRowsId = item.id;
     },
     // remove select
-    hapusDataTerseleksi: function hapusDataTerseleksi(val) {
-      //    const params = {params: {'id': 
-      //         val}}
-      //         console.log(params)
-      console.log(val); // try {
-      //     await itemService.deleteItem(items);
-      //     this.items = this.items.filter(obj => {
-      //         return obj.id != item.id;
-      //     });
-      //     this.flashMessage.success({
-      //         message: "Item DELETED successfully!",
-      //         time: 5000
-      //     });
-      // } catch (error) {
-      //     this.flashMessage.error({
-      //         message: error.response.data.message,
-      //         time: 5000
-      //     });
-      // }
-    },
+    hapusDataTerseleksi: function () {
+      var _hapusDataTerseleksi = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(items) {
+        var _this = this;
+
+        var params;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                params = {
+                  'items': items
+                };
+                _context.prev = 1;
+                _context.next = 4;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["deleteAllSelected"](params);
+
+              case 4:
+                items.map(function (val) {
+                  var index = _this.items.indexOf(val);
+
+                  _this.items.splice(index, 1);
+                }); // this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
+
+                this.flashMessage.success({
+                  message: "Item DELETED successfully!",
+                  time: 5000
+                });
+                _context.next = 11;
+                break;
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](1);
+                this.flashMessage.error({
+                  message: _context.t0.response.data.message,
+                  time: 5000
+                });
+
+              case 11:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[1, 8]]);
+      }));
+
+      function hapusDataTerseleksi(_x) {
+        return _hapusDataTerseleksi.apply(this, arguments);
+      }
+
+      return hapusDataTerseleksi;
+    }(),
     //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
     loadItemsData: function () {
       var _loadItemsData = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         var current_page, sorting, params, response, getData;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 current_page = this.search == '' ? this.current_page : 1;
                 sorting = this.sortByDesc ? 'DESC' : 'ASC'; // let
@@ -568,13 +653,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     sortbydesc: sorting
                   }
                 };
-                console.log(params);
-                _context.prev = 4;
-                _context.next = 7;
+                _context2.prev = 3;
+                _context2.next = 6;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["loadData"](params);
 
-              case 7:
-                response = _context.sent;
+              case 6:
+                response = _context2.sent;
                 // console.log(response);
                 getData = response.data.data;
                 this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
@@ -590,24 +674,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context.next = 18;
+                _context2.next = 17;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](4);
-                console.log('' + _context.t0);
+              case 13:
+                _context2.prev = 13;
+                _context2.t0 = _context2["catch"](3);
+                console.log('' + _context2.t0);
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
 
-              case 18:
+              case 17:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this, [[4, 14]]);
+        }, _callee2, this, [[3, 13]]);
       }));
 
       function loadItemsData() {
@@ -644,51 +728,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     removeData: function () {
       var _removeData = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 if (window.confirm("Are you sure you want to delete ".concat(item.nama, " ?"))) {
-                  _context2.next = 2;
+                  _context3.next = 2;
                   break;
                 }
 
-                return _context2.abrupt("return");
+                return _context3.abrupt("return");
 
               case 2:
-                _context2.prev = 2;
-                _context2.next = 5;
+                _context3.prev = 2;
+                _context3.next = 5;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["deleteItem"](item.id);
 
               case 5:
-                this.items = this.items.filter(function (obj) {
-                  return obj.id != item.id;
-                });
+                // this.items = this.items.filter(obj => {
+                //     return obj.id != item.id;
+                // });
+                this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
+
                 this.flashMessage.success({
                   message: "Item DELETED successfully!",
                   time: 5000
                 });
-                _context2.next = 12;
+                _context3.next = 12;
                 break;
 
               case 9:
-                _context2.prev = 9;
-                _context2.t0 = _context2["catch"](2);
+                _context3.prev = 9;
+                _context3.t0 = _context3["catch"](2);
                 this.flashMessage.error({
-                  message: _context2.t0.response.data.message,
+                  message: _context3.t0.response.data.message,
                   time: 5000
                 });
 
               case 12:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this, [[2, 9]]);
+        }, _callee3, this, [[2, 9]]);
       }));
 
-      function removeData(_x) {
+      function removeData(_x2) {
         return _removeData.apply(this, arguments);
       }
 
@@ -723,12 +809,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     updateData: function () {
       var _updateData = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(item) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(item) {
         var formData, response, _response;
 
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 formData = new FormData();
                 formData.append("nama", this.editItemData.nama);
@@ -737,16 +823,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 formData.append("stok_awal", this.editItemData.stok_awal);
 
                 if (!(this.methodForms == 'Add')) {
-                  _context3.next = 27;
+                  _context4.next = 27;
                   break;
                 }
 
-                _context3.prev = 6;
-                _context3.next = 9;
+                _context4.prev = 6;
+                _context4.next = 9;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["createItem"](formData);
 
               case 9:
-                response = _context3.sent;
+                response = _context4.sent;
                 //    jika sukses
                 //    this.items.unshift(response.data);
                 this.loadItemsData();
@@ -756,40 +842,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Category stored successfully!",
                   time: 5000
                 });
-                _context3.next = 25;
+                _context4.next = 25;
                 break;
 
               case 16:
-                _context3.prev = 16;
-                _context3.t0 = _context3["catch"](6);
-                _context3.t1 = _context3.t0.response.status;
-                _context3.next = _context3.t1 === 422 ? 21 : 23;
+                _context4.prev = 16;
+                _context4.t0 = _context4["catch"](6);
+                _context4.t1 = _context4.t0.response.status;
+                _context4.next = _context4.t1 === 422 ? 21 : 23;
                 break;
 
               case 21:
-                this.errors = _context3.t0.response.data.errors;
-                return _context3.abrupt("break", 25);
+                this.errors = _context4.t0.response.data.errors;
+                return _context4.abrupt("break", 25);
 
               case 23:
                 this.flashMessage.error({
                   message: "Some error occured, Please Try Again!",
                   time: 5000
                 });
-                return _context3.abrupt("break", 25);
+                return _context4.abrupt("break", 25);
 
               case 25:
-                _context3.next = 40;
+                _context4.next = 40;
                 break;
 
               case 27:
                 // ini untuk edit data
                 formData.append('_method', 'put');
-                _context3.prev = 28;
-                _context3.next = 31;
+                _context4.prev = 28;
+                _context4.next = 31;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["updateItem"](this.editItemData.id, formData);
 
               case 31:
-                _response = _context3.sent;
+                _response = _context4.sent;
                 this.items.map(function (item) {
                   if (item.id === _response.data.id) {
                     for (var key in _response.data) {
@@ -803,26 +889,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Item Updated successfully!",
                   time: 5000
                 });
-                _context3.next = 40;
+                _context4.next = 40;
                 break;
 
               case 37:
-                _context3.prev = 37;
-                _context3.t2 = _context3["catch"](28);
+                _context4.prev = 37;
+                _context4.t2 = _context4["catch"](28);
                 this.flashMessage.error({
-                  message: _context3.t2.response.data.message,
+                  message: _context4.t2.response.data.message,
                   time: 5000
                 });
 
               case 40:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this, [[6, 16], [28, 37]]);
+        }, _callee4, this, [[6, 16], [28, 37]]);
       }));
 
-      function updateData(_x2) {
+      function updateData(_x3) {
         return _updateData.apply(this, arguments);
       }
 
@@ -965,53 +1051,70 @@ var render = function() {
             "update:sort-desc": function($event) {
               _vm.sortDesc = $event
             },
-            "row-selected": _vm.onRowSelected
+            "row-selected": _vm.onRowSelected,
+            "row-clicked": _vm.myRowClickHandler
           },
           scopedSlots: _vm._u([
             {
               key: "cell(selected)",
               fn: function(row) {
                 return [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: row.item.selected,
-                        expression: "row.item.selected"
-                      }
-                    ],
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(row.item.selected)
-                        ? _vm._i(row.item.selected, null) > -1
-                        : row.item.selected
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = row.item.selected,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(row.item, "selected", $$a.concat([$$v]))
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                row.item,
-                                "selected",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
+                  _c(
+                    "label",
+                    { staticClass: "custom-control material-checkbox" },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: row.item.selected,
+                            expression: "row.item.selected"
                           }
-                        } else {
-                          _vm.$set(row.item, "selected", $$c)
+                        ],
+                        staticClass: "material-control-input",
+                        attrs: { type: "checkbox", id: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(row.item.selected)
+                            ? _vm._i(row.item.selected, null) > -1
+                            : row.item.selected
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.checkboxVal(row.index, $event)
+                          },
+                          change: function($event) {
+                            var $$a = row.item.selected,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    row.item,
+                                    "selected",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    row.item,
+                                    "selected",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(row.item, "selected", $$c)
+                            }
+                          }
                         }
-                      }
-                    }
-                  })
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "material-control-indicator" })
+                    ]
+                  )
                 ]
               }
             },
@@ -1020,7 +1123,7 @@ var render = function() {
               fn: function(row) {
                 return [
                   _c(
-                    "b-button",
+                    "button",
                     {
                       directives: [
                         {
@@ -1029,23 +1132,19 @@ var render = function() {
                           modifiers: { hover: true }
                         }
                       ],
-                      attrs: {
-                        pill: "",
-                        size: "sm",
-                        variant: "info",
-                        title: "Edit Data"
-                      },
+                      staticClass: "tombol-di-table",
+                      attrs: { title: "Edit Data" },
                       on: {
                         click: function($event) {
                           return _vm.editData(row.item)
                         }
                       }
                     },
-                    [_c("span", { staticClass: "fa fa-pencil-alt" })]
+                    [_c("span", { staticClass: "fa fa-edit" })]
                   ),
                   _vm._v(" "),
                   _c(
-                    "b-button",
+                    "button",
                     {
                       directives: [
                         {
@@ -1054,12 +1153,8 @@ var render = function() {
                           modifiers: { hover: true }
                         }
                       ],
-                      attrs: {
-                        pill: "",
-                        size: "sm",
-                        variant: "danger",
-                        title: "Hapus Data"
-                      },
+                      staticClass: "tombol-di-table",
+                      attrs: { title: "Hapus Data" },
                       on: {
                         click: function($event) {
                           return _vm.removeData(row.item)
@@ -1074,30 +1169,62 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _c(
-          "b-button",
-          { attrs: { size: "sm" }, on: { click: _vm.selectAllRows } },
-          [_vm._v("Select all")]
-        ),
-        _vm._v(" "),
-        _c(
-          "b-button",
-          { attrs: { size: "sm" }, on: { click: _vm.clearSelected } },
-          [_vm._v("Clear selected")]
-        ),
-        _vm._v(" "),
-        _c(
-          "b-button",
-          {
-            attrs: { size: "sm" },
-            on: {
-              click: function($event) {
-                return _vm.removeSelected(_vm.items)
+        _c("div", { staticClass: "box-bw-table" }, [
+          _c("label", { staticClass: "custom-control material-checkbox" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.allSelected,
+                  expression: "allSelected"
+                }
+              ],
+              staticClass: "material-control-input",
+              attrs: { type: "checkbox" },
+              domProps: {
+                checked: Array.isArray(_vm.allSelected)
+                  ? _vm._i(_vm.allSelected, null) > -1
+                  : _vm.allSelected
+              },
+              on: {
+                change: [
+                  function($event) {
+                    var $$a = _vm.allSelected,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && (_vm.allSelected = $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          (_vm.allSelected = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
+                      }
+                    } else {
+                      _vm.allSelected = $$c
+                    }
+                  },
+                  _vm.togleAll
+                ]
               }
-            }
-          },
-          [_vm._v("Hapus")]
-        )
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "material-control-indicator" }),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "material-control-description",
+                staticStyle: { color: "white" }
+              },
+              [_vm._v("Select All")]
+            )
+          ])
+        ])
       ],
       1
     ),
@@ -1143,10 +1270,7 @@ var render = function() {
             },
             expression: "meta.current_page"
           }
-        }),
-        _vm._v("\n         Selected Rows:"),
-        _c("br"),
-        _vm._v("\n  " + _vm._s(_vm.selected) + "\n    ")
+        })
       ],
       1
     )
@@ -1254,7 +1378,6 @@ var render = function() {
           ])
         ])
       ]),
-      _vm._v("\n    \n   " + _vm._s(_vm.selectedRowsId) + "\n    "),
       _vm._v(" "),
       _c(
         "b-modal",
@@ -1680,7 +1803,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************!*\
   !*** ./resources/js/services/items_service.js ***!
   \************************************************/
-/*! exports provided: createItem, loadData, deleteItem, updateItem, loadMore */
+/*! exports provided: createItem, loadData, deleteItem, deleteAllSelected, updateItem, loadMore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1688,6 +1811,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createItem", function() { return createItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadData", function() { return loadData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteItem", function() { return deleteItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteAllSelected", function() { return deleteAllSelected; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateItem", function() { return updateItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadMore", function() { return loadMore; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
@@ -1700,6 +1824,9 @@ function loadData(params) {
 }
 function deleteItem(id) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("user/items/".concat(id)); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+}
+function deleteAllSelected(params) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post('user/items/delete', params); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items/delete)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function updateItem(id, data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("user/items/".concat(id), data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)

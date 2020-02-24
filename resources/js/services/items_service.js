@@ -12,6 +12,10 @@ export function deleteItem(id) {
     return http().delete(`user/items/${id}`); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 
+export function deleteAllSelected(params) {
+    return http().post('user/items/delete', params); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items/delete)...karena sdh di definisikan di store maka tgl ('/items)
+}
+
 export function updateItem(id, data) {
     return httpFile().post(`user/items/${id}`, data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }

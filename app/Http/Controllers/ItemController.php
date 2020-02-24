@@ -148,7 +148,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {   
-        dd($item->all());
+        // dd($item->all());
         if ($item->delete()) {
             // Storage::delete($item->image);
             return response()->json([
@@ -161,5 +161,16 @@ class ItemController extends Controller
                 'status_code' => 500,
             ], 500);
         }
+    }
+
+    public function deleteAll(Request $request)
+    {   
+        Item::whereIn('id', $request->items)->delete();
+        
+            return response()->json([
+                'message' => 'delete category successfully',
+                'status_code' => 200,
+            ], 200);
+        
     }
 }

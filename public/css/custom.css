@@ -84,3 +84,43 @@ body {
     pointer-events: none;
     cursor: default;
 }
+
+/* BUTTON ON TABLE ======================================== */
+
+button.tombol-di-table {
+    background: transparent;
+    border: none;
+    color: lightgray;
+    font-size: smaller;
+    padding: 3px;
+    margin-top: -5px;
+}
+
+button.tombol-di-table:hover{
+    color: #fff;
+}
+
+/* BUTTON TOMBOL HAPUS di SELECT ALL =========================== */
+
+button.tombol-di-bw-table {
+    background: transparent;
+    border: none;
+    color:#dc3545;
+    font-size: small;
+    padding: 3px;
+    margin-top: -5px;
+    padding-bottom: 1px;
+}
+
+button.tombol-di-bw-table:hover{
+    color:#d05f6a;
+}
+
+/* box bawah table ====================================== */
+.box-bw-table {
+    background: currentColor;
+    padding: 5px;
+    margin-top: -15px;
+    
+}
+
