@@ -105,16 +105,27 @@ button.tombol-di-table:hover{
 button.tombol-di-bw-table {
     background: transparent;
     border: none;
-    color:#dc3545;
+    color:white;
     font-size: small;
     padding: 3px;
     margin-top: -5px;
     padding-bottom: 1px;
+    padding-left:8px;
 }
 
 button.tombol-di-bw-table:hover{
-    color:#d05f6a;
+    color:#dc3545;
 }
+
+button.tombol-di-bw-table[disabled]:hover {
+    color: grey;
+}
+
+button.tombol-di-bw-table[disabled] {
+    color: grey;
+}
+
+
 
 /* box bawah table ====================================== */
 .box-bw-table {
@@ -122,5 +133,6 @@ button.tombol-di-bw-table:hover{
     padding: 5px;
     margin-top: -15px;
     
+    padding-right:8px;
 }
 

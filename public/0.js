@@ -153,24 +153,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
-    remaining: function remaining() {
-      console.dir(this.selected);
+    remaining: function remaining() {// console.dir(this.selected);
     }
   },
   //PROPS INI ADALAH DATA YANG AKAN DIMINTA DARI PENGGUNA COMPONENT DATATABLE YANG KITA BUAT
@@ -200,9 +187,10 @@ __webpack_require__.r(__webpack_exports__);
       //FIELD YANG AKAN DISORT AKAN OTOMATIS DISIMPAN DISINI
       sortDesc: false,
       //SEDANGKAN JENISNYA ASCENDING ATAU DESC AKAN DISIMPAN DISINI
-      selectMode: 'multi',
+      selectMode: "multi",
       selected: [],
       checkedId: [],
+      selectedItems: [],
       allSelected: false,
       selectedRow: false,
       booleanValue: false
@@ -211,84 +199,77 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     //KETIKA VALUE DARI VARIABLE sortBy BERUBAH
     sortBy: function sortBy(val) {
-      //MAKA KITA EMIT DENGAN NAMA SORT DAN DATANYA ADALAH OBJECT BERUPA VALUE DARI SORTBY DAN SORTDESC
-      //EMIT BERARTI MENGIRIMKAN DATA KEPADA PARENT ATAU YANG MEMANGGIL COMPONENT INI
-      //SEHINGGA DARI PARENT TERSEBUT, KITA BISA MENGGUNAKAN VALUE YANG DIKIRIMKAN
-      this.$emit('sort', {
+      this.$emit("sort", {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc
       });
     },
     //KETIKA VALUE DARI SORTDESC BERUBAH
     sortDesc: function sortDesc(val) {
-      //MAKA CARA YANG SAMA AKAN DIKERJAKAN
-      this.$emit('sort', {
+      this.$emit("sort", {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc
       });
     }
   },
   methods: {
-    checkboxVal: function checkboxVal(index, event) {
-      if (event.target.checked) {
-        this.$refs.selectableTable.selectRow(index);
+    selectAllRows: function selectAllRows() {
+      this.items.forEach(function (item) {
+        return item = event.target.checked;
+      });
+
+      if (this.selectedItems.length === this.items.length) {
+        this.selectedItems = [];
       } else {
-        this.$refs.selectableTable.unselectRow(index);
+        this.selectedItems = this.items.slice();
       }
     },
-    myRowClickHandler: function myRowClickHandler(record, index) {
-      this.$refs.checkboxTable.checked;
-    },
-    onRowSelected: function onRowSelected(e, index) {
-      this.selected = [];
+    // onRowSelected(e, index) {
+    //     this.selected = [];
+    //     if (e.length > 0) {
+    //         this.selected = e.map(val=>val)
+    //         this.allSelected = true;
+    //     }else {
+    //         this.allSelected = false;
+    //     }
+    // // this.selected = items // ini yg awal
+    // },
+    removeSelected: function removeSelected(item) {
+      item = this.selectedItems; // ambil idnya
 
-      if (e.length > 0) {
-        this.selected = e.map(function (val) {
-          return val;
-        });
-        this.allSelected = true;
-      } else {
-        this.allSelected = false;
-      } // this.selected = items // ini yg awal
-
-    },
-    removeSelected: function removeSelected(items) {
-      this.$emit('removedSelected', this.selected);
+      this.$emit("removedSelected", item);
     },
     togleAll: function togleAll() {
       return this.allSelected ? this.selectAllRows() : this.clearSelected();
     },
-    selectAllRows: function selectAllRows() {
-      this.$refs.selectableTable.selectAllRows();
-    },
-    clearSelected: function clearSelected() {
-      this.$refs.selectableTable.clearSelected();
-    },
+    // clearSelected() {
+    //     this.$refs.selectableTable.clearSelected()
+    // },
     //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
     loadPerPage: function loadPerPage(val) {
       //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
-      this.$emit('per_page', this.meta.per_page);
+      this.$emit("per_page", this.meta.per_page);
     },
     //KETIKA PAGINATION BERUBAH, MAKA FUNGSI INI AKAN DIJALANKAN
     changePage: function changePage(val) {
       //KIRIM EMIT DENGAN NAMA PAGINATION DAN VALUENYA ADALAH HALAMAN YANG DIPILIH OLEH USER
-      this.$emit('pagination', val);
+      this.$emit("pagination", val);
     },
     //KETIKA KOTAK PENCARIAN DIISI, MAKA FUNGSI INI AKAN DIJALANKAN
     //KITA GUNAKAN DEBOUNCE UNTUK MEMBUAT DELAY, DIMANA FUNGSI INI AKAN DIJALANKAN
     //500 MIL SECOND SETELAH USER BERHENTI MENGETIK
     search: lodash__WEBPACK_IMPORTED_MODULE_0___default.a.debounce(function (e) {
       //KIRIM EMIT DENGAN NAMA SEARCH DAN VALUE SESUAI YANG DIKETIKKAN OLEH USER
-      this.$emit('search', e.target.value);
+      this.$emit("search", e.target.value);
     }, 500),
     removeData: function removeData(index) {
-      this.$emit('removedData', index); // kirim event removedTodo parent (itemnya)
+      this.$emit("removedData", index); // kirim event removedTodo parent (itemnya)
     },
     editData: function editData(index) {
-      this.$emit('editedData', index); // kirim event editedData parent (itemnya)
+      this.$emit("editedData", index); // kirim event editedData parent (itemnya)
     },
     addNew: function addNew() {
-      this.$emit('createdData'); // kirim event createdData parent (itemnya)
+      this.$emit("createdData"); // kirim event createdData parent (itemnya)
     } // selectId(index) {
     //     this.$emit('selectedId', index);
     // }
@@ -491,12 +472,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
  //IMPORT COMPONENT DATATABLENYA
 // import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 
@@ -523,8 +498,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       methodForms: "Add",
       // labelButton: "",
       fields: [{
-        key: 'selected',
-        label: '#'
+        key: 'index',
+        label: 'index'
       }, {
         key: 'nama',
         sortable: true
@@ -575,14 +550,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
-    selectedDataId: function selectedDataId(item) {
-      this.selectedRowsId = item.id;
+    selectedDataId: function selectedDataId(item) {// console.log('ok')
     },
     // remove select
     hapusDataTerseleksi: function () {
       var _hapusDataTerseleksi = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(items) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(val) {
         var _this = this;
 
         var params;
@@ -590,15 +564,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                if (window.confirm("Are you sure you want to delete this selection data ?")) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
                 params = {
-                  'items': items
+                  'items': val
                 };
-                _context.prev = 1;
-                _context.next = 4;
+                _context.prev = 3;
+                _context.next = 6;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["deleteAllSelected"](params);
 
-              case 4:
-                items.map(function (val) {
+              case 6:
+                val.map(function (val) {
                   var index = _this.items.indexOf(val);
 
                   _this.items.splice(index, 1);
@@ -608,23 +590,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Item DELETED successfully!",
                   time: 5000
                 });
-                _context.next = 11;
+                _context.next = 13;
                 break;
 
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](1);
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](3);
                 this.flashMessage.error({
                   message: _context.t0.response.data.message,
                   time: 5000
                 });
 
-              case 11:
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 8]]);
+        }, _callee, this, [[3, 10]]);
       }));
 
       function hapusDataTerseleksi(_x) {
@@ -1028,11 +1010,7 @@ var render = function() {
           attrs: {
             striped: "",
             hover: "",
-            small: "",
             dark: "",
-            "no-border-collapse": "",
-            selectable: "",
-            "select-mode": _vm.selectMode,
             items: _vm.items,
             fields: _vm.fields,
             "sort-by": _vm.sortBy,
@@ -1052,72 +1030,42 @@ var render = function() {
             },
             "update:sort-desc": function($event) {
               _vm.sortDesc = $event
-            },
-            "row-selected": _vm.onRowSelected,
-            "row-clicked": _vm.myRowClickHandler
+            }
           },
           scopedSlots: _vm._u([
             {
-              key: "cell(selected)",
+              key: "head(index)",
+              fn: function() {
+                return [
+                  _c("b-form-checkbox", {
+                    attrs: {
+                      size: "sm",
+                      checked: _vm.selectedItems.length === _vm.items.length
+                    },
+                    on: { change: _vm.selectAllRows }
+                  })
+                ]
+              },
+              proxy: true
+            },
+            {
+              key: "cell(index)",
               fn: function(row) {
                 return [
-                  _c(
-                    "label",
-                    { staticClass: "custom-control material-checkbox" },
-                    [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: row.item.selected,
-                            expression: "row.item.selected"
-                          }
-                        ],
-                        ref: "checkboxTable",
-                        staticClass: "material-control-input",
-                        attrs: { type: "checkbox", id: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(row.item.selected)
-                            ? _vm._i(row.item.selected, null) > -1
-                            : row.item.selected
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.checkboxVal(row.index, $event)
-                          },
-                          change: function($event) {
-                            var $$a = row.item.selected,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    row.item,
-                                    "selected",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    row.item,
-                                    "selected",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(row.item, "selected", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "material-control-indicator" })
-                    ]
-                  )
+                  _c("b-form-checkbox", {
+                    attrs: {
+                      size: "sm",
+                      name: "selected-items",
+                      value: row.item
+                    },
+                    model: {
+                      value: _vm.selectedItems,
+                      callback: function($$v) {
+                        _vm.selectedItems = $$v
+                      },
+                      expression: "selectedItems"
+                    }
+                  })
                 ]
               }
             },
@@ -1173,110 +1121,72 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("div", { staticClass: "box-bw-table" }, [
-          _c("label", { staticClass: "custom-control material-checkbox" }, [
-            _c("input", {
-              directives: [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-6" }, [
+              _c(
+                "button",
                 {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.allSelected,
-                  expression: "allSelected"
-                }
-              ],
-              staticClass: "material-control-input",
-              attrs: { type: "checkbox" },
-              domProps: {
-                checked: Array.isArray(_vm.allSelected)
-                  ? _vm._i(_vm.allSelected, null) > -1
-                  : _vm.allSelected
-              },
-              on: {
-                change: [
-                  function($event) {
-                    var $$a = _vm.allSelected,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.allSelected = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.allSelected = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
-                    } else {
-                      _vm.allSelected = $$c
-                    }
-                  },
-                  _vm.togleAll
+                  staticClass: "tombol-di-bw-table",
+                  attrs: { disabled: !_vm.selectedItems.length },
+                  on: { click: _vm.removeSelected }
+                },
+                [
+                  _c("i", { staticClass: "fa fa-trash" }),
+                  _vm._v(" Delete Selected Table Data\n            ")
                 ]
-              }
-            }),
+              )
+            ]),
             _vm._v(" "),
-            _c("span", { staticClass: "material-control-indicator" }),
-            _vm._v(" "),
-            _c(
-              "span",
-              {
-                staticClass: "material-control-description",
-                staticStyle: { color: "white" }
-              },
-              [_vm._v("Select All")]
-            )
+            _c("div", { staticClass: "col-md-6 text-right" }, [
+              _c("p", { staticStyle: { color: "white" } }, [
+                _vm._v(
+                  "\n                    Showing " +
+                    _vm._s(_vm.meta.from) +
+                    " to " +
+                    _vm._s(_vm.meta.to) +
+                    " of\n                    " +
+                    _vm._s(_vm.meta.total) +
+                    " table data\n                "
+                )
+              ])
+            ])
           ])
         ])
       ],
       1
     ),
     _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-md-6" }, [
-      _c("p", [
-        _vm._v(
-          "Showing " +
-            _vm._s(_vm.meta.from) +
-            " to " +
-            _vm._s(_vm.meta.to) +
-            " of " +
-            _vm._s(_vm.meta.total) +
-            " items"
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-6" },
-      [
-        _c("b-pagination", {
-          staticClass: "mt-4",
-          attrs: {
-            "total-rows": _vm.meta.total,
-            "per-page": _vm.meta.per_page,
-            align: "right",
-            "aria-controls": "dw-datatable",
-            size: "sm",
-            "first-text": "First",
-            "prev-text": "⏪",
-            "next-text": "⏩",
-            "last-text": "Last"
-          },
-          on: { change: _vm.changePage },
-          model: {
-            value: _vm.meta.current_page,
-            callback: function($$v) {
-              _vm.$set(_vm.meta, "current_page", $$v)
+    _c("div", { staticClass: "col-md-12" }, [
+      _c(
+        "div",
+        { staticClass: "text-right" },
+        [
+          _c("b-pagination", {
+            staticClass: "mt-4",
+            attrs: {
+              "total-rows": _vm.meta.total,
+              "per-page": _vm.meta.per_page,
+              align: "right",
+              "aria-controls": "dw-datatable",
+              size: "sm",
+              "first-text": "First",
+              "prev-text": "⏪",
+              "next-text": "⏩",
+              "last-text": "Last"
             },
-            expression: "meta.current_page"
-          }
-        })
-      ],
-      1
-    )
+            on: { change: _vm.changePage },
+            model: {
+              value: _vm.meta.current_page,
+              callback: function($$v) {
+                _vm.$set(_vm.meta, "current_page", $$v)
+              },
+              expression: "meta.current_page"
+            }
+          })
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -1346,40 +1256,29 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "container", staticStyle: { "padding-top": "20px" } },
     [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-12" }, [
-          _c("div", { staticClass: "card" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "card-body" },
-              [
-                _c("app-datatable", {
-                  attrs: {
-                    items: _vm.items,
-                    fields: _vm.fields,
-                    meta: _vm.meta
-                  },
-                  on: {
-                    per_page: _vm.handlePerPage,
-                    pagination: _vm.handlePagination,
-                    search: _vm.handleSearch,
-                    sort: _vm.handleSort,
-                    removedData: _vm.removeData,
-                    editedData: _vm.editData,
-                    createdData: _vm.addData,
-                    removedSelected: _vm.hapusDataTerseleksi,
-                    selectedId: _vm.selectedDataId
-                  }
-                })
-              ],
-              1
-            )
-          ])
-        ])
+      _c("div", { staticClass: "container-fluid mt-4" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            _c("app-datatable", {
+              attrs: { items: _vm.items, fields: _vm.fields, meta: _vm.meta },
+              on: {
+                per_page: _vm.handlePerPage,
+                pagination: _vm.handlePagination,
+                search: _vm.handleSearch,
+                sort: _vm.handleSort,
+                removedData: _vm.removeData,
+                editedData: _vm.editData,
+                createdData: _vm.addData,
+                removedSelected: _vm.hapusDataTerseleksi,
+                selectedId: _vm.selectedDataId
+              }
+            })
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _c(
@@ -1648,16 +1547,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h5", { staticClass: "card-title" }, [_vm._v("Management Items")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

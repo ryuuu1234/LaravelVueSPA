@@ -34,97 +34,77 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    var expenses = [{
-      'id': 1,
-      'first_name': 'Jesse',
-      'last_name': 'Simmons',
-      'date': '2016-10-15 13:43:27',
-      'gender': 'Male',
-      'value': 100
-    }, {
-      'id': 2,
-      'first_name': 'John',
-      'last_name': 'Jacobs',
-      'date': '2016-12-15 06:00:53',
-      'gender': 'Male',
-      'value': 100
-    }, {
-      'id': 3,
-      'first_name': 'Tina',
-      'last_name': 'Gilbert',
-      'date': '2016-04-26 06:26:28',
-      'gender': 'Female',
-      'value': 100
-    }, {
-      'id': 4,
-      'first_name': 'Clarence',
-      'last_name': 'Flores',
-      'date': '2016-04-10 10:28:46',
-      'gender': 'Male',
-      'value': 100
-    }, {
-      'id': 5,
-      'first_name': 'Anne',
-      'last_name': 'Lee',
-      'date': '2016-12-06 14:38:38',
-      'gender': 'Female',
-      'value': 100
-    }];
     return {
-      expenses: expenses,
-      copyOfExpenses: [],
-      checkedRows: [],
-      columns: [{
-        field: 'id',
-        label: 'ID',
-        width: '40',
-        numeric: true
+      modes: ['multi', 'single', 'range'],
+      fields: [{
+        key: 'index',
+        label: 'index'
       }, {
-        field: 'first_name',
-        label: 'First Name'
+        key: 'isActive'
       }, {
-        field: 'last_name',
-        label: 'Last Name'
+        key: 'age'
       }, {
-        field: 'date',
-        label: 'Date',
-        centered: true
+        key: 'first_name'
       }, {
-        field: 'gender',
-        label: 'Gender'
+        key: 'last_name'
+      }],
+      items: [{
+        isActive: true,
+        age: 40,
+        first_name: 'Dickerson',
+        last_name: 'Macdonald'
       }, {
-        field: 'value',
-        label: 'Value'
-      }]
+        isActive: false,
+        age: 21,
+        first_name: 'Larsen',
+        last_name: 'Shaw'
+      }, {
+        isActive: false,
+        age: 89,
+        first_name: 'Geneva',
+        last_name: 'Wilson'
+      }, {
+        isActive: true,
+        age: 38,
+        first_name: 'Jami',
+        last_name: 'Carney'
+      }],
+      selectMode: 'multi',
+      selectedItems: []
     };
   },
   methods: {
-    toggleValue: function toggleValue() {
-      for (var i = 0; i < this.copyOfExpenses.length; i++) {
-        var found = false;
-
-        for (var j = 0; j < this.checkedRows.length; j++) {
-          if (this.copyOfExpenses[i].id === this.checkedRows[j].id) {
-            this.copyOfExpenses[i].value = 0;
-            found = true;
-            break;
-          }
-        }
-
-        if (!found) {
-          this.copyOfExpenses[i].value = this.expenses[i].value;
-        }
+    selectAllRows: function selectAllRows() {
+      if (this.selectedItems.length === this.items.length) {
+        this.selectedItems = [];
+      } else {
+        this.selectedItems = this.items.slice();
       }
-    }
-  },
-  // mounted () {
-  //   this.copyOfExpenses = _.cloneDeep(this.expenses) 
-  // },
-  watch: {
-    checkedRows: function checkedRows() {
-      this.toggleValue();
+    },
+    clearSelected: function clearSelected() {},
+    hapusYgTerpilih: function hapusYgTerpilih(item) {
+      // Rows are indexed from 0, so the third row is index 2
+      item = this.selectedItems.map(function (val) {
+        return val.age;
+      });
+      this.selectedItems = item;
+      console.log(item);
+    },
+    unselectThirdRow: function unselectThirdRow() {// Rows are indexed from 0, so the third row is index 2
     }
   }
 });
@@ -150,46 +130,97 @@ var render = function() {
     "div",
     [
       _c(
-        "button",
-        {
-          staticClass: "button field is-danger",
-          attrs: { disabled: !_vm.checkedRows.length },
-          on: {
-            click: function($event) {
-              _vm.checkedRows = []
-            }
-          }
-        },
+        "b-form-group",
+        { attrs: { label: "Selection mode:", "label-cols-md": "4" } },
         [
-          _c("b-icon", { attrs: { icon: "close" } }),
-          _vm._v(" "),
-          _c("span", [_vm._v("Clear checked")])
+          _c("b-form-select", {
+            staticClass: "mb-3",
+            attrs: { options: _vm.modes },
+            model: {
+              value: _vm.selectMode,
+              callback: function($$v) {
+                _vm.selectMode = $$v
+              },
+              expression: "selectMode"
+            }
+          })
         ],
         1
       ),
       _vm._v(" "),
       _c("b-table", {
-        attrs: {
-          striped: "",
-          hover: "",
-          small: "",
-          data: _vm.copyOfExpenses,
-          columns: _vm.columns,
-          "checked-rows": _vm.checkedRows,
-          "is-row-checkable": function(row) {
-            return row.id !== 3
+        attrs: { items: _vm.items, fields: _vm.fields, responsive: "sm" },
+        scopedSlots: _vm._u([
+          {
+            key: "head(index)",
+            fn: function() {
+              return [
+                _c("b-form-checkbox", {
+                  attrs: {
+                    name: "checkbox-validation",
+                    checked: _vm.selectedItems.length === _vm.items.length
+                  },
+                  on: { change: _vm.selectAllRows }
+                })
+              ]
+            },
+            proxy: true
           },
-          checkable: ""
-        },
-        on: {
-          "update:checkedRows": function($event) {
-            _vm.checkedRows = $event
-          },
-          "update:checked-rows": function($event) {
-            _vm.checkedRows = $event
+          {
+            key: "cell(index)",
+            fn: function(row) {
+              return [
+                _c("b-form-checkbox", {
+                  attrs: { name: "selected-items", value: row.item },
+                  model: {
+                    value: _vm.selectedItems,
+                    callback: function($$v) {
+                      _vm.selectedItems = $$v
+                    },
+                    expression: "selectedItems"
+                  }
+                })
+              ]
+            }
           }
-        }
-      })
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "p",
+        [
+          _c(
+            "b-button",
+            { attrs: { size: "sm" }, on: { click: _vm.selectAllRows } },
+            [_vm._v("Select all")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            { attrs: { size: "sm" }, on: { click: _vm.clearSelected } },
+            [_vm._v("Clear selected")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            { attrs: { size: "sm" }, on: { click: _vm.hapusYgTerpilih } },
+            [_vm._v("hapus yg terpilih")]
+          ),
+          _vm._v(" "),
+          _c(
+            "b-button",
+            { attrs: { size: "sm" }, on: { click: _vm.unselectThirdRow } },
+            [_vm._v("Unselect 3rd row")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v("\n    Selected Rows:"),
+        _c("br"),
+        _vm._v("\n    " + _vm._s(_vm.selectedItems) + "\n  ")
+      ])
     ],
     1
   )

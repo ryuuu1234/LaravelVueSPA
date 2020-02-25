@@ -1,12 +1,8 @@
 <template>
-    <div class="container" style="padding-top: 20px">
-        <div class="row">
+    <div>
+        <div class="container-fluid mt-4">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Management Items</h5>
-                    </div>
-                    <div class="card-body">
+                
                       	<!-- COMPONENT YANG SUDAH KITA BUAT, MENGHARAPKAN 3 BUAH PROPS, YAKNI ITEMS, FIELDS DAN META. KETIGA DATA YANG DIMINTA OLEH PROPS INI AKAN KITA KIRIMKAN -->
                         <!-- ADAPUN CARA MENGAMBIL VALUE DARI EMIT YANG SUDAH KITA BUAT ADALAH DENGAN MENAMBAHKAN @ DAN DIIKUTI DENGAN NAMA EMITNYA -->
                         <!-- DAN PARAMETER SETELAH SAMA DENGAN DARI EMIT ADALAH FUNGSI UNTUK MENERIMA VALUENYA -->
@@ -25,8 +21,7 @@
                             @selectedId="selectedDataId"
                         />
                         
-                    </div>
-                </div>
+                   
             </div>
         </div>
         
@@ -127,7 +122,6 @@
             </div>
         </b-modal>
 
-
     </div>
 </template>
 
@@ -163,7 +157,7 @@ export default {
             methodForms: "Add",
             // labelButton: "",
             fields: [
-                {key: 'selected', label:'#'},
+                {key: 'index', label:'index'},
                 {key: 'nama', sortable: true},
                 // {key: 'unit.nama', label:'Satuan'},
                 {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
@@ -200,16 +194,19 @@ export default {
     methods: {
 
         selectedDataId: function(item){
-            this.selectedRowsId = item.id;
+            // console.log('ok')
 
         },
         // remove select
-       hapusDataTerseleksi: async function(items) {
-           const params = {'items': items}
+       hapusDataTerseleksi: async function(val) {
+            if (!window.confirm(`Are you sure you want to delete this selection data ?` )) {
+                return;
+            }
+           const params = {'items': val}
             try {
                 await itemService.deleteAllSelected(params);
 
-                items.map(val => {
+                val.map(val => {
                     const index = this.items.indexOf(val)
                     this.items.splice(index,1)
                 });
