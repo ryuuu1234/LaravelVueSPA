@@ -114,7 +114,7 @@ button.tombol-di-bw-table {
 }
 
 button.tombol-di-bw-table:hover{
-    color:#dc3545;
+    color:#FF0000;
 }
 
 button.tombol-di-bw-table[disabled]:hover {

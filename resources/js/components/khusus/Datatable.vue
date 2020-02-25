@@ -57,24 +57,58 @@
                 :sort-desc.sync="sortDesc"
                 show-empty
                 responsive="sm"
-            >
+            >   
+                <template v-slot:table-busy>
+                    <div class="text-center my-2">
+                    <b-spinner class="align-middle"></b-spinner>
+                    <strong>Loading...</strong>
+                    </div>
+                </template>
                 <!-- Example scoped slot for select state illustrative purposes -->
                 <template v-slot:head(index)>
-                    <b-form-checkbox
+                    <label class="custom-control fill-checkbox-red" style="min-height:0.8rem !important;">
+                        <input type="checkbox" 
+                        class="fill-control-input"
+                        @change="selectAllRows"
+                        :checked="selectedItems.length === items.length"
+                        >
+                        <span class="fill-control-indicator"></span>
+                        <span class="fill-control-description"></span>
+                    </label>
+                    <!-- <div class="custom-control custom-checkbox">
+                        <input type="checkbox" 
+                        class="custom-control-input" 
+                        id="customCheck" 
+                        @change="selectAllRows"
+                        :checked="selectedItems.length === items.length"
+                        >
+                        <label class="custom-control-label" for="customCheck"></label>
+                    </div> -->
+                    <!-- <b-form-checkbox
                         size="sm"
                         @change="selectAllRows"
                         :checked="selectedItems.length === items.length"
                     >
-                    </b-form-checkbox>
+                    </b-form-checkbox> -->
                 </template>
                 <template v-slot:cell(index)="row">
-                    <b-form-checkbox
+                    <label class="custom-control fill-checkbox-red" style="min-height:0.8rem !important;">
+                        <input type="checkbox" 
+                        class="fill-control-input"
+                         name="selected-items"
+                        v-model="selectedItems"
+                        :value="row.item"
+                        >
+                        <span class="fill-control-indicator"></span>
+                        <span class="fill-control-description"></span>
+                    </label>
+                    <!-- <b-form-checkbox
                         size="sm"
                         name="selected-items"
                         v-model="selectedItems"
                         :value="row.item"
                     >
-                    </b-form-checkbox>
+                    </b-form-checkbox> -->
                 </template>
 
                 <!-- Example scoped button tambahan -->
@@ -164,8 +198,9 @@ export default {
         //ADAPUN META, TYPENYA ADALAH OBJECT YANG BERISI INFORMASI MENGENAL CURRENT PAGE, LOAD PERPAGE, TOTAL DATA, DAN LAIN SEBAGAINYA.
         meta: {
             required: true
-        }
+        },
 
+        
         // completed: {
         //     type:Boolean
         // }
@@ -182,7 +217,8 @@ export default {
 
             allSelected: false,
             selectedRow: false,
-            booleanValue: false
+            booleanValue: false,
+
         };
     },
     watch: {
@@ -200,7 +236,13 @@ export default {
                 sortBy: this.sortBy,
                 sortDesc: this.sortDesc
             });
-        }
+        },
+
+        // isBusy(val) {
+        //     this.$emit("busy", {
+        //         isBusy: this.isBusy
+        //     });
+        // }
     },
     methods: {
         selectAllRows() {

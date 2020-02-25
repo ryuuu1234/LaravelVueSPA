@@ -148,6 +148,7 @@ export default {
         //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
         this.loadItemsData()
         this.kosongkanForm()
+        // this.handleLoading(true)
     },
     
     data() {
@@ -226,6 +227,8 @@ export default {
         
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
         loadItemsData: async function() {
+            this.isBusy = true;
+            // this.handleLoading(true);
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
             // let
@@ -276,6 +279,10 @@ export default {
             this.search = val //SET VALUE PENCARIAN KE VARIABLE SEARCH
             this.loadItemsData() //REQUEST DATA BARU
         },
+
+        // handleLoading(val) {
+        //     console.log(val);
+        // },
         //JIKA ADA EMIT SORT
         handleSort(val) {
             //MAKA SET SORT-NYA

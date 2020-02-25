@@ -153,6 +153,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -210,7 +244,12 @@ __webpack_require__.r(__webpack_exports__);
         sortBy: this.sortBy,
         sortDesc: this.sortDesc
       });
-    }
+    } // isBusy(val) {
+    //     this.$emit("busy", {
+    //         isBusy: this.isBusy
+    //     });
+    // }
+
   },
   methods: {
     selectAllRows: function selectAllRows() {
@@ -489,7 +528,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   created: function created() {
     //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
     this.loadItemsData();
-    this.kosongkanForm();
+    this.kosongkanForm(); // this.handleLoading(true)
   },
   data: function data() {
     return {
@@ -625,6 +664,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                this.isBusy = true; // this.handleLoading(true);
+
                 current_page = this.search == '' ? this.current_page : 1;
                 sorting = this.sortByDesc ? 'DESC' : 'ASC'; // let
 
@@ -637,11 +678,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     sortbydesc: sorting
                   }
                 };
-                _context2.prev = 3;
-                _context2.next = 6;
+                _context2.prev = 4;
+                _context2.next = 7;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["loadData"](params);
 
-              case 6:
+              case 7:
                 response = _context2.sent;
                 // console.log(response);
                 getData = response.data.data;
@@ -658,24 +699,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context2.next = 17;
+                _context2.next = 18;
                 break;
 
-              case 13:
-                _context2.prev = 13;
-                _context2.t0 = _context2["catch"](3);
+              case 14:
+                _context2.prev = 14;
+                _context2.t0 = _context2["catch"](4);
                 console.log('' + _context2.t0);
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
 
-              case 17:
+              case 18:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[3, 13]]);
+        }, _callee2, this, [[4, 14]]);
       }));
 
       function loadItemsData() {
@@ -702,6 +743,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.loadItemsData(); //REQUEST DATA BARU
     },
+    // handleLoading(val) {
+    //     console.log(val);
+    // },
     //JIKA ADA EMIT SORT
     handleSort: function handleSort(val) {
       //MAKA SET SORT-NYA
@@ -1034,16 +1078,48 @@ var render = function() {
           },
           scopedSlots: _vm._u([
             {
+              key: "table-busy",
+              fn: function() {
+                return [
+                  _c(
+                    "div",
+                    { staticClass: "text-center my-2" },
+                    [
+                      _c("b-spinner", { staticClass: "align-middle" }),
+                      _vm._v(" "),
+                      _c("strong", [_vm._v("Loading...")])
+                    ],
+                    1
+                  )
+                ]
+              },
+              proxy: true
+            },
+            {
               key: "head(index)",
               fn: function() {
                 return [
-                  _c("b-form-checkbox", {
-                    attrs: {
-                      size: "sm",
-                      checked: _vm.selectedItems.length === _vm.items.length
+                  _c(
+                    "label",
+                    {
+                      staticClass: "custom-control fill-checkbox-red",
+                      staticStyle: { "min-height": "0.8rem !important" }
                     },
-                    on: { change: _vm.selectAllRows }
-                  })
+                    [
+                      _c("input", {
+                        staticClass: "fill-control-input",
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: _vm.selectedItems.length === _vm.items.length
+                        },
+                        on: { change: _vm.selectAllRows }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "fill-control-indicator" }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "fill-control-description" })
+                    ]
+                  )
                 ]
               },
               proxy: true
@@ -1052,20 +1128,59 @@ var render = function() {
               key: "cell(index)",
               fn: function(row) {
                 return [
-                  _c("b-form-checkbox", {
-                    attrs: {
-                      size: "sm",
-                      name: "selected-items",
-                      value: row.item
+                  _c(
+                    "label",
+                    {
+                      staticClass: "custom-control fill-checkbox-red",
+                      staticStyle: { "min-height": "0.8rem !important" }
                     },
-                    model: {
-                      value: _vm.selectedItems,
-                      callback: function($$v) {
-                        _vm.selectedItems = $$v
-                      },
-                      expression: "selectedItems"
-                    }
-                  })
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedItems,
+                            expression: "selectedItems"
+                          }
+                        ],
+                        staticClass: "fill-control-input",
+                        attrs: { type: "checkbox", name: "selected-items" },
+                        domProps: {
+                          value: row.item,
+                          checked: Array.isArray(_vm.selectedItems)
+                            ? _vm._i(_vm.selectedItems, row.item) > -1
+                            : _vm.selectedItems
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.selectedItems,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = row.item,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (_vm.selectedItems = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (_vm.selectedItems = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.selectedItems = $$c
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "fill-control-indicator" }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "fill-control-description" })
+                    ]
+                  )
                 ]
               }
             },
