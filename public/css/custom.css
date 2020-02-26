@@ -114,7 +114,7 @@ button.tombol-di-bw-table {
 }
 
 button.tombol-di-bw-table:hover{
-    color:#FF0000;
+    color:#dc3545;
 }
 
 button.tombol-di-bw-table[disabled]:hover {
@@ -134,5 +134,12 @@ button.tombol-di-bw-table[disabled] {
     margin-top: -15px;
     
     padding-right:8px;
+}
+/* PAGINATION */
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #343a40 !important ;
+    border-color: #343a40 !important;
 }
 

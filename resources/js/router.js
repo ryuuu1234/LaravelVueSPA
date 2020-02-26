@@ -27,6 +27,11 @@ const routes = [
                 name: 'data-items',
                 component: () => import('./views/ItemsViewPage.vue')
             },
+            {
+                path: 'register-list',
+                name: 'register-list',
+                component: () => import('./views/ListRegister.vue')
+            },
             
         ],
         beforeEnter(to, from, next) {

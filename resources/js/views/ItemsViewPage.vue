@@ -19,6 +19,8 @@
                             @createdData="addData"
                             @removedSelected="hapusDataTerseleksi"
                             @selectedId="selectedDataId"
+                            :tombolAddNew="tombolAddNew"
+                            :tombolEdit="tombolEdit"
                         />
                         
                    
@@ -183,6 +185,10 @@ export default {
             isInputActive: false,
 
             selectedRowsId:[],
+
+            // pengaturan tombol
+            tombolAddNew: true,
+            tombolEdit:true,
         }
     },
     
@@ -241,7 +247,7 @@ export default {
             }};
             try {
                 const response = await itemService.loadData(params); 
-                // console.log(response);
+                console.dir(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                 this.units = response.data.data_unit

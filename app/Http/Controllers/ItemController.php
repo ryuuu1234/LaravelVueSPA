@@ -115,7 +115,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {   
-        dd($request->all());
+        // dd($request->all());
         $request->validate([
             'nama'=>'required',
             'harga_beli'=>'required|numeric',

@@ -17,6 +17,10 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+/**
+ * Jika tanpa middleware => auth:api, maka siapapun bebas akses tanpa authentifikasi
+ */
+
 Route::group(['prefix' => 'auth'], function() {
     Route::post('register', 'AuthController@register'); // ini untuk alamat api/auth/register
     Route::post('login', 'AuthController@login');
@@ -46,7 +50,8 @@ Route::group(['prefix' => 'user'], function () {
         //     ],200);
 
         // })->middleware('scope:Root,Admin');
-        
+        Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
+        Route::resource('registers', 'RegisterController')->middleware('scope:Root,Admin');
         
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::post('items/delete', 'ItemController@deleteAll');
@@ -56,8 +61,12 @@ Route::group(['prefix' => 'user'], function () {
 
 Route::resource('categories', 'CategoryController');
 
-//sementara
+//untuk register selain root dan admin
+Route::group(['prefix' => 'client'], function () {
+    Route::post('register', 'RegisterController@register'); // ini untuk alamat api/client/register
 
-
-// untuk test
-Route::get('/test', 'ItemController@test');
+    // ini khusus scope root dan admin
+    // Route::group(['middleware' => 'auth:api'], function () {
+        
+    // })->middleware('scope:Root,Admin');
+});
