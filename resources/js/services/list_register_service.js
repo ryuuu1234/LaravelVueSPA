@@ -5,5 +5,5 @@ export function loadData(params) {
 }
 
 export function updateStatus(id, data) {
-    return httpFile().post(`user/registers/${id}`, data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+    return httpFile().post(`user/update-status/${id}`, data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }

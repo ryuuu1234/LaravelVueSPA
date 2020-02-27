@@ -339,37 +339,39 @@ export default {
         // },
 
         konfirmStatus: function(item) {
+            this.editItemData = {...item};
             this.methodForms = "Edit";
+            this.editItemData.status = 1;
             this.showEditDataModal();
         },
 
         updateStatus: async function(item){
 
-            const formData = new FormData();
-            formData.append("status", this.editItemData.status);
-            formData.append('_method', 'put');
-                try {
-                    const response = await listRegisterService.updateStatus(item.id, formData)
-                    this.items.map(item => {
-                        if (item.id === response.data.id) {
-                            for (let key in response.data) {
-                                item[key] = response.data[key];
-                            }
+        const formData = new FormData();
+        formData.append("status", this.editItemData.status);
+        formData.append('_method', 'put');
+            try {
+                const response = await listRegisterService.updateStatus(this.editItemData.id, formData)
+                this.items.map(item => {
+                    if (item.id === response.data.id) {
+                        for (let key in response.data) {
+                            item[key] = response.data[key];
                         }
-                    })
+                    }
+                })
 
-                    // jika success tutup modal dan munculkan pesan
-                    this.hideEditDataModal();
-                    this.flashMessage.success({
-                        message: "Item Updated successfully!",
-                        time: 5000
-                    });
-                } catch (error) {
-                    this.flashMessage.error({
-                        message: error.response.data.message,
-                        time: 5000
-                    });
-                }
+                // jika success tutup modal dan munculkan pesan
+                this.hideEditDataModal();
+                this.flashMessage.success({
+                    message: "Item Updated successfully!",
+                    time: 5000
+                });
+            } catch (error) {
+                this.flashMessage.error({
+                    message: error.response.data.message,
+                    time: 5000
+                });
+            }
            
             
             

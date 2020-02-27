@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Register;
+use App\User;
 
 class RegisterController extends Controller
 {
@@ -29,20 +30,28 @@ class RegisterController extends Controller
         );
     }
 
-    public function update(Request $request, Register $register) {
-        
-        dd($request->all());
-        // $register->status = $request->status;
+    public function update_status(Request $request, Register $register) {
 
-        // if ($register->save()) {
-        //     return response()->json($register,200);
-        // } else {
+        $register->status = $request->status;
+
+        if ($register->save()) {
+            // simpan ke user
+            $user = new User();
+            $user->name = $register->name;
+            $user->email = $register->email;
+            $user->password = bcrypt($register->password);
+            $user->role = $register->role;
+            $user->status = $register->status;
+            $user->save();
+
+            return response()->json($register,200);
+        } else {
             
-        //     $message = [
-        //         'message'=>'some errors occured, Please try again',
-        //         'status_code'=>500
-        //     ];
-        //     return response()->json($message,500);
-        // }
+            $message = [
+                'message'=>'some errors occured, Please try again',
+                'status_code'=>500
+            ];
+            return response()->json($message,500);
+        }
     }
 }

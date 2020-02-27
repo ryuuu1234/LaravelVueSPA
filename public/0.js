@@ -179,10 +179,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -572,9 +568,9 @@ var render = function() {
               key: "cell(status)",
               fn: function(row) {
                 return [
-                  row.item.status
-                    ? _c("button", { staticClass: "btn btn-success btn-xsm" }, [
-                        _vm._v("Active\n                 ")
+                  row.item.status == 1
+                    ? _c("span", { staticClass: "badge badge-success" }, [
+                        _vm._v("Active")
                       ])
                     : _c(
                         "button",

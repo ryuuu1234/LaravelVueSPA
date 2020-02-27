@@ -92,11 +92,7 @@
 
                 <!-- Example scoped button tambahan -->
                 <template v-slot:cell(status)="row">
-                     <button 
-                     class="btn btn-success btn-xsm"
-                     v-if="row.item.status"
-                     >Active
-                     </button>
+                     <span v-if="row.item.status == 1" class="badge badge-success">Active</span>
                      <button 
                      class="btn btn-danger btn-xsm"
                      v-else

@@ -51,7 +51,7 @@ Route::group(['prefix' => 'user'], function () {
 
         // })->middleware('scope:Root,Admin');
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
-        Route::resource('registers', 'RegisterController')->middleware('scope:Root,Admin');
+        Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
         
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::post('items/delete', 'ItemController@deleteAll');
