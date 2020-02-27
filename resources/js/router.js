@@ -32,6 +32,8 @@ const routes = [
                 name: 'register-list',
                 component: () => import('./views/ListRegister.vue')
             },
+            // ini di hapus
+           
             
         ],
         beforeEnter(to, from, next) {
@@ -67,11 +69,18 @@ const routes = [
         name: 'reset-password',
         component: () => import('./views/authentication/ResetPassword.vue'),
     },
+
+    //route ini dihapus
     {
         path: '/percobaan',
         name: 'percobaan',
         component: () => import('./views/Percobaan.vue'),
-    }
+    },
+    {
+        path: '/preloader',
+        name: 'preloader',
+        component: () => import('./views/Preloader.vue')
+    },
     
 ];
 

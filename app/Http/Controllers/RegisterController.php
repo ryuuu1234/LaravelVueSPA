@@ -54,4 +54,35 @@ class RegisterController extends Controller
             return response()->json($message,500);
         }
     }
+
+    // INI UNTUK REGISTER CLIENT
+    public function register(Request $request) {
+
+        $request->validate([
+            'name'      =>  'required|string|max:100',
+            'email'     =>  'required|string|email',
+            'password'  =>  'required|string|confirmed',
+            'role'      =>  'required|string|'
+        ]);
+
+        $user = new User();
+
+        $user->name     = $request->name;
+        $user->email    = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->role     = $request->role;
+        $user->status   = 0;
+
+        if ($user->save()) {
+            return response()->json([
+                'message'       => 'User Created Successfully',
+                'status_code'   => 201
+            ],201);
+        }else {
+            return response()->json([
+                'message'       => 'Some error occured, Please Try again',
+                'status_code'   => 500
+            ],500);
+        }
+    }
 }

@@ -106578,7 +106578,8 @@ var routes = [{
     component: function component() {
       return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./views/ListRegister.vue */ "./resources/js/views/ListRegister.vue"));
     }
-  }],
+  } // ini di hapus
+  ],
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_3__["isLoggedIn"]()) {
       next('/login');
@@ -106611,11 +106612,18 @@ var routes = [{
   component: function component() {
     return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/authentication/ResetPassword.vue */ "./resources/js/views/authentication/ResetPassword.vue"));
   }
-}, {
+}, //route ini dihapus
+{
   path: '/percobaan',
   name: 'percobaan',
   component: function component() {
     return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./views/Percobaan.vue */ "./resources/js/views/Percobaan.vue"));
+  }
+}, {
+  path: '/preloader',
+  name: 'preloader',
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/Preloader.vue */ "./resources/js/views/Preloader.vue"));
   }
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
