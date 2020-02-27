@@ -30,6 +30,10 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'Root' => 'Root token scope',
             'Admin' => 'Admin token scope',
+            'Produksi' => 'Produksi token scope',
+            'Packing' => 'Packing token scope',
+            'Supplier' => 'Supplier token scope',
+            'Mitra' => 'Mitra token scope',
         ]);
     }
 }
