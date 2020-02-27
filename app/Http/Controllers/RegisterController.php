@@ -32,19 +32,29 @@ class RegisterController extends Controller
 
     public function update_status(Request $request, Register $register) {
 
-        $register->status = $request->status;
+        $register->status = 1;
 
         if ($register->save()) {
             // simpan ke user
-            $user = new User();
-            $user->name = $register->name;
-            $user->email = $register->email;
-            $user->password = bcrypt($register->password);
-            $user->role = $register->role;
-            $user->status = $register->status;
-            $user->save();
+            $cek = User::where('email', $register->email)->first();
+            if ($cek != Null) {
+                $message = [
+                    'message'=>'Data user ini sudah aktif',
+                    'status_code'=>500
+                ];
+                return response()->json($message,500);
+            } else {
+                $user = new User();
+                $user->name = $register->name;
+                $user->email = $register->email;
+                $user->password = bcrypt($register->password);
+                $user->role = $register->role;
+                $user->status = $register->status;
+                $user->save();
+    
+                return response()->json($register,200);
+            }
 
-            return response()->json($register,200);
         } else {
             
             $message = [
@@ -65,15 +75,15 @@ class RegisterController extends Controller
             'role'      =>  'required|string|'
         ]);
 
-        $user = new User();
+        $register = new Register();
 
-        $user->name     = $request->name;
-        $user->email    = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->role     = $request->role;
-        $user->status   = 0;
+        $register->name     = $request->name;
+        $register->email    = $request->email;
+        $register->password = bcrypt($request->password);
+        $register->role     = $request->role;
+        $register->status   = 0;
 
-        if ($user->save()) {
+        if ($register->save()) {
             return response()->json([
                 'message'       => 'User Created Successfully',
                 'status_code'   => 201

@@ -21,9 +21,17 @@
                     <div class="nav-link-ku">
                         <router-link :to="{name:'register-list'}" class="nav-link" exact>
                             <div class="sb-nav-link-icon">
+                                <i class="fas fa-registered"></i>
+                            </div>
+                            Data Register
+                        </router-link>
+                    </div>
+                    <div class="nav-link-ku">
+                        <router-link :to="{name:'users-list'}" class="nav-link" exact>
+                            <div class="sb-nav-link-icon">
                                 <i class="fas fa-users"></i>
                             </div>
-                            User Register
+                            Data User
                         </router-link>
                     </div>
                    

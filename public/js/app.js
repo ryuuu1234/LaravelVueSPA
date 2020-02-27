@@ -4147,6 +4147,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
@@ -89787,10 +89795,33 @@ var render = function() {
                   },
                   [
                     _c("div", { staticClass: "sb-nav-link-icon" }, [
+                      _c("i", { staticClass: "fas fa-registered" })
+                    ]),
+                    _vm._v(
+                      "\n                        Data Register\n                    "
+                    )
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "nav-link-ku" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { to: { name: "users-list" }, exact: "" }
+                  },
+                  [
+                    _c("div", { staticClass: "sb-nav-link-icon" }, [
                       _c("i", { staticClass: "fas fa-users" })
                     ]),
                     _vm._v(
-                      "\n                        User Register\n                    "
+                      "\n                        Data User\n                    "
                     )
                   ]
                 )
@@ -106578,8 +106609,13 @@ var routes = [{
     component: function component() {
       return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ./views/ListRegister.vue */ "./resources/js/views/ListRegister.vue"));
     }
-  } // ini di hapus
-  ],
+  }, {
+    path: 'users-list',
+    name: 'users-list',
+    component: function component() {
+      return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, /*! ./views/ListUser.vue */ "./resources/js/views/ListUser.vue"));
+    }
+  }],
   beforeEnter: function beforeEnter(to, from, next) {
     if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_3__["isLoggedIn"]()) {
       next('/login');

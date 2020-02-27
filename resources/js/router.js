@@ -32,7 +32,12 @@ const routes = [
                 name: 'register-list',
                 component: () => import('./views/ListRegister.vue')
             },
-            // ini di hapus
+
+            {
+                path: 'users-list',
+                name: 'users-list',
+                component: () => import('./views/ListUser.vue')
+            },
            
             
         ],

@@ -179,6 +179,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
  //IMPORT LODASH, DIMANA AKAN DIGUNAKAN UNTUK MEMBUAT DELAY KETIKA KOLOM PENCARIAN DIISI
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -568,11 +570,8 @@ var render = function() {
               key: "cell(status)",
               fn: function(row) {
                 return [
-                  row.item.status == 1
-                    ? _c("span", { staticClass: "badge badge-success" }, [
-                        _vm._v("Active")
-                      ])
-                    : _c(
+                  row.item.status == 0
+                    ? _c(
                         "button",
                         {
                           staticClass: "btn btn-danger btn-xsm",
@@ -582,7 +581,19 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v("InActive\n                 ")]
+                        [_vm._v("inActive")]
+                      )
+                    : _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-xsm",
+                          on: {
+                            click: function($event) {
+                              return _vm.konfirmStatus(row.item)
+                            }
+                          }
+                        },
+                        [_vm._v("Active\n                 ")]
                       )
                 ]
               }
@@ -664,13 +675,13 @@ var render = function() {
             _c("div", { staticClass: "col-md-6 text-right" }, [
               _c("p", { staticStyle: { color: "white" } }, [
                 _vm._v(
-                  "\n                        Showing " +
+                  "\n                        Halaman ke - " +
                     _vm._s(_vm.meta.from) +
-                    " to " +
+                    " dari " +
                     _vm._s(_vm.meta.to) +
-                    " of\n                        " +
+                    " data ditemukan, dan dari\n                        " +
                     _vm._s(_vm.meta.total) +
-                    " table data\n                    "
+                    " data keseluruhan\n                    "
                 )
               ])
             ])

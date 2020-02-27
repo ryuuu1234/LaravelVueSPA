@@ -75,7 +75,7 @@
 import Datatable from '../components/khusus/Datatable.vue' 
 // import InputNumber from '../components/khusus/InputNumber.vue'
 // import axios from 'axios';
-import * as listRegisterService from "../services/list_register_service";
+import * as listUserService from "../services/list_user_service";
 
 export default {
     
@@ -169,7 +169,7 @@ export default {
                 sortbydesc: sorting
             }};
             try {
-                const response = await listRegisterService.loadData(params); 
+                const response = await listUserService.loadData(params); 
                 console.dir(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
@@ -341,21 +341,16 @@ export default {
         konfirmStatus: function(item) {
             this.editItemData = {...item};
             this.methodForms = "Edit";
-            this.editItemData.status = 1;
             this.showEditDataModal();
         },
 
         updateStatus: async function(item){
-        if (this.editItemData.status == 0) {
-            alert("unuk menonaktifkan user ini, access di panel user..terimakasih!");
-            this.hideEditDataModal();
-            return;
-        }    
+
         const formData = new FormData();
         formData.append("status", this.editItemData.status);
         formData.append('_method', 'put');
             try {
-                const response = await listRegisterService.updateStatus(this.editItemData.id, formData)
+                const response = await listUserService.updateStatus(this.editItemData.id, formData)
                 this.items.map(item => {
                     if (item.id === response.data.id) {
                         for (let key in response.data) {
@@ -371,7 +366,6 @@ export default {
                     time: 5000
                 });
             } catch (error) {
-                console.log('' + error);
                 this.flashMessage.error({
                     message: error.response.data.message,
                     time: 5000

@@ -50,6 +50,9 @@ Route::group(['prefix' => 'user'], function () {
         //     ],200);
 
         // })->middleware('scope:Root,Admin');
+        Route::get('list-user', 'UserController@list')->middleware('scope:Root,Admin');
+        Route::put('update-status-user/{user}', 'UserController@update_status')->middleware('scope:Root,Admin');
+        
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
         

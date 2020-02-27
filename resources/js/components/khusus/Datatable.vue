@@ -92,12 +92,14 @@
 
                 <!-- Example scoped button tambahan -->
                 <template v-slot:cell(status)="row">
-                     <span v-if="row.item.status == 1" class="badge badge-success">Active</span>
+                     <button v-if="row.item.status == 0"
+                     @click="konfirmStatus(row.item)" 
+                     class="btn btn-danger btn-xsm">inActive</button>
                      <button 
-                     class="btn btn-danger btn-xsm"
+                     class="btn btn-primary btn-xsm"
                      v-else
                      @click="konfirmStatus(row.item)"
-                     >InActive
+                     >Active
                      </button>
                        
                 </template>
@@ -135,8 +137,8 @@
                     </div>
                     <div class="col-md-6 text-right">
                         <p style="color:white;">
-                            Showing {{ meta.from }} to {{ meta.to }} of
-                            {{ meta.total }} table data
+                            Halaman ke - {{ meta.from }} dari {{ meta.to }} data ditemukan, dan dari
+                            {{ meta.total }} data keseluruhan
                         </p>
                     </div>    
                 </div>

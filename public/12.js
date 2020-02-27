@@ -1,9 +1,9 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[4],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[12],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListRegister.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ListRegister.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListUser.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ListUser.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -12,7 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/khusus/Datatable.vue */ "./resources/js/components/khusus/Datatable.vue");
-/* harmony import */ var _services_list_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/list_register_service */ "./resources/js/services/list_register_service.js");
+/* harmony import */ var _services_list_user_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/list_user_service */ "./resources/js/services/list_user_service.js");
 
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -212,7 +212,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 };
                 _context2.prev = 4;
                 _context2.next = 7;
-                return _services_list_register_service__WEBPACK_IMPORTED_MODULE_2__["loadData"](params);
+                return _services_list_user_service__WEBPACK_IMPORTED_MODULE_2__["loadData"](params);
 
               case 7:
                 response = _context2.sent;
@@ -394,7 +394,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     konfirmStatus: function konfirmStatus(item) {
       this.editItemData = _objectSpread({}, item);
       this.methodForms = "Edit";
-      this.editItemData.status = 1;
       this.showEditDataModal();
     },
     updateStatus: function () {
@@ -406,24 +405,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                if (!(this.editItemData.status == 0)) {
-                  _context4.next = 4;
-                  break;
-                }
-
-                alert("unuk menonaktifkan user ini, access di panel user..terimakasih!");
-                this.hideEditDataModal();
-                return _context4.abrupt("return");
-
-              case 4:
                 formData = new FormData();
                 formData.append("status", this.editItemData.status);
                 formData.append('_method', 'put');
-                _context4.prev = 7;
-                _context4.next = 10;
-                return _services_list_register_service__WEBPACK_IMPORTED_MODULE_2__["updateStatus"](this.editItemData.id, formData);
+                _context4.prev = 3;
+                _context4.next = 6;
+                return _services_list_user_service__WEBPACK_IMPORTED_MODULE_2__["updateStatus"](this.editItemData.id, formData);
 
-              case 10:
+              case 6:
                 response = _context4.sent;
                 this.items.map(function (item) {
                   if (item.id === response.data.id) {
@@ -438,24 +427,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Item Updated successfully!",
                   time: 5000
                 });
-                _context4.next = 20;
+                _context4.next = 15;
                 break;
 
-              case 16:
-                _context4.prev = 16;
-                _context4.t0 = _context4["catch"](7);
-                console.log('' + _context4.t0);
+              case 12:
+                _context4.prev = 12;
+                _context4.t0 = _context4["catch"](3);
                 this.flashMessage.error({
                   message: _context4.t0.response.data.message,
                   time: 5000
                 });
 
-              case 20:
+              case 15:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[7, 16]]);
+        }, _callee4, this, [[3, 12]]);
       }));
 
       function updateStatus(_x3) {
@@ -469,10 +457,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580&":
-/*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580& ***!
-  \**********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928&":
+/*!******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928& ***!
+  \******************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -631,10 +619,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/services/list_register_service.js":
-/*!********************************************************!*\
-  !*** ./resources/js/services/list_register_service.js ***!
-  \********************************************************/
+/***/ "./resources/js/services/list_user_service.js":
+/*!****************************************************!*\
+  !*** ./resources/js/services/list_user_service.js ***!
+  \****************************************************/
 /*! exports provided: loadData, updateStatus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -645,25 +633,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 
 function loadData(params) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('user/list-register', params); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('user/list-user', params); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function updateStatus(id, data) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("user/update-status/".concat(id), data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("user/update-status-user/".concat(id), data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 
 /***/ }),
 
-/***/ "./resources/js/views/ListRegister.vue":
-/*!*********************************************!*\
-  !*** ./resources/js/views/ListRegister.vue ***!
-  \*********************************************/
+/***/ "./resources/js/views/ListUser.vue":
+/*!*****************************************!*\
+  !*** ./resources/js/views/ListUser.vue ***!
+  \*****************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListRegister.vue?vue&type=template&id=3e001580& */ "./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580&");
-/* harmony import */ var _ListRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListRegister.vue?vue&type=script&lang=js& */ "./resources/js/views/ListRegister.vue?vue&type=script&lang=js&");
+/* harmony import */ var _ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListUser.vue?vue&type=template&id=7bcfa928& */ "./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928&");
+/* harmony import */ var _ListUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListUser.vue?vue&type=script&lang=js& */ "./resources/js/views/ListUser.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -673,9 +661,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _ListRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _ListUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -685,38 +673,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/ListRegister.vue"
+component.options.__file = "resources/js/views/ListUser.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/ListRegister.vue?vue&type=script&lang=js&":
-/*!**********************************************************************!*\
-  !*** ./resources/js/views/ListRegister.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************/
+/***/ "./resources/js/views/ListUser.vue?vue&type=script&lang=js&":
+/*!******************************************************************!*\
+  !*** ./resources/js/views/ListUser.vue?vue&type=script&lang=js& ***!
+  \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ListRegister.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListRegister.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListRegister_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ListUser.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListUser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580& ***!
-  \****************************************************************************/
+/***/ "./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928&":
+/*!************************************************************************!*\
+  !*** ./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928& ***!
+  \************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ListRegister.vue?vue&type=template&id=3e001580& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListRegister.vue?vue&type=template&id=3e001580&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ListUser.vue?vue&type=template&id=7bcfa928& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/ListUser.vue?vue&type=template&id=7bcfa928&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListRegister_vue_vue_type_template_id_3e001580___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListUser_vue_vue_type_template_id_7bcfa928___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
