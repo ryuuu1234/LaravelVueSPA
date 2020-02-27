@@ -85,13 +85,14 @@ export default {
     };
   },
 
+  
+
   methods: {
       login: async function() {
           try {
             const response = await auth.login(this.user);
-            // console.log(response);
+            this.token_scope(response.token_scope);
             this.errors = {};
-            this.$router.push('/home');
           } catch (error) {
             //   console.log(''+error); // ini untuk cek errornya apa
              switch (error.response.status) 
@@ -119,6 +120,22 @@ export default {
                     break;
             }         
           }
+      },
+      logout: async function(){
+        auth.logout();
+        // this.$router.push('/login');
+      },
+
+      token_scope: function(item){
+        if (item == 'Admin' || item == 'Root') {
+           this.$router.push('/home');
+        } else {
+           this.flashMessage.error({
+                message: "Kamu Bukan Administrator, tidak bisa login",
+                time: 5000
+            });
+          this.logout();
+        }
       }
   },
   created() {

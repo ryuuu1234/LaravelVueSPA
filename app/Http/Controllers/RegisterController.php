@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Register;
 use App\User;
 
@@ -47,7 +48,7 @@ class RegisterController extends Controller
                 $user = new User();
                 $user->name = $register->name;
                 $user->email = $register->email;
-                $user->password = bcrypt($register->password);
+                $user->password = $register->password;
                 $user->role = $register->role;
                 $user->status = $register->status;
                 $user->save();

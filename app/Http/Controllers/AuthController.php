@@ -57,11 +57,17 @@ class AuthController extends Controller
         // INI UNTUK ROLE USER
         $user = $request->user();
         if ($user->role == 'Root') {
-
             $tokenData = $user->createToken('Personal Access Token', ['Root']);
-            
-        } else {
+        } else if ($user->role == 'Admin') {
             $tokenData = $user->createToken('Personal Access Token', ['Admin']);
+        } else if ($user->role == 'Produksi') {
+            $tokenData = $user->createToken('Personal Access Token', ['Produksi']);
+        } else if ($user->role == 'Packing') {
+            $tokenData = $user->createToken('Personal Access Token', ['Packing']);
+        } else if ($user->role == 'Supplier') {
+            $tokenData = $user->createToken('Personal Access Token', ['Supplier']);
+        } else if ($user->role == 'Mitra') {
+            $tokenData = $user->createToken('Personal Access Token', ['Mitra']);
         }
 
         $token = $tokenData->token;

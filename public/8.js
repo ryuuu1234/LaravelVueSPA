@@ -118,9 +118,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 response = _context.sent;
-                // console.log(response);
+                this.token_scope(response.token_scope);
                 this.errors = {};
-                this.$router.push('/home');
                 _context.next = 21;
                 break;
 
@@ -169,7 +168,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return login;
-    }()
+    }(),
+    logout: function () {
+      var _logout = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _services_auth_service__WEBPACK_IMPORTED_MODULE_1__["logout"](); // this.$router.push('/login');
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function logout() {
+        return _logout.apply(this, arguments);
+      }
+
+      return logout;
+    }(),
+    token_scope: function token_scope(item) {
+      if (item == 'Admin' || item == 'Root') {
+        this.$router.push('/home');
+      } else {
+        this.flashMessage.error({
+          message: "Kamu Bukan Administrator, tidak bisa login",
+          time: 5000
+        });
+        this.logout();
+      }
+    }
   },
   created: function created() {
     document.querySelector("body").style.backgroundColor = "#343a40";

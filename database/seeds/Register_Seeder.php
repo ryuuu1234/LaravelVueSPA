@@ -15,7 +15,8 @@ class Register_Seeder extends Seeder
             'name'=>'Nafisa',
             'email'=>'nafisa@yahoo.com',
             'password'=>bcrypt('12345'),
-            'role'=> 'Produksi'
+            'role'=> 'Produksi',
+            'status' => 1
         ]);
       
     }
