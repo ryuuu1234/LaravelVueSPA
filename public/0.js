@@ -673,17 +673,23 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-6 text-right" }, [
-              _c("p", { staticStyle: { color: "white" } }, [
-                _vm._v(
-                  "\n                        Halaman ke - " +
-                    _vm._s(_vm.meta.from) +
-                    " dari " +
-                    _vm._s(_vm.meta.to) +
-                    " data ditemukan, dan dari\n                        " +
-                    _vm._s(_vm.meta.total) +
-                    " data keseluruhan\n                    "
-                )
-              ])
+              _c(
+                "p",
+                { staticStyle: { color: "white", "font-size": "12px" } },
+                [
+                  _c("i", [
+                    _vm._v(
+                      "Halaman ke - " +
+                        _vm._s(_vm.meta.from) +
+                        " dari " +
+                        _vm._s(_vm.meta.to) +
+                        " data ditemukan, " +
+                        _vm._s(_vm.meta.total) +
+                        " data keseluruhan\n                        "
+                    )
+                  ])
+                ]
+              )
             ])
           ])
         ])

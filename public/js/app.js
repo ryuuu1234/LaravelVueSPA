@@ -4155,6 +4155,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
@@ -89854,8 +89856,15 @@ var render = function() {
                           attrs: { to: { name: "categories" }, exact: "" }
                         },
                         [_vm._v("Categories")]
-                      ),
-                      _vm._v(" "),
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "nav-link-ku" },
+                    [
                       _c(
                         "router-link",
                         {

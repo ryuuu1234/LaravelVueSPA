@@ -136,9 +136,9 @@
                         </button>
                     </div>
                     <div class="col-md-6 text-right">
-                        <p style="color:white;">
-                            Halaman ke - {{ meta.from }} dari {{ meta.to }} data ditemukan, dan dari
-                            {{ meta.total }} data keseluruhan
+                        <p style="color:white; font-size:12px;">
+                            <i>Halaman ke - {{ meta.from }} dari {{ meta.to }} data ditemukan, {{ meta.total }} data keseluruhan
+                            </i> 
                         </p>
                     </div>    
                 </div>
