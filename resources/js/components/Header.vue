@@ -45,7 +45,7 @@
         <div class="child-menu"> 
         	<div class="content-list content-menu">
                 <ul class="list-wrapper pd-lr-10">
-                    <li @click="toggle"> <router-link :to="{name:'categories'}"> <div class="menu-icon"><i class=" fa fa-user"></i></div> <div class="menu-text">Edit Profile</div> </router-link> </li>
+                    <li @click="toggle"> <router-link :to="{name:'profile-user'}"> <div class="menu-icon"><i class=" fa fa-user"></i></div> <div class="menu-text">Edit Profile</div> </router-link> </li>
                      
                     <li class="line"></li>
                     

@@ -11,7 +11,8 @@ export default new Vuex.Store({
         isLoggedIn: false,
         apiURL: 'http://localhost:8000/api',
         serverPath: 'http://localhost:8000',
-        profile:{}
+        profile:{},
+        errors:[],
     },
     mutations: {
         authenticate(state, payload) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
             } else {
                 state.profile = {};
             }
+        },
+        CLEAR_ERRORS(state) {
+            state.errors = []
         }
     },
     actions: {

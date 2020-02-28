@@ -114,4 +114,26 @@ class AuthController extends Controller
             'status_code'   => 500
         ],500);
     }
+
+    public function update_profile(Request $request, User $user)
+    {
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required|email'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($user->save()) {
+            return response()->json($user,200);
+        } else {
+            return response()->json([
+                'message'       => 'Error on Updated',
+                'status_code'   => 500
+            ],500);
+        }
+
+        
+    }
 }

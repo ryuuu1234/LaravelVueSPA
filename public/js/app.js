@@ -89705,7 +89705,7 @@ var render = function() {
                           [
                             _c(
                               "router-link",
-                              { attrs: { to: { name: "categories" } } },
+                              { attrs: { to: { name: "profile-user" } } },
                               [
                                 _c("div", { staticClass: "menu-icon" }, [
                                   _c("i", { staticClass: " fa fa-user" })
@@ -106670,32 +106670,56 @@ var routes = [{
   children: [{
     path: '',
     name: 'dashboard',
+    meta: {
+      title: 'Dashboard'
+    },
     component: function component() {
       return __webpack_require__.e(/*! import() */ 11).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
     }
   }, {
     path: 'categories',
     name: 'categories',
+    meta: {
+      title: 'Management Categories'
+    },
     component: function component() {
       return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./views/Categories.vue */ "./resources/js/views/Categories.vue"));
     }
   }, {
     path: 'data-items',
     name: 'data-items',
+    meta: {
+      title: 'Management Data Items'
+    },
     component: function component() {
       return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! ./views/ItemsViewPage.vue */ "./resources/js/views/ItemsViewPage.vue"));
     }
   }, {
     path: 'register-list',
     name: 'register-list',
+    meta: {
+      title: 'Management Register User'
+    },
     component: function component() {
       return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(5)]).then(__webpack_require__.bind(null, /*! ./views/ListRegister.vue */ "./resources/js/views/ListRegister.vue"));
     }
   }, {
     path: 'users-list',
     name: 'users-list',
+    meta: {
+      title: 'Management User'
+    },
     component: function component() {
       return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./views/ListUser.vue */ "./resources/js/views/ListUser.vue"));
+    }
+  }, {
+    path: 'profile-user',
+    name: 'profile-user',
+    meta: {
+      title: 'Management Profile'
+    },
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ 12).then(__webpack_require__.bind(null, /*! ./views/ProfileUser.vue */ "./resources/js/views/ProfileUser.vue"));
     }
   }],
   beforeEnter: function beforeEnter(to, from, next) {
@@ -106757,12 +106781,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 /*!***********************************************!*\
   !*** ./resources/js/services/auth_service.js ***!
   \***********************************************/
-/*! exports provided: register, login, isLoggedIn, logout, getAccessToken, getProfile */
+/*! exports provided: register, updateProfile, login, isLoggedIn, logout, getAccessToken, getProfile */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "register", function() { return register; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateProfile", function() { return updateProfile; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "login", function() { return login; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isLoggedIn", function() { return isLoggedIn; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
@@ -106777,6 +106802,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function register(user) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post('/auth/register', user);
+}
+function updateProfile(id, data) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().put("/user/update-profile/".concat(id), data);
 }
 function login(user) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post('/auth/login', user).then(function (response) {
@@ -106880,7 +106908,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     isLoggedIn: false,
     apiURL: 'http://localhost:8000/api',
     serverPath: 'http://localhost:8000',
-    profile: {}
+    profile: {},
+    errors: []
   },
   mutations: {
     authenticate: function authenticate(state, payload) {
@@ -106891,6 +106920,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
       } else {
         state.profile = {};
       }
+    },
+    CLEAR_ERRORS: function CLEAR_ERRORS(state) {
+      state.errors = [];
     }
   },
   actions: {

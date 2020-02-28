@@ -15,28 +15,40 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
+                meta : {title: 'Dashboard'},
                 component: () => import('./views/Dashboard.vue')
             },
             {
                 path: 'categories',
                 name: 'categories',
+                meta : {title: 'Management Categories'},
                 component: () => import('./views/Categories.vue')
             },
             {
                 path: 'data-items',
                 name: 'data-items',
+                meta : {title: 'Management Data Items'},
                 component: () => import('./views/ItemsViewPage.vue')
             },
             {
                 path: 'register-list',
                 name: 'register-list',
+                meta : {title: 'Management Register User'},
                 component: () => import('./views/ListRegister.vue')
             },
 
             {
                 path: 'users-list',
                 name: 'users-list',
+                meta : {title: 'Management User'},
                 component: () => import('./views/ListUser.vue')
+            },
+
+            {
+                path: 'profile-user',
+                name: 'profile-user',
+                meta : {title: 'Management Profile'},
+                component: () => import('./views/ProfileUser.vue')
             },
            
             
