@@ -574,7 +574,7 @@ var render = function() {
                     ? _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger btn-xsm",
+                          staticClass: "btn btn-danger btn-xxsm",
                           on: {
                             click: function($event) {
                               return _vm.konfirmStatus(row.item)
@@ -586,7 +586,7 @@ var render = function() {
                     : _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary btn-xsm",
+                          staticClass: "btn btn-primary btn-xxsm",
                           on: {
                             click: function($event) {
                               return _vm.konfirmStatus(row.item)

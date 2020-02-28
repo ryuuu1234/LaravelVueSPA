@@ -4034,8 +4034,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      dropMenu: false
+    };
+  },
+  created: function created() {
+    window.addEventListener("click", this.close);
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener("click", this.close);
+  },
   methods: {
     logout: function () {
       var _logout = _asyncToGenerator(
@@ -4062,6 +4094,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return logout;
     }(),
+    toggle: function toggle() {
+      this.dropMenu = !this.dropMenu;
+    },
+    close: function close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.dropMenu = false;
+      }
+    },
     hideSidebar: function hideSidebar(e) {
       e.preventDefault();
       document.querySelector("body").classList.toggle("sb-sidenav-toggled");
@@ -89620,7 +89660,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-link btn-sm order-1 order-lg-0",
+          staticClass: "btn btn-link btn-sm order-0 order-lg-0",
           attrs: { id: "sidebarToggle" },
           on: { click: _vm.hideSidebar }
         },
@@ -89635,57 +89675,77 @@ var render = function() {
       _vm._v(" "),
       _c("ul", { staticClass: "navbar-nav ml-auto ml-md-0" }, [
         _c("li", { staticClass: "nav-item dropdown" }, [
-          _c(
-            "a",
-            {
-              staticClass: "nav-link dropdown-toggle",
-              attrs: {
-                id: "userDropdown",
-                href: "#",
-                role: "button",
-                "data-toggle": "dropdown",
-                "aria-haspopup": "true",
-                "aria-expanded": "false"
-              }
-            },
-            [
-              _c("span", { staticClass: "mega-image" }, [
-                _c("img", {
-                  attrs: {
-                    src:
-                      _vm.$store.state.serverPath +
-                      "/storage/galleries_images/nouser.png",
-                    alt: "example image"
-                  }
-                })
-              ])
-            ]
-          ),
+          _c("a", { staticClass: "mega-link", on: { click: _vm.toggle } }, [
+            _c("span", { staticClass: "mega-image" }, [
+              _c("img", {
+                attrs: {
+                  src:
+                    _vm.$store.state.serverPath +
+                    "/storage/galleries_images/nouser.png",
+                  alt: "example image"
+                }
+              })
+            ])
+          ]),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "dropdown-menu dropdown-menu-right",
-              attrs: { "aria-labelledby": "userDropdown" }
-            },
-            [
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Settings")
-              ]),
-              _vm._v(" "),
-              _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
-                _vm._v("Activity Log")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "dropdown-divider" }),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "dropdown-item", on: { click: _vm.logout } },
-                [_vm._v("Logout")]
+          _vm.dropMenu
+            ? _c(
+                "div",
+                {
+                  staticClass:
+                    "vd_mega-menu-content  width-xs-2  left-xs left-sm"
+                },
+                [
+                  _c("div", { staticClass: "child-menu" }, [
+                    _c("div", { staticClass: "content-list content-menu" }, [
+                      _c("ul", { staticClass: "list-wrapper pd-lr-10" }, [
+                        _c(
+                          "li",
+                          { on: { click: _vm.toggle } },
+                          [
+                            _c(
+                              "router-link",
+                              { attrs: { to: { name: "categories" } } },
+                              [
+                                _c("div", { staticClass: "menu-icon" }, [
+                                  _c("i", { staticClass: " fa fa-user" })
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "menu-text" }, [
+                                  _vm._v("Edit Profile")
+                                ])
+                              ]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("li", { staticClass: "line" }),
+                        _vm._v(" "),
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "javascript:void(0)" },
+                              on: { click: _vm.logout }
+                            },
+                            [
+                              _vm._m(2),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "menu-text" }, [
+                                _vm._v("Sign Out")
+                              ])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ])
+                ]
               )
-            ]
-          )
+            : _vm._e()
         ])
       ])
     ]
@@ -89713,6 +89773,28 @@ var staticRenderFns = [
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", { attrs: { href: "javascript:void(0)" } }, [
+        _c("div", { staticClass: "menu-icon" }, [
+          _c("i", { staticClass: "  fa fa-key" })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "menu-text" }, [_vm._v("Lock")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "menu-icon" }, [
+      _c("i", { staticClass: " fa fa-sign-out" })
+    ])
   }
 ]
 render._withStripped = true

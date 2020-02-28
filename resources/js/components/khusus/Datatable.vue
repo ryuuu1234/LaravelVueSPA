@@ -94,9 +94,9 @@
                 <template v-slot:cell(status)="row">
                      <button v-if="row.item.status == 0"
                      @click="konfirmStatus(row.item)" 
-                     class="btn btn-danger btn-xsm">inActive</button>
+                     class="btn btn-danger btn-xxsm">inActive</button>
                      <button 
-                     class="btn btn-primary btn-xsm"
+                     class="btn btn-primary btn-xxsm"
                      v-else
                      @click="konfirmStatus(row.item)"
                      >Active
