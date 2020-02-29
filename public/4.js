@@ -465,18 +465,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Category Updated successfully!",
                   time: 5000
                 });
-                _context4.next = 16;
+                _context4.next = 23;
                 break;
 
               case 13:
                 _context4.prev = 13;
                 _context4.t0 = _context4["catch"](4);
+                _context4.t1 = _context4.t0.response.status;
+                _context4.next = _context4.t1 === 422 ? 18 : 21;
+                break;
+
+              case 18:
+                this.errors = _context4.t0.response.data.errors;
+                console.log(this.errors);
+                return _context4.abrupt("break", 23);
+
+              case 21:
                 this.flashMessage.error({
-                  message: _context4.t0.response.data.message,
+                  message: "Some error occured, Please Try Again!",
                   time: 5000
                 });
+                return _context4.abrupt("break", 23);
 
-              case 16:
+              case 23:
               case "end":
                 return _context4.stop();
             }
@@ -1007,19 +1018,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 
 function createCategory(data) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post('/user/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 function loadCategories() {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/categories'); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('/user/categories'); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 function deleteCategory(id) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/categories/".concat(id)); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("/user/categories/".concat(id)); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 function updateCategory(id, data) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().put("/categories/".concat(id), data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("/user/categories/".concat(id), data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 function loadMore(page) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("/categories?page=".concat(page));
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("/user/categories?page=".concat(page));
 }
 
 /***/ }),

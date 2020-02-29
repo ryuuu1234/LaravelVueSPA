@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
  */
 
 Route::group(['prefix' => 'auth'], function() {
+
     Route::post('register', 'AuthController@register'); // ini untuk alamat api/auth/register
     Route::post('login', 'AuthController@login');
 
@@ -37,7 +38,7 @@ Route::group(['prefix' => 'auth'], function() {
 Route::group(['prefix' => 'user'], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
-
+        Route::resource('categories', 'CategoryController');
         // Route::post('edit-category', function () {
         //     return response()->json([
         //         'meesage' => 'Admin Access', 'status_code'=>200
@@ -60,11 +61,12 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('items/delete', 'ItemController@deleteAll');
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
+        Route::put('update-image/{user}', 'AuthController@update_image');
 
     });
 });
 
-Route::resource('categories', 'CategoryController');
+
 
 //untuk register selain root dan admin
 Route::group(['prefix' => 'client'], function () {

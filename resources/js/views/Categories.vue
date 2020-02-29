@@ -279,6 +279,7 @@ export default {
                 switch (error.response.status) {
                     case 422:
                         this.errors = error.response.data.errors;
+                        
                         break;
 
                     default:
@@ -332,11 +333,13 @@ export default {
         },
         //edit dan update data
         updateCategory: async function(category) {
+
+            
             const formData = new FormData();
             formData.append("name", this.editCategoryData.name);
             formData.append("image", this.editCategoryData.image);
             formData.append('_method', 'put');
-
+            
             try {
                 const response = await categoryService.updateCategory(this.editCategoryData.id, formData);
 
@@ -356,10 +359,19 @@ export default {
                 });
 
             } catch (error) {
-                this.flashMessage.error({
-                    message: error.response.data.message,
-                    time: 5000
-                });
+               switch (error.response.status) {
+                    case 422:
+                        this.errors = error.response.data.errors;
+                        console.log(this.errors)
+                        break;
+
+                    default:
+                        this.flashMessage.error({
+                            message: "Some error occured, Please Try Again!",
+                            time: 5000
+                        });
+                        break;
+                }
             }
         },
 

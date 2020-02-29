@@ -8,6 +8,8 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Storage;
+
 class AuthController extends Controller
 {
     public function register(Request $request) {
@@ -132,8 +134,33 @@ class AuthController extends Controller
                 'message'       => 'Error on Updated',
                 'status_code'   => 500
             ],500);
+        } 
+    }
+
+    public function update_image(Request $request, User $user)
+    {
+        // dd($request->all());
+        $old_path = $user->image;
+        if($request->hasFile('image')) {
+            $request->validate([
+                'image'=>'required|image|mimes:jpeg,png,jpg'
+            ]);
+            $path = $request->file('image')->store('users_images');
+            $user->image = $path;
+
+            if ($old_path != '' || $old_path != null) {
+                Storage::delete($old_path);
+            }      
+            
         }
 
-        
+        if ($user->save()) {
+            return response()->json($user,200);
+        } else {
+            return response()->json([
+                'message'       => 'Error on Updated',
+                'status_code'   => 500
+            ],500);
+        } 
     }
 }
