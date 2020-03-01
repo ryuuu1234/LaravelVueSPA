@@ -4040,21 +4040,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 // import {bus} from '../app';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -89675,110 +89660,90 @@ var render = function() {
         _vm._v(_vm._s(_vm.$store.state.profile.name))
       ]),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("ul", { staticClass: "navbar-nav ml-auto ml-md-0" }, [
-        _c("li", { staticClass: "nav-item dropdown" }, [
-          _c("a", { staticClass: "mega-link", on: { click: _vm.toggle } }, [
-            _c("span", { staticClass: "mega-image" }, [
-              _c("img", {
-                attrs: {
-                  src:
-                    this.$store.state.serverPath +
-                    "/storage/" +
-                    _vm.$store.state.profile.image,
-                  alt: "example image"
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.dropMenu
-            ? _c(
-                "div",
-                {
-                  staticClass:
-                    "vd_mega-menu-content  width-xs-2  left-xs left-sm"
-                },
-                [
-                  _c("div", { staticClass: "child-menu" }, [
-                    _c("div", { staticClass: "content-list content-menu" }, [
-                      _c("ul", { staticClass: "list-wrapper pd-lr-10" }, [
-                        _c(
-                          "li",
-                          { on: { click: _vm.toggle } },
-                          [
+      _c(
+        "ul",
+        { staticClass: "navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0" },
+        [
+          _c("li", { staticClass: "nav-item dropdown" }, [
+            _c("a", { staticClass: "mega-link", on: { click: _vm.toggle } }, [
+              _c("span", { staticClass: "mega-image" }, [
+                _c("img", {
+                  attrs: {
+                    src:
+                      this.$store.state.serverPath +
+                      "/storage/" +
+                      _vm.$store.state.profile.image,
+                    alt: "example image"
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.dropMenu
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "vd_mega-menu-content  width-xs-2  left-xs left-sm"
+                  },
+                  [
+                    _c("div", { staticClass: "child-menu" }, [
+                      _c("div", { staticClass: "content-list content-menu" }, [
+                        _c("ul", { staticClass: "list-wrapper pd-lr-10" }, [
+                          _c(
+                            "li",
+                            { on: { click: _vm.toggle } },
+                            [
+                              _c(
+                                "router-link",
+                                { attrs: { to: { name: "profile-user" } } },
+                                [
+                                  _c("div", { staticClass: "menu-icon" }, [
+                                    _c("i", { staticClass: " fa fa-user" })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "menu-text" }, [
+                                    _vm._v("Edit Profile")
+                                  ])
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("li", { staticClass: "line" }),
+                          _vm._v(" "),
+                          _vm._m(0),
+                          _vm._v(" "),
+                          _c("li", [
                             _c(
-                              "router-link",
-                              { attrs: { to: { name: "profile-user" } } },
+                              "a",
+                              {
+                                attrs: { href: "javascript:void(0)" },
+                                on: { click: _vm.logout }
+                              },
                               [
-                                _c("div", { staticClass: "menu-icon" }, [
-                                  _c("i", { staticClass: " fa fa-user" })
-                                ]),
+                                _vm._m(1),
                                 _vm._v(" "),
                                 _c("div", { staticClass: "menu-text" }, [
-                                  _vm._v("Edit Profile")
+                                  _vm._v("Sign Out")
                                 ])
                               ]
                             )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("li", { staticClass: "line" }),
-                        _vm._v(" "),
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _c("li", [
-                          _c(
-                            "a",
-                            {
-                              attrs: { href: "javascript:void(0)" },
-                              on: { click: _vm.logout }
-                            },
-                            [
-                              _vm._m(2),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "menu-text" }, [
-                                _vm._v("Sign Out")
-                              ])
-                            ]
-                          )
+                          ])
                         ])
                       ])
                     ])
-                  ])
-                ]
-              )
-            : _vm._e()
-        ])
-      ])
+                  ]
+                )
+              : _vm._e()
+          ])
+        ]
+      )
     ]
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "form",
-      {
-        staticClass:
-          "d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"
-      },
-      [
-        _c("div", { staticClass: "form-group has-search" }, [
-          _c("span", { staticClass: "fa fa-search form-control-feedback" }),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control-search",
-            attrs: { type: "text", placeholder: "Search" }
-          })
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

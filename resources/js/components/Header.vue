@@ -6,24 +6,15 @@
     <span class="navbar-brand" >{{$store.state.profile.name}}</span>
     
     <!-- Navbar Search-->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+    <!-- <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <div class="form-group has-search">
         <span class="fa fa-search form-control-feedback"></span>
         <input type="text" class="form-control-search" placeholder="Search">
       </div>
-    </form>
+    </form> -->
     <!-- Navbar-->
-    <ul class="navbar-nav ml-auto ml-md-0">
+    <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <li class="nav-item dropdown">
-        <!-- <a
-          class="nav-link dropdown-toggle"
-          id="userDropdown"
-          href="#"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        > -->
         <a 
           class="mega-link"
           @click="toggle"
@@ -33,12 +24,6 @@
             </span>
           
         </a>
-        <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <a class="dropdown-item" href="#">Settings</a>
-          <a class="dropdown-item" href="#">Activity Log</a>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item" v-on:click="logout">Logout</button>
-        </div> -->
         <div class="vd_mega-menu-content  width-xs-2  left-xs left-sm"
             v-if="dropMenu"
         >
