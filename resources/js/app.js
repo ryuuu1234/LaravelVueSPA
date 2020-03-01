@@ -25,7 +25,7 @@ Vue.use(VueSweetalert2);
 
 Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 
-
+export const bus = new Vue();
 
 new Vue({
     el: "#app",

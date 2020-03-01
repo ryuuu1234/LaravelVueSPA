@@ -4055,11 +4055,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+// import {bus} from '../app';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      dropMenu: false
+      dropMenu: false,
+      displayImage: ''
     };
   },
   created: function created() {
@@ -89682,8 +89684,9 @@ var render = function() {
               _c("img", {
                 attrs: {
                   src:
-                    _vm.$store.state.serverPath +
-                    "/storage/galleries_images/nouser.png",
+                    this.$store.state.serverPath +
+                    "/storage/" +
+                    _vm.$store.state.profile.image,
                   alt: "example image"
                 }
               })
@@ -106412,11 +106415,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no exports provided */
+/*! exports provided: bus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bus", function() { return bus; });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
@@ -106452,6 +106456,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_sweetalert2__WEBPACK_IMPORTED
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_numeral_filter__WEBPACK_IMPORTED_MODULE_10__["default"], {
   locale: 'en-gb'
 });
+var bus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: "#app",
   router: _router_js__WEBPACK_IMPORTED_MODULE_2__["default"],

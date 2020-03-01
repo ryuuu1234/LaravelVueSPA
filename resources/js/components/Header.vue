@@ -29,7 +29,7 @@
           @click="toggle"
         >
             <span class="mega-image">
-                <img :src="`${$store.state.serverPath}/storage/galleries_images/nouser.png`" alt="example image">               
+                <img :src="`${this.$store.state.serverPath}/storage/${$store.state.profile.image}`" alt="example image">               
             </span>
           
         </a>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+// import {bus} from '../app';
   import * as auth from '../services/auth_service';
 
   export default {
@@ -69,16 +70,22 @@
     data(){
       return {
         dropMenu: false,
+        displayImage: ''
       }
     },
     created() {
       window.addEventListener("click", this.close);
+      
     },
+
+   
 
     beforeDestroy() {
       window.removeEventListener("click", this.close);
     },
     methods: {
+
+      
       logout: async function(){
         auth.logout();
         this.$router.push('/login');

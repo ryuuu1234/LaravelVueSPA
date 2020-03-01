@@ -89,14 +89,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// import {bus} from '../app';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
-    this.loadProfile();
-  },
+  // created() {
+  //     //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
+  //     this.loadProfile()
+  // },
   mounted: function mounted() {
     this.loadImage();
+    this.loadProfile();
   },
   data: function data() {
     return {
@@ -143,23 +194,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Avatar has been updated successfully!",
                   time: 5000
                 });
-                _context.next = 17;
+                this.user.image = response.data.image;
+                _context.next = 18;
                 break;
 
-              case 14:
-                _context.prev = 14;
+              case 15:
+                _context.prev = 15;
                 _context.t0 = _context["catch"](7);
                 this.flashMessage.error({
                   message: _context.t0.response.data.message,
                   time: 5000
                 });
 
-              case 17:
+              case 18:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[7, 14]]);
+        }, _callee, this, [[7, 15]]);
       }));
 
       function attachImage() {
@@ -194,38 +246,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Profile Updated successfully!",
                   time: 5000
                 });
-                this.user = {
-                  name: response.data.name,
-                  email: response.data.email
-                };
-                this.errors = [];
-                _context2.next = 18;
+                this.user.id = response.data.id, this.user.name = response.data.name, this.user.email = response.data.email, this.errors = [];
+                _context2.next = 17;
                 break;
 
-              case 9:
-                _context2.prev = 9;
+              case 8:
+                _context2.prev = 8;
                 _context2.t0 = _context2["catch"](0);
                 _context2.t1 = _context2.t0.response.status;
-                _context2.next = _context2.t1 === 422 ? 14 : 16;
+                _context2.next = _context2.t1 === 422 ? 13 : 15;
                 break;
 
-              case 14:
+              case 13:
                 this.errors = _context2.t0.response.data.errors;
-                return _context2.abrupt("break", 18);
+                return _context2.abrupt("break", 17);
 
-              case 16:
+              case 15:
                 this.flashMessage.error({
                   message: "Some error occured, Please Try Again!",
                   time: 5000
                 });
-                return _context2.abrupt("break", 18);
+                return _context2.abrupt("break", 17);
 
-              case 18:
+              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 9]]);
+        }, _callee2, this, [[0, 8]]);
       }));
 
       function togleUpdateForm(_x) {
@@ -260,7 +308,7 @@ var render = function() {
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "content-dark mt-3" }, [
             _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "col-md-12" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-4" }, [
                     _c("div", { staticClass: "avatar-profile" }, [
@@ -287,107 +335,188 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-8" }, [
-                    _c("div", { staticClass: "form-group-ku" }, [
-                      _c(
-                        "label",
-                        { staticClass: "lbl-form-ku", attrs: { for: "name" } },
-                        [_vm._v("Nama")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "tab-content",
+                        attrs: { id: "myTabContent" }
+                      },
+                      [
+                        _c(
+                          "div",
                           {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.user.name,
-                            expression: "user.name"
-                          }
-                        ],
-                        staticClass: "form-control-customku",
-                        attrs: {
-                          type: "text",
-                          id: "name",
-                          placeholder: "Nama User"
-                        },
-                        domProps: { value: _vm.user.name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                            staticClass: "tab-pane fade show active",
+                            attrs: {
+                              id: "profile",
+                              role: "tabpanel",
+                              "aria-labelledby": "profile-tab"
                             }
-                            _vm.$set(_vm.user, "name", $event.target.value)
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.errors.name
-                        ? _c("div", { staticClass: "invalid-feedback" }, [
-                            _vm._v(
-                              "\n                                            " +
-                                _vm._s(_vm.errors.name[0]) +
-                                "\n                                        "
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "card",
+                                staticStyle: { width: "80%" }
+                              },
+                              [
+                                _c("div", { staticClass: "card-body" }, [
+                                  _c(
+                                    "h5",
+                                    { staticClass: "card-title text-dark" },
+                                    [_vm._v("Form Profile")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h6",
+                                    {
+                                      staticClass:
+                                        "card-subtitle mb-2 text-muted"
+                                    },
+                                    [_vm._v("Update informasi anda disini")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("hr", { staticClass: "batas-dark" }),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "form-group-ku" }, [
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "lbl-form-ku text-dark",
+                                        attrs: { for: "name" }
+                                      },
+                                      [_vm._v("Nama")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.user.name,
+                                          expression: "user.name"
+                                        }
+                                      ],
+                                      staticClass: "form-control-customku",
+                                      attrs: {
+                                        type: "text",
+                                        id: "name",
+                                        placeholder: "Nama User"
+                                      },
+                                      domProps: { value: _vm.user.name },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.user,
+                                            "name",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _vm.errors.name
+                                      ? _c(
+                                          "div",
+                                          { staticClass: "invalid-feedback" },
+                                          [
+                                            _vm._v(
+                                              "\n                                                    " +
+                                                _vm._s(_vm.errors.name[0]) +
+                                                "\n                                                "
+                                            )
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "form-group-ku" }, [
+                                    _c(
+                                      "label",
+                                      {
+                                        staticClass: "lbl-form-ku text-dark",
+                                        attrs: { for: "email" }
+                                      },
+                                      [_vm._v("Email")]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.user.email,
+                                          expression: "user.email"
+                                        }
+                                      ],
+                                      staticClass: "form-control-customku",
+                                      attrs: {
+                                        type: "text",
+                                        id: "email",
+                                        placeholder: "Email"
+                                      },
+                                      domProps: { value: _vm.user.email },
+                                      on: {
+                                        input: function($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            _vm.user,
+                                            "email",
+                                            $event.target.value
+                                          )
+                                        }
+                                      }
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("hr", { staticClass: "batas-dark" }),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "text-right" }, [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger btn-xsm",
+                                        attrs: { type: "submit" },
+                                        on: {
+                                          click: function($event) {
+                                            $event.preventDefault()
+                                            return _vm.togleUpdateForm($event)
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Simpan Perubahan")]
+                                    )
+                                  ])
+                                ])
+                              ]
                             )
-                          ])
-                        : _vm._e()
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group-ku" }, [
-                      _c(
-                        "label",
-                        { staticClass: "lbl-form-ku", attrs: { for: "email" } },
-                        [_vm._v("Email")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
                           {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.user.email,
-                            expression: "user.email"
-                          }
-                        ],
-                        staticClass: "form-control-customku",
-                        attrs: {
-                          type: "text",
-                          id: "email",
-                          placeholder: "Email"
-                        },
-                        domProps: { value: _vm.user.email },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
+                            staticClass: "tab-pane fade",
+                            attrs: {
+                              id: "contact",
+                              role: "tabpanel",
+                              "aria-labelledby": "contact-tab"
                             }
-                            _vm.$set(_vm.user, "email", $event.target.value)
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("hr", { staticClass: "batas-dark" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "text-right" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger btn-xsm",
-                          attrs: { type: "submit" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.togleUpdateForm($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Simpan Perubahan")]
-                      )
-                    ])
+                          },
+                          [_vm._v("...")]
+                        )
+                      ]
+                    )
                   ])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [_vm._v("isinya tabel")])
+              ])
             ])
           ])
         ])
@@ -395,7 +524,54 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "ul",
+      { staticClass: "nav nav-tabs", attrs: { id: "myTab", role: "tablist" } },
+      [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "profile-tab",
+                "data-toggle": "tab",
+                href: "#profile",
+                role: "tab",
+                "aria-controls": "profile",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("Profile")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "contact-tab",
+                "data-toggle": "tab",
+                href: "#contact",
+                role: "tab",
+                "aria-controls": "contact",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("Contact")]
+          )
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
