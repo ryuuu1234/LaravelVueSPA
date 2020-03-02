@@ -15,134 +15,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("main", [
-    _c("div", { staticClass: "container-fluid" }, [
-      _c("ol", { staticClass: "breadcrumb mb-4 mt-4" }, [
-        _c("li", { staticClass: "breadcrumb-item active" }, [
-          _vm._v(_vm._s(_vm.$route.meta.title))
-        ])
-      ]),
-      _vm._v(" "),
-      _vm._m(0)
-    ])
-  ])
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xl-3 col-md-6" }, [
-        _c("div", { staticClass: "card bg-primary text-white mb-4" }, [
-          _c("div", { staticClass: "card-body" }, [_vm._v("Primary Card")]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "card-footer d-flex align-items-center justify-content-between"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "small text-white stretched-link",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("View Details")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "small text-white" }, [
-                _c("i", { staticClass: "fas fa-angle-right" })
-              ])
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-xl-3 col-md-6" }, [
-        _c("div", { staticClass: "card bg-warning text-white mb-4" }, [
-          _c("div", { staticClass: "card-body" }, [_vm._v("Warning Card")]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "card-footer d-flex align-items-center justify-content-between"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "small text-white stretched-link",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("View Details")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "small text-white" }, [
-                _c("i", { staticClass: "fas fa-angle-right" })
-              ])
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-xl-3 col-md-6" }, [
-        _c("div", { staticClass: "card bg-success text-white mb-4" }, [
-          _c("div", { staticClass: "card-body" }, [_vm._v("Success Card")]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "card-footer d-flex align-items-center justify-content-between"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "small text-white stretched-link",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("View Details")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "small text-white" }, [
-                _c("i", { staticClass: "fas fa-angle-right" })
-              ])
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-xl-3 col-md-6" }, [
-        _c("div", { staticClass: "card bg-danger text-white mb-4" }, [
-          _c("div", { staticClass: "card-body" }, [_vm._v("Danger Card")]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "card-footer d-flex align-items-center justify-content-between"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "small text-white stretched-link",
-                  attrs: { href: "#" }
-                },
-                [_vm._v("View Details")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "small text-white" }, [
-                _c("i", { staticClass: "fas fa-angle-right" })
-              ])
-            ]
-          )
-        ])
+    return _c("main", [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row" })
       ])
     ])
   }
