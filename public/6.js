@@ -98,6 +98,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
  // import InputNumber from '../components/khusus/InputNumber.vue'
 // import axios from 'axios';
 
@@ -108,7 +109,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
   },
   created: function created() {
-    this.loadItemsData(); // this.kosongkanForm()
+    this.loadItemsData(); // this.loading()
+    // this.kosongkanForm()
   },
   data: function data() {
     return {
@@ -148,7 +150,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       selectedRowsId: [],
       // pengaturan tombol
       tombolAddNew: false,
-      tombolEdit: false
+      tombolEdit: false,
+      showLoading: false
     };
   },
   computed: {
@@ -157,6 +160,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   methods: {
+    // loading: function()
+    // {
+    //     this.isBusy != this.isBusy
+    // },
     // remove select
     hapusDataTerseleksi: function () {
       var _hapusDataTerseleksi = _asyncToGenerator(
@@ -196,8 +203,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                this.isBusy = true; // this.handleLoading(true);
-
+                this.showLoading = true;
                 current_page = this.search == '' ? this.current_page : 1;
                 sorting = this.sortByDesc ? 'DESC' : 'ASC'; // let
 
@@ -231,24 +237,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   from: getData.from,
                   to: getData.to
                 };
-                _context2.next = 19;
+                this.showLoading = false;
+                _context2.next = 21;
                 break;
 
-              case 15:
-                _context2.prev = 15;
+              case 16:
+                _context2.prev = 16;
                 _context2.t0 = _context2["catch"](4);
                 console.log('' + _context2.t0);
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
+                this.showLoading = false;
 
-              case 19:
+              case 21:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 15]]);
+        }, _callee2, this, [[4, 16]]);
       }));
 
       function loadItemsData() {
@@ -486,7 +494,8 @@ var render = function() {
                 fields: _vm.fields,
                 meta: _vm.meta,
                 tombolAddNew: _vm.tombolAddNew,
-                tombolEdit: _vm.tombolEdit
+                tombolEdit: _vm.tombolEdit,
+                isBusy: _vm.showLoading
               },
               on: {
                 per_page: _vm.handlePerPage,

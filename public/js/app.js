@@ -4184,6 +4184,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
@@ -89925,6 +89928,22 @@ var render = function() {
                       )
                     ],
                     1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "nav-link-ku" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: { name: "products" }, exact: "" }
+                        },
+                        [_vm._v("Data Products")]
+                      )
+                    ],
+                    1
                   )
                 ])
               ]
@@ -106699,6 +106718,15 @@ var routes = [{
     },
     component: function component() {
       return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./views/ProfileUser.vue */ "./resources/js/views/ProfileUser.vue"));
+    }
+  }, {
+    path: 'products',
+    name: 'products',
+    meta: {
+      title: 'Management Products'
+    },
+    component: function component() {
+      return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, /*! ./views/ListProduct.vue */ "./resources/js/views/ListProduct.vue"));
     }
   }],
   beforeEnter: function beforeEnter(to, from, next) {

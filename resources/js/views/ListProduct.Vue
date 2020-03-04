@@ -35,29 +35,29 @@
                 <form v-on:submit.prevent="updateData">
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group-sm mb-2">
-                                <label for="nama">Nama Item</label>
+                                <label for="nama">Nama Product</label>
                                 <input
                                     type="text"
                                     class="form-control form-control-sm"
                                     id="nama"
-                                    placeholder="Enter Item Name"
-                                    v-model="editItemData.nama"
+                                    placeholder="Nama Produk"
+                                    v-model="editItemData.name"
                                 />
-                                <div class="invalid-feedback" v-if="errors.nama">
-                                    {{ errors.nama[0] }}
+                                <div class="invalid-feedback" v-if="errors.name">
+                                    {{ errors.name[0] }}
                                 </div>
                             </div>
                         </div> 
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="form-group-sm">
-                                <label for="harga_beli">Harga Beli </label>
+                                <label for="harga">Harga </label>
                                 
                                     <input-number
                                         class="form-control form-control-sm" 
-                                        id="harga_beli"
+                                        id="harga"
                                         placeholder="Masukkan Harga Beli Item"
                                         v-model="currencyInput"
                                     >
@@ -65,43 +65,42 @@
                                     </input-number>   
                                     
                                     
-                                <div class="invalid-feedback" v-if="errors.harga_beli">
-                                    {{ errors.harga_beli[0] }}
+                                <div class="invalid-feedback" v-if="errors.harga">
+                                    {{ errors.harga[0] }}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group-sm mb-2">
-                                <label for="unit_id">Satuan</label>
-                                <select 
-                                    name="unit_id" id="unit_id"
-                                    class="form-control form-control-sm"
-                                    v-model="editItemData.unit_id"
-                                >
-                                    <option value="">Pilih Satuan</option>
-                                    <option v-for="unit in units" :key="unit.id" 
-                                        :value="unit.id"
-                                        >{{ unit.nama }}
-                                    </option>
-                                </select>
-                                <div class="invalid-feedback" v-if="errors.unit_id">
-                                    {{ errors.unit_id[0] }}
-                                </div>
-                            </div>
-                        </div>
+                       
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group-sm">
                                 <label for="stok_awal">Stok Awal</label>
                                 <input 
                                     type="number"
                                     class="form-control form-control-sm"
-                                    placeholder="masukkan stok awal"
+                                    placeholder="stok awal"
                                     v-model="editItemData.stok_awal"
                                 />
                                 <div class="invalid-feedback" v-if="errors.stok_awal">
                                     {{ errors.stok_awal[0] }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group-sm">
+                                <label for="description">Deskripsi</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="description" 
+                                    rows="3"
+                                     placeholder="masukkan Keterangan"
+                                     v-model="editItemData.description"
+                                    ></textarea>
+                                
+                                <div class="invalid-feedback" v-if="errors.description">
+                                    {{ errors.description[0] }}
                                 </div>
                             </div>
                         </div>
@@ -135,7 +134,7 @@ import Datatable from '../components/khusus/Datatable.vue' //IMPORT COMPONENT DA
 // import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 import InputNumber from '../components/khusus/InputNumber.vue'
 // import axios from 'axios';
-import * as itemService from "../services/items_service";
+import * as itemService from "../services/product_service";
 
 export default {
 
@@ -162,10 +161,10 @@ export default {
             // labelButton: "",
             fields: [
                 {key: 'index', label:'index'},
-                {key: 'nama', sortable: true},
+                {key: 'name', sortable: true},
                 // {key: 'unit.nama', label:'Satuan'},
-                {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
-                            return "Rp " + new Intl.NumberFormat().format(item.harga_beli) + " / "+ item.unit.nama
+                {key: 'harga', label:'Harga', formatter: (value, key, item) => {
+                            return "Rp " + new Intl.NumberFormat().format(item.harga) 
                             }, sortable: true, class:'text-right'},
                 {key: 'stok_awal', sortable: true, class:'text-right'},
                 {key: 'actions', label: 'Actions', class:'text-right'}
@@ -304,7 +303,7 @@ export default {
 
         removeData: async function(item) {
             
-            if (!window.confirm(`Are you sure you want to delete ${item.nama} ?` )) {
+            if (!window.confirm(`Are you sure you want to delete ${item.name} ?` )) {
                 return;
             }
 
@@ -331,7 +330,7 @@ export default {
         editData(item) {
             this.editItemData = {...item};
             // this.currencyInput = this.editItemData.harga_beli;
-            this.currencyInput = String(this.editItemData.harga_beli);
+            this.currencyInput = String(this.editItemData.harga);
             this.methodForms = "Edit";
             this.showEditDataModal();
         },
@@ -351,10 +350,11 @@ export default {
         },
 
         kosongkanForm() {
-            this.editItemData.nama = "";
-            this.editItemData.unit_id = "";
-            this.editItemData.harga_beli = "";
+            this.editItemData.name = "";
+            // this.editItemData.unit_id = "";
+            this.editItemData.harga = "";
             this.editItemData.stok_awal = "";
+            this.editItemData.description = "";
             this.currencyInput ="";
         },
 
@@ -362,9 +362,9 @@ export default {
         updateData: async function(item){
 
             const formData = new FormData();
-            formData.append("nama", this.editItemData.nama);
-            formData.append("harga_beli", this.currencyInput);
-            formData.append("unit_id", this.editItemData.unit_id);
+            formData.append("name", this.editItemData.name);
+            formData.append("harga", this.currencyInput);
+            formData.append("description", this.editItemData.description);
             formData.append("stok_awal", this.editItemData.stok_awal);
             
             if (this.methodForms == 'Add') {
@@ -374,9 +374,9 @@ export default {
                 //    jika sukses
                 //    this.items.unshift(response.data);
                     this.loadItemsData();
-                   this.hideEditDataModal();
-                   this.kosongkanForm();
-                   this.flashMessage.success({
+                    this.hideEditDataModal();
+                    this.kosongkanForm();
+                    this.flashMessage.success({
                         message: "Category stored successfully!",
                         time: 5000
                     });

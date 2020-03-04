@@ -50,6 +50,13 @@ const routes = [
                 meta : {title: 'Management Profile'},
                 component: () => import('./views/ProfileUser.vue')
             },
+
+            {
+                path: 'products',
+                name: 'products',
+                meta : {title: 'Management Products'},
+                component: () => import('./views/ListProduct.vue')
+            },
            
             
         ],

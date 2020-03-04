@@ -52,6 +52,9 @@
                             <div class="nav-link-ku">
                                 <router-link :to="{name:'data-items'}" class="nav-link" exact>Data Items</router-link>
                             </div>
+                            <div class="nav-link-ku">
+                                <router-link :to="{name:'products'}" class="nav-link" exact>Data Products</router-link>
+                            </div>
                         </nav>
                     </div>
                     

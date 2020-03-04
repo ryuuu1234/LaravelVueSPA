@@ -20,6 +20,7 @@
                             @removedSelected="hapusDataTerseleksi"
                             :tombolAddNew="tombolAddNew"
                             :tombolEdit="tombolEdit"
+                            :isBusy="showLoading"
                         />
                           
             </div>
@@ -85,6 +86,7 @@ export default {
 
     created() {
         this.loadItemsData()
+        // this.loading()
         // this.kosongkanForm()
     },
     
@@ -118,6 +120,7 @@ export default {
             // pengaturan tombol
             tombolAddNew: false,
             tombolEdit:false,
+            showLoading: false,
         }
     },
     
@@ -128,6 +131,10 @@ export default {
     },
 
     methods: {
+        // loading: function()
+        // {
+        //     this.isBusy != this.isBusy
+        // },
         // remove select
        hapusDataTerseleksi: async function(val) {
             if (!window.confirm(`Are you sure you want to delete this selection data ?` )) {
@@ -156,8 +163,7 @@ export default {
        },
         
         loadItemsData: async function() {
-            this.isBusy = true;
-            // this.handleLoading(true);
+            this.showLoading = true;
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
             // let
@@ -184,12 +190,14 @@ export default {
                     from: getData.from,
                     to: getData.to 
                 }
+                this.showLoading = false;
             } catch (error) {
                     console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
                 });
+                this.showLoading = false;
             }
         },
 

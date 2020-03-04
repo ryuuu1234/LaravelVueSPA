@@ -20,6 +20,7 @@
                             @removedSelected="hapusDataTerseleksi"
                             :tombolAddNew="tombolAddNew"
                             :tombolEdit="tombolEdit"
+                            :isBusy="showLoading"
                         />
                           
             </div>
@@ -118,6 +119,7 @@ export default {
             // pengaturan tombol
             tombolAddNew: false,
             tombolEdit:false,
+            showLoading:false,
         }
     },
     
@@ -156,7 +158,7 @@ export default {
        },
         
         loadItemsData: async function() {
-            this.isBusy = true;
+            this.showLoading = true;
             // this.handleLoading(true);
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
@@ -184,12 +186,14 @@ export default {
                     from: getData.from,
                     to: getData.to 
                 }
+                this.showLoading = false;
             } catch (error) {
                     console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
                 });
+                this.showLoading = false;
             }
         },
 

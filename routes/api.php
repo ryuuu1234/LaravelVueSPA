@@ -58,7 +58,9 @@ Route::group(['prefix' => 'user'], function () {
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
         
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
+        Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
         Route::post('items/delete', 'ItemController@deleteAll');
+        Route::post('products/delete', 'ProductController@deleteAll');
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');
