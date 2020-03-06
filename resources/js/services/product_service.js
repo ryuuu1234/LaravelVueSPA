@@ -21,5 +21,5 @@ export function updateItem(id, data) {
 }
 
 export function loadMore(page) {
-    return http().get(`user/products?page=${page}`);
+    return http().get(`user/products?page=${page}`); //
 }

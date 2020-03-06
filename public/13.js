@@ -1078,7 +1078,7 @@ function updateItem(id, data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().post("user/products/".concat(id), data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/products)...karena sdh di definisikan di store maka tgl ('/products)
 }
 function loadMore(page) {
-  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("user/products?page=".concat(page));
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("user/products?page=".concat(page)); //
 }
 
 /***/ }),
