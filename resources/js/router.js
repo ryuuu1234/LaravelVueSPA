@@ -57,6 +57,8 @@ const routes = [
                 meta : {title: 'Management Products'},
                 component: () => import('./views/ListProduct.vue')
             },
+
+            
            
             
         ],

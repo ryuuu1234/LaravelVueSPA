@@ -4187,6 +4187,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
@@ -89947,6 +89956,29 @@ var render = function() {
                   )
                 ])
               ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "nav-link-ku" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { to: { name: "order" }, exact: "" }
+                  },
+                  [
+                    _c("div", { staticClass: "sb-nav-link-icon" }, [
+                      _c("i", { staticClass: "fas fa-shopping-cart" })
+                    ]),
+                    _vm._v(
+                      "\n                        Order\n                    "
+                    )
+                  ]
+                )
+              ],
+              1
             )
           ])
         ]),
