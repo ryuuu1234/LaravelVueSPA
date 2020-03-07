@@ -41,8 +41,7 @@ Homestead.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#### Ini permintaan wawan
-public/*.js
+
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files

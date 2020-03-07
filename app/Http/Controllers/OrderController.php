@@ -55,7 +55,7 @@ class OrderController extends Controller
             'total'=>'required|numeric',
             'user_id'=>'required|numeric',
             'qty'=>'required|numeric',
-            'product_id'=>'required|numeric'
+            'product_id'=>'required|numeric',
             'harga'=>'required|numeric'
         ]);
 
