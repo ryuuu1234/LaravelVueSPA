@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailOrder extends Model
 {
-    //
+    protected $guarded = [];
+    
+    //Model relationships ke Order
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

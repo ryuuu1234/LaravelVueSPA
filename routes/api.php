@@ -61,6 +61,9 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
         Route::post('items/delete', 'ItemController@deleteAll');
         Route::post('products/delete', 'ProductController@deleteAll');
+        
+        // api/user/orders   ->untuk order dr mitra
+        Route::resource('orders', 'OrderController'); 
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');
