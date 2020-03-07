@@ -62,7 +62,7 @@ class OrderController extends Controller
         DB::beginTransaction();
         try {
             
-            //menyimpan data ke table orders
+            //menyimpan data ke table orders coba lg wa
             $order = Order::create([
                 'reff' => $this->generateInvoice(),
                 'user_id' => $request->user_id,
