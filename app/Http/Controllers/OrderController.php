@@ -56,6 +56,7 @@ class OrderController extends Controller
             'user_id'=>'required|numeric',
             'qty'=>'required|numeric',
             'product_id'=>'required|numeric'
+            'harga'=>'required|numeric'
         ]);
 
         DB::beginTransaction();
@@ -86,6 +87,7 @@ class OrderController extends Controller
             $order->detail_order()->create([
                 'product_id' => $request->product_id,
                 'qty' => $request->qty,
+                'harga' => $request->harga,
             ]);
 
             //apabila tidak terjadi error, penyimpanan diverifikasi
