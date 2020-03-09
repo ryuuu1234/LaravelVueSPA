@@ -53,20 +53,20 @@
                                 <router-link :to="{name:'data-items'}" class="nav-link" exact>Data Items</router-link>
                             </div>
                             <div class="nav-link-ku">
-                                <router-link :to="{name:'products'}" class="nav-link" exact>Data Products</router-link>
+                                <router-link to="/products" class="nav-link" exact>Data Products</router-link>
                             </div>
                         </nav>
                     </div>
                     
                     <!-- ini nanti dihapus -->
-                    <div class="nav-link-ku">
+                    <!-- <div class="nav-link-ku">
                         <router-link :to="{name:'order'}" class="nav-link" exact>
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-shopping-cart"></i>
                             </div>
                             Order
                         </router-link>
-                    </div>
+                    </div> -->
                         
                 </div>
             </div>

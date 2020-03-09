@@ -2,11 +2,18 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import * as auth from './services/auth_service';
+import product from './stores/product.js';
 
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+    // ini baru masuk
+    modules: {
+        auth,
+        product
+    },
+    // =====================
     state: {
         isLoggedIn: false,
         apiURL: 'http://localhost:8000/api',
@@ -22,6 +29,9 @@ export default new Vuex.Store({
             } else {
                 state.profile = {};
             }
+        },
+        SET_ERRORS(state, payload) {
+            state.errors = payload
         },
         CLEAR_ERRORS(state) {
             state.errors = []

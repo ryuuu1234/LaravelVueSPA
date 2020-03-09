@@ -222,8 +222,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 response = _context2.sent;
-                console.dir(response);
                 getData = response.data.data;
+                console.dir(getData);
                 this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
 
                 this.units = response.data.data_unit; // console.log(this.units)

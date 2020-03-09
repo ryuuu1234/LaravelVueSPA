@@ -14,17 +14,29 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $items = Product::orderBy(request()->sortby, request()->sortbydesc)
-            ->when(request()->q, function($items) {
-                $items = $items->where('name', 'LIKE', '%' . request()->q . '%');
-                    // ->orWhere('harga', 'LIKE', '%' . request()->q . '%');
-        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        // $items = Product::orderBy(request()->sortby, request()->sortbydesc)
+        //     ->when(request()->q, function($items) {
+        //         $items = $items->where('name', 'LIKE', '%' . request()->q . '%');
+        //             // ->orWhere('harga', 'LIKE', '%' . request()->q . '%');
+        // })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
 
-        // $items->load('unit:id,nama');
-        // $unit = Unit::all();
+        // // $items->load('unit:id,nama');
+        // // $unit = Unit::all();
+        // return response()->json([
+        //     'status' => 'success', 
+        //     'data' => $items,
+        //     ]
+        // );
+
+        // ini yg baru
+        $products = Product::orderBy('created_at', 'DESC')
+        ->when(request()->q, function($products) {
+            $products = $products->where('name', 'LIKE', '%' . request()->q . '%');
+            
+        })->paginate(10);
         return response()->json([
             'status' => 'success', 
-            'data' => $items,
+            'data' => $products,
             ]
         );
     }
@@ -46,7 +58,8 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+        // dd($request->all());
         $request->validate([
             'name'=>'required|min:3',
             'harga'=>'required|numeric',
@@ -75,7 +88,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $product = Product::find($product); // panggil data by Id
+        dd($product);
     }
 
     /**
@@ -84,9 +98,10 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::where('id', $id)->first();
+        return response()->json(['status' => 'success', 'data' => $product], 200);
     }
 
     /**

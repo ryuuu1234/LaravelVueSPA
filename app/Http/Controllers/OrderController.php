@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use App\Order;
 
 use App\User;
 use App\DetailOder;
-use DB;
 
 class OrderController extends Controller
 {
@@ -51,18 +52,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $request->validate([
             'total'=>'required|numeric',
             'user_id'=>'required|numeric',
             'qty'=>'required|numeric',
             'product_id'=>'required|numeric',
-            'harga'=>'required|numeric'
+            'harga'=>'required|integer'
         ]);
 
         DB::beginTransaction();
         try {
             
-            //menyimpan data ke table orders coba lg wa
+            //menyimpan data ke table orders
             $order = Order::create([
                 'reff' => $this->generateInvoice(),
                 'user_id' => $request->user_id,

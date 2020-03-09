@@ -176,8 +176,9 @@ export default {
             }};
             try {
                 const response = await listUserService.loadData(params); 
-                console.dir(response);
+                
                 let getData = response.data.data
+                console.dir(getData);
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                 this.units = response.data.data_unit
                 // console.log(this.units)

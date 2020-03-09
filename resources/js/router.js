@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from './views/Home.vue'
+import Home from './views/Home.vue';
+import IndexProduct from './views/products/index.vue';
 
 import * as auth from './services/auth_service';
 
@@ -51,25 +52,55 @@ const routes = [
                 component: () => import('./views/ProfileUser.vue')
             },
 
-            {
-                path: 'products',
-                name: 'products',
-                meta : {title: 'Management Products'},
-                component: () => import('./views/ListProduct.vue')
-            },
-
-            
-           
+            // ini router product yg lama
+            // {
+            //     path: 'products',
+            //     name: 'products',
+            //     meta : {title: 'Management Products'},
+            //     component: () => import('./views/ListProduct.vue')
+            // },
             
         ],
-        beforeEnter(to, from, next) {
-            if (!auth.isLoggedIn()) {
-                next('/login');
-            } else {
-                next();
-            }
-        }
+
+        // ini yang lama
+        // beforeEnter(to, from, next) {
+        //     //store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
+        //     if (!auth.isLoggedIn()) {
+        //         next('/login');
+        //     } else {
+        //         next();
+        //     }
+        // }
+        
     },
+    {
+        path:'/products',
+        component: IndexProduct,
+        children: [
+            {
+                path: '',
+                name: 'products.data',
+                component: () => import('./views/products/Product.vue'),
+                meta: { title: 'Manage Product' }
+            },
+            {
+                path: 'add',
+                name: 'products.add',
+                component: () => import('./views/products/Add.vue'),
+                meta: { title: 'Add New Product' }
+            },
+            {
+                path: 'edit/:id',
+                name: 'products.edit',
+                component: () => import('./views/products/Edit.vue'),
+                meta: { title: 'Edit Product' }
+            }
+        ], 
+    },
+
+
+
+
 
     {
         path: '/register',
@@ -115,5 +146,14 @@ const router = new Router({
     routes: routes,
     linkActiveClass: 'active',
 });
+
+router.beforeEach((to, from, next) => {
+    // store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
+    if (!auth.isLoggedIn()) {
+        next('/login');
+    } else {
+        next();
+    }
+})
 
 export default router;
