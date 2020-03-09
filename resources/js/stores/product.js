@@ -27,7 +27,7 @@ const mutations = {
     ASSIGN_FORM(state, payload) {
         state.product = {
             name        :payload.name,
-            harga       :payload.harga,
+            harga       :String(payload.harga),
             stok_awal   :payload.stok_awal,
             description :payload.description,
         }
@@ -53,7 +53,7 @@ const actions = {
             http().get(`/user/products?page=${state.page}&q=${search}`)
             .then((response) => {
                 let getData = response.data.data
-                console.dir(getData)
+                // console.dir(getData)
                 //SIMPAN DATA KE STATE MELALUI MUTATIONS
                 commit('ASSIGN_DATA', getData)
                 resolve(getData)

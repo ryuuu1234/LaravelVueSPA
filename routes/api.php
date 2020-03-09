@@ -64,6 +64,7 @@ Route::group(['prefix' => 'user'], function () {
         
         // api/user/orders   ->untuk order dr mitra
         Route::resource('orders', 'OrderController'); 
+        Route::post('mitra-ordered', 'OrderController@purchase');
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');
@@ -76,7 +77,7 @@ Route::group(['prefix' => 'user'], function () {
 //untuk register selain root dan admin
 Route::group(['prefix' => 'client'], function () {
     Route::post('register', 'RegisterController@register'); // ini untuk alamat api/client/register
-
+    
     // ini khusus scope root dan admin
     // Route::group(['middleware' => 'auth:api'], function () {
         

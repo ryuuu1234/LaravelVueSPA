@@ -65,6 +65,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'DataProduct',
@@ -99,7 +100,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       set: function set(val) {
         //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE PAGE
         //DI VUEX JUGA AKAN DIUBAH
-        console.log('Computed');
         this.$store.commit('product/SET_PAGE', val);
       }
     }
@@ -247,6 +247,20 @@ var render = function() {
                         }
                       },
                       [_c("i", { staticClass: "fa fa-trash" })]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-success btn-sm",
+                        attrs: {
+                          to: {
+                            name: "products.order",
+                            params: { id: row.item.id }
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "fa fa-upload" })]
                     )
                   ]
                 }

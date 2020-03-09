@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Order;
 
-use App\User;
+
 use App\DetailOder;
 
 class OrderController extends Controller
@@ -50,70 +50,74 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function purchase(Request $request){
+        dd($request->all());
+    }
+
     public function store(Request $request)
     {
         dd($request->all());
-        $request->validate([
-            'total'=>'required|numeric',
-            'user_id'=>'required|numeric',
-            'qty'=>'required|numeric',
-            'product_id'=>'required|numeric',
-            'harga'=>'required|integer'
-        ]);
+        // $request->validate([
+        //     'total'=>'required|numeric',
+        //     'user_id'=>'required|numeric',
+        //     'qty'=>'required|numeric',
+        //     'product_id'=>'required|numeric',
+        //     'harga'=>'required|integer'
+        // ]);
 
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
             
-            //menyimpan data ke table orders
-            $order = Order::create([
-                'reff' => $this->generateInvoice(),
-                'user_id' => $request->user_id,
-                'total'=>$request->total,
-                'status'=> 1, // 
-                // 'total' => array_sum(array_column($result, 'result'))
+        //     //menyimpan data ke table orders
+        //     $order = Order::create([
+        //         'reff' => $this->generateInvoice(),
+        //         'user_id' => $request->user_id,
+        //         'total'=>$request->total,
+        //         'status'=> 1, // 
+        //         // 'total' => array_sum(array_column($result, 'result'))
                 
-                //array_sum untuk menjumlahkan value dari result
-            ]);
+        //         //array_sum untuk menjumlahkan value dari result
+        //     ]);
     
      
-            //looping cart untuk disimpan ke table order_details
-            // foreach ($result as $key => $row) {
-            //     $order->order_detail()->create([
-            //         'product_id' => $key,
-            //         'qty' => $row['qty'],
-            //         'price' => $row['price']
-            //     ]);
-            // }
+        //     //looping cart untuk disimpan ke table order_details
+        //     // foreach ($result as $key => $row) {
+        //     //     $order->order_detail()->create([
+        //     //         'product_id' => $key,
+        //     //         'qty' => $row['qty'],
+        //     //         'price' => $row['price']
+        //     //     ]);
+        //     // }
 
-            // SIMPAN KE DETAIL ORDER
-            $order->detail_order()->create([
-                'product_id' => $request->product_id,
-                'qty' => $request->qty,
-                'harga' => $request->harga,
-            ]);
+        //     // SIMPAN KE DETAIL ORDER
+        //     $order->detail_order()->create([
+        //         'product_id' => $request->product_id,
+        //         'qty' => $request->qty,
+        //         'harga' => $request->harga,
+        //     ]);
 
-            //apabila tidak terjadi error, penyimpanan diverifikasi
-            DB::commit();
+        //     //apabila tidak terjadi error, penyimpanan diverifikasi
+        //     DB::commit();
     
      
-            //me-return status dan message berupa code invoice, dan menghapus cookie
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => $order->reff,
-            // ], 200)->cookie(Cookie::forget('cart'));
-            return response()->json([
-                'status' => 'success',
-                'message' => $order->reff,
-            ], 200);
-        } catch (\Exception $e) {
-            //jika ada error, maka akan dirollback sehingga tidak ada data yang tersimpan 
-            DB::rollback();
-            //pesan gagal akan di-return
-            return response()->json([
-                'status' => 'failed',
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        //     //me-return status dan message berupa code invoice, dan menghapus cookie
+        //     // return response()->json([
+        //     //     'status' => 'success',
+        //     //     'message' => $order->reff,
+        //     // ], 200)->cookie(Cookie::forget('cart'));
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => $order->reff,
+        //     ], 200);
+        // } catch (\Exception $e) {
+        //     //jika ada error, maka akan dirollback sehingga tidak ada data yang tersimpan 
+        //     DB::rollback();
+        //     //pesan gagal akan di-return
+        //     return response()->json([
+        //         'status' => 'failed',
+        //         'message' => $e->getMessage()
+        //     ], 400);
+        // }
 
         // $order = new Order();
         // $order->reff = $this->generateInvoice();

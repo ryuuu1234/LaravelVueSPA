@@ -23,6 +23,7 @@
                     <template v-slot:cell(actions)="row">
                         <router-link :to="{ name: 'products.edit', params: {id: row.item.id} }" class="btn btn-warning btn-sm"><i class="fa fa-pencil-alt"></i></router-link>
                         <button class="btn btn-danger btn-sm" @click="deleteProduct(row.item.id)"><i class="fa fa-trash"></i></button>
+                        <router-link :to="{ name: 'products.order', params: {id: row.item.id} }" class="btn btn-success btn-sm"><i class="fa fa-upload"></i></router-link>
                     </template>
                 </b-table>
 
@@ -80,7 +81,6 @@ export default {
             set(val) {
                 //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE PAGE
                 //DI VUEX JUGA AKAN DIUBAH
-                console.log('Computed')
                 this.$store.commit('product/SET_PAGE', val)
             }
         }

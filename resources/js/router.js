@@ -94,6 +94,12 @@ const routes = [
                 name: 'products.edit',
                 component: () => import('./views/products/Edit.vue'),
                 meta: { title: 'Edit Product' }
+            },
+            {
+                path: 'order/:id',
+                name: 'products.order',
+                component: () => import('./views/products/Order.vue'),
+                meta: { title: 'Order Product' }
             }
         ], 
     },

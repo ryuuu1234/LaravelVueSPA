@@ -12,7 +12,7 @@
         </div>
         <div class="form-group" :class="{ 'has-error': errors.harga }">
             <label for="">Harga</label>
-            <input type="text" class="form-control" v-model="product.harga">
+            <input-number class="form-control" v-model="product.harga"></input-number>
             <p class="text-danger" v-if="errors.harga">{{ errors.harga[0] }}</p>
         </div>
         <div class="form-group" :class="{ 'has-error': errors.stok_awal }">
@@ -34,13 +34,18 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import InputNumber from '../../components/khusus/InputNumber'
 export default {
     name: 'FormProducts',
+    components: {
+        // 'my-currency-input': MyCurrencyInput, //REGISTER COMPONENT DATATABLE
+        'input-number' : InputNumber    
+    },
     computed: {
         ...mapState(['errors']), //MENGAMBIL STATE ERRORS
         ...mapState('product', {
             product: state => state.product //MENGAMBIL STATE PRODUCT
-        })
+        }),
     },
     methods: {
         ...mapMutations('product', ['CLEAR_FORM']), //PANGGIL MUTATIONS CLEAR_FORM

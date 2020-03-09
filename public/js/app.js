@@ -106852,7 +106852,7 @@ var routes = [{
     path: 'add',
     name: 'products.add',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/products/Add.vue */ "./resources/js/views/products/Add.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(13), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! ./views/products/Add.vue */ "./resources/js/views/products/Add.vue"));
     },
     meta: {
       title: 'Add New Product'
@@ -106861,10 +106861,19 @@ var routes = [{
     path: 'edit/:id',
     name: 'products.edit',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./views/products/Edit.vue */ "./resources/js/views/products/Edit.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(13), __webpack_require__.e(17)]).then(__webpack_require__.bind(null, /*! ./views/products/Edit.vue */ "./resources/js/views/products/Edit.vue"));
     },
     meta: {
       title: 'Edit Product'
+    }
+  }, {
+    path: 'order/:id',
+    name: 'products.order',
+    component: function component() {
+      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./views/products/Order.vue */ "./resources/js/views/products/Order.vue"));
+    },
+    meta: {
+      title: 'Order Product'
     }
   }]
 }, {
@@ -107137,7 +107146,7 @@ var mutations = {
   ASSIGN_FORM: function ASSIGN_FORM(state, payload) {
     state.product = {
       name: payload.name,
-      harga: payload.harga,
+      harga: String(payload.harga),
       stok_awal: payload.stok_awal,
       description: payload.description
     };
@@ -107162,8 +107171,8 @@ var actions = {
     return new Promise(function (resolve, reject) {
       //REQUEST DATA DENGAN ENDPOINT /products
       Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("/user/products?page=".concat(state.page, "&q=").concat(search)).then(function (response) {
-        var getData = response.data.data;
-        console.dir(getData); //SIMPAN DATA KE STATE MELALUI MUTATIONS
+        var getData = response.data.data; // console.dir(getData)
+        //SIMPAN DATA KE STATE MELALUI MUTATIONS
 
         commit('ASSIGN_DATA', getData);
         resolve(getData);
