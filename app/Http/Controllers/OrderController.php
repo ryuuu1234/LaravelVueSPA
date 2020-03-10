@@ -9,6 +9,7 @@ use App\Order;
 
 
 use App\DetailOder;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -56,14 +57,35 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
-        // $request->validate([
-        //     'total'=>'required|numeric',
-        //     'user_id'=>'required|numeric',
-        //     'qty'=>'required|numeric',
-        //     'product_id'=>'required|numeric',
-        //     'harga'=>'required|integer'
-        // ]);
+        // dd($request->all());
+        $request->validate([
+            'total'=>'required|integer',
+            'user_id'=>'required|numeric',
+            'product_id'=>'required|numeric',
+            'harga'=>'required|integer'
+        ]);
+
+        $order = new Order();
+        $order->reff = Str::random();
+        $order->total = $request->total;
+        $order->status = 1;
+        $order->user_id = $request->user_id;
+        if ($order->save()) {
+            $order->detail_order()->create([
+                        'product_id' => $request->product_id,
+                        'qty' => $request->qty,
+                        'harga' => $request->harga,
+                    ]);
+            return response()->json([
+                'status'=>'sukses',
+                'message'=>$order->reff,
+                ], 200);        
+        } else {
+            return response()->json([
+                'status'=>'failed',
+                'message'=>'data gagal di simpan',
+                ], 500); 
+        }
 
         // DB::beginTransaction();
         // try {

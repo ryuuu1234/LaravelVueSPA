@@ -60,6 +60,7 @@ const actions = {
             })
         })
     },
+    
     //FUNGSI UNTUK MENAMBAHKAN DATA BARU
     submitProduct({ dispatch, commit, state }) {
         return new Promise((resolve, reject) => {

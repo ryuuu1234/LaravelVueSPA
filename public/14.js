@@ -9,7 +9,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _services_http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/http_service */ "./resources/js/services/http_service.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -20,53 +26,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//  import { mapActions, mapState } from 'vuex'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'OrderProduct',
   created: function created() {
-    this.getProductById(this.$route.params.id);
+    this.editProduct(this.$route.params.id);
   },
   data: function data() {
     return {
-      id: '',
-      name: '',
-      harga: '',
-      qty: ''
+      qty: 1
     };
   },
-  methods: {
-    getProductById: function getProductById(id) {
-      var _this = this;
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('product', {
+    product: function product(state) {
+      return state.product;
+    } //MENGAMBIL STATE PRODUCT
 
-      //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE product DI URL
-      Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("user/products/".concat(id, "/edit")).then(function (response) {
-        console.log(response);
-        var getData = response.data.data;
-        _this.id = getData.id;
-        _this.name = getData.name;
-        _this.harga = getData.harga;
-      })["catch"](function (error) {
-        return console.log(error);
-      });
-    },
+  })),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('product', ['editProduct']), {
     purchaseOrder: function purchaseOrder() {
+      var product_id = this.$route.params.id;
+      var harga = this.product.harga;
+      var qty = this.qty;
+      var total = harga * qty;
+      var user_id = this.$store.state.profile.id;
+      console.log(user_id);
       var formData = new FormData();
-      formData.append("name", this.name);
-      formData.append("harga", this.harga);
+      formData.append("product_id", product_id);
+      formData.append("harga", harga);
       formData.append("qty", this.qty);
-      Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post("/user/orders", formData).then(function (response) {
+      formData.append("total", total);
+      formData.append("user_id", user_id);
+      http().post("/user/orders", formData).then(function (response) {
         //APABILA BERHASIL KITA MELAKUKAN REQUEST LAGI
-        //UNTUK MENGAMBIL DATA TERBARU
-        dispatch('getProducts').then(function () {
-          resolve(response.data);
-        });
+        console.log(response);
       })["catch"](function (error) {
-        console.log(error);
+        console.log("" + error);
       });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -90,11 +88,11 @@ var render = function() {
     "div",
     { staticClass: "col-md-6", staticStyle: { padding: "20px" } },
     [
-      _c("h1", [_vm._v("id: " + _vm._s(this.id))]),
+      _c("h1", [_vm._v("id: " + _vm._s(this.$route.params.id))]),
       _vm._v(" "),
-      _c("h1", [_vm._v("name: " + _vm._s(this.name))]),
+      _c("h1", [_vm._v("name: " + _vm._s(_vm.product.name))]),
       _vm._v(" "),
-      _c("h1", [_vm._v("harga: " + _vm._s(this.harga))]),
+      _c("h1", [_vm._v("harga: " + _vm._s(_vm.product.harga))]),
       _vm._v(" "),
       _c("input", {
         directives: [
