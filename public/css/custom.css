@@ -143,6 +143,10 @@ button.tombol-di-bw-table[disabled] {
     border-color: #343a40 !important;
 }
 
+a.page-link {
+    color:black;
+}
+
 /* input */
 .form-group-ku {
     margin-bottom:0.5rem;

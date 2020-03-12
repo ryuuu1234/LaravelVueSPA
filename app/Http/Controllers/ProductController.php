@@ -33,7 +33,7 @@ class ProductController extends Controller
         ->when(request()->q, function($products) {
             $products = $products->where('name', 'LIKE', '%' . request()->q . '%');
             
-        })->paginate(10);
+        })->paginate(5);
         return response()->json([
             'status' => 'success', 
             'data' => $products,

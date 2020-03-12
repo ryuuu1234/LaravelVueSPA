@@ -11,6 +11,8 @@ use App\Order;
 use App\DetailOder;
 use Illuminate\Support\Str;
 
+use App\StatusOrder;
+
 class OrderController extends Controller
 {
     /**
@@ -24,10 +26,11 @@ class OrderController extends Controller
             ->when(request()->q, function($orders) {
                 $orders = $orders->where('reff', 'LIKE', '%' . request()->q . '%');
                     // ->orWhere('harga', 'LIKE', '%' . request()->q . '%');
-        })->paginate(request()->per_page); 
+        // })->paginate(5); 
+        })->paginate(request()->per_page);
 
-        $orders->load('user:id,name');
-        $user = User::all();
+        $orders->load('status:id,name');
+        // $user = User::all();
         return response()->json([
             'status' => 'success', 
             'data' => $orders,
@@ -51,9 +54,6 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function purchase(Request $request){
-        dd($request->all());
-    }
 
     public function store(Request $request)
     {
@@ -68,7 +68,7 @@ class OrderController extends Controller
         $order = new Order();
         $order->reff = Str::random();
         $order->total = $request->total;
-        $order->status = 1;
+        $order->status_id = 1;
         $order->user_id = $request->user_id;
         if ($order->save()) {
             $order->detail_order()->create([
@@ -182,9 +182,15 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit($id)
     {
-        //
+        $order = Order::where('id', $id)->first();
+        $order->load('user:id,name,role');
+        $status = StatusOrder::all();
+        return response()->json([
+            'status' => $status, 
+            'data' => $order
+        ], 200);
     }
 
     /**

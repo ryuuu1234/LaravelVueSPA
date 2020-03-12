@@ -2,53 +2,64 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Home from './views/Home.vue';
-import IndexProduct from './views/products/index.vue';
+import IndexProduct from './views/products/Index.vue';
+import IndexOrder from './views/orders/Index.vue';
 
 import * as auth from './services/auth_service';
 
 Vue.use(Router);
 
-const routes = [
-    {
+const routes = [{
         path: '/home',
         component: Home,
-        children: [
-            {
+        children: [{
                 path: '',
                 name: 'dashboard',
-                meta : {title: 'Dashboard'},
+                meta: {
+                    title: 'Dashboard'
+                },
                 component: () => import('./views/Dashboard.vue')
             },
             {
                 path: 'categories',
                 name: 'categories',
-                meta : {title: 'Management Categories'},
+                meta: {
+                    title: 'Management Categories'
+                },
                 component: () => import('./views/Categories.vue')
             },
             {
                 path: 'data-items',
                 name: 'data-items',
-                meta : {title: 'Management Data Items'},
+                meta: {
+                    title: 'Management Data Items'
+                },
                 component: () => import('./views/ItemsViewPage.vue')
             },
             {
                 path: 'register-list',
                 name: 'register-list',
-                meta : {title: 'Management Register User'},
+                meta: {
+                    title: 'Management Register User'
+                },
                 component: () => import('./views/ListRegister.vue')
             },
 
             {
                 path: 'users-list',
                 name: 'users-list',
-                meta : {title: 'Management User'},
+                meta: {
+                    title: 'Management User'
+                },
                 component: () => import('./views/ListUser.vue')
             },
 
             {
                 path: 'profile-user',
                 name: 'profile-user',
-                meta : {title: 'Management Profile'},
+                meta: {
+                    title: 'Management Profile'
+                },
                 component: () => import('./views/ProfileUser.vue')
             },
 
@@ -59,7 +70,7 @@ const routes = [
             //     meta : {title: 'Management Products'},
             //     component: () => import('./views/ListProduct.vue')
             // },
-            
+
         ],
 
         // ini yang lama
@@ -71,37 +82,67 @@ const routes = [
         //         next();
         //     }
         // }
-        
+
     },
     {
-        path:'/products',
+        path: '/products',
         component: IndexProduct,
-        children: [
-            {
+        children: [{
                 path: '',
                 name: 'products.data',
                 component: () => import('./views/products/Product.vue'),
-                meta: { title: 'Manage Product' }
+                meta: {
+                    title: 'Manage Product'
+                }
             },
             {
                 path: 'add',
                 name: 'products.add',
                 component: () => import('./views/products/Add.vue'),
-                meta: { title: 'Add New Product' }
+                meta: {
+                    title: 'Add New Product'
+                }
             },
             {
                 path: 'edit/:id',
                 name: 'products.edit',
                 component: () => import('./views/products/Edit.vue'),
-                meta: { title: 'Edit Product' }
+                meta: {
+                    title: 'Edit Product'
+                }
             },
             {
                 path: 'order/:id',
                 name: 'products.order',
                 component: () => import('./views/products/Order.vue'),
-                meta: { title: 'Order Product' }
+                meta: {
+                    title: 'Order Product'
+                }
             }
-        ], 
+        ],
+    },
+    {
+        path: '/orders',
+        component: IndexOrder,
+        children: [
+            {
+            path: '',
+            name: 'orders.data',
+            component: () => import('./views/orders/Order.vue'),
+            meta: {
+                title: 'Manage Product'
+            } 
+            },
+            {
+                path: 'status/:id',
+                name: 'orders.status',
+                component: () => import('./views/orders/Status.vue'),
+                meta: {
+                    title: 'Edit Status Order',
+                    subtitle: 'With Details Product Order'
+                }
+            }
+        ],
     },
 
 
@@ -144,7 +185,7 @@ const routes = [
         name: 'preloader',
         component: () => import('./views/Preloader.vue')
     },
-    
+
 ];
 
 const router = new Router({

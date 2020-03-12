@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import * as auth from './services/auth_service';
 import product from './stores/product.js';
+import order from './stores/store_order.js';
 
 
 Vue.use(Vuex);
@@ -11,7 +12,8 @@ export default new Vuex.Store({
     // ini baru masuk
     modules: {
         auth,
-        product
+        product,
+        order
     },
     // =====================
     state: {
