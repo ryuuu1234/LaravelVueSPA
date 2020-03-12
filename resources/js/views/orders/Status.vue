@@ -21,26 +21,29 @@
                         </tr>
                         <tr>
                             <td>Status Order</td>
-                            <td>  
+                            <!-- <td>  
                                 <select id="status" class="form-control  input-sm" v-model="order.status_id">
                                     <option v-for="status in status_orders" :key="status.id" :value='status.id'>{{ status.name }}</option>
                                 </select>
-                            </td>
+                            </td> -->
+                            <b-form-select v-model="order.status_id" size="sm" class="mt-3">
+                                <b-form-select-option v-for="status in status_orders" :key="status.id" :value='status.id' >{{ status.name }}</b-form-select-option>
+                            </b-form-select>
                         </tr>
                     </table>
                 </div>
                 <hr class="batas-dark"/>
                 <div class="text-right">
                     <button type="submit" class="btn btn-danger btn-xsm"
-                        @click.prevent="togleUpdateForm"
-                    >Simpan Perubahan</button>
+                        @click.prevent="submit"
+                    >Update Status</button>
+                    <button type="submit" class="btn btn-dark btn-xsm"
+                        @click="$router.go(-1)"
+                    >Kembali</button>
                 </div>
             </div>
         </div>
-        <h1>Status</h1>
-        <p>{{order.reff}}</p>
-        <p>{{order.user_id}}</p>
-        <p>{{order.total}}</p>
+       
        
     </div>
 </template>
@@ -51,6 +54,7 @@ export default {
     created(){
         this.getOrderById(this.$route.params.id)
     },
+   
     computed:{
         //MENGAMBIL DATA orderS dan meta DARI STATE orderS
         ...mapState("order", {
@@ -60,7 +64,17 @@ export default {
     },    
     methods: {
         //MENGAMBIL FUNGSI DARI VUEX MODULE order
-        ...mapActions("order", ["getOrderById"]),
+        ...mapActions("order", ["getOrderById", "updateStatusOrder"]),
+
+        submit: function(){
+            this.updateStatusOrder(this.$route.params.id).then(() => {
+                //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
+                this.flashMessage.success({
+                    message: "Status Update Succesfully!",
+                    time: 5000
+                });
+            })
+        }
     }
 }
 </script>

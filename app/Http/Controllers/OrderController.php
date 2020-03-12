@@ -202,7 +202,22 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $request->validate([
+            'status_id'=>'required|numeric',
+        ]);
+
+        $order->status_id = $request->status_id;
+
+        if ($order->save()) {
+            return response()->json($order,200);
+        } else {
+            
+            $message = [
+                'message'=>'some errors occured, Please try again',
+                'status_code'=>500
+            ];
+            return response()->json($message,500);
+        }
     }
 
     /**

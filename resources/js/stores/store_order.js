@@ -161,10 +161,7 @@ const actions = {
         })
     },
     //UNTUK MENGUPDATE DATA BERDASARKAN CODE YANG SEDANG DIEDIT
-    updateOrder({
-        state,
-        commit
-    }, payload) {
+    updateOrder({state,commit}, payload) {
         return new Promise((resolve, reject) => {
             //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
             //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
@@ -173,6 +170,17 @@ const actions = {
                 .then((response) => {
                     //FORM DIBERSIHKAN
                     commit('CLEAR_FORM')
+                    resolve(response.data)
+                })
+        })
+    },
+    updateStatusOrder({state,commit}, payload) {
+        return new Promise((resolve, reject) => {
+            //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
+            //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
+            //MELALUI STATE order
+            http().put(`/user/orders/${payload}`, state.order)
+                .then((response) => {
                     resolve(response.data)
                 })
         })

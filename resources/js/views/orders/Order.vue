@@ -99,13 +99,16 @@
                             </template> -->
 
                             <!-- Example scoped button tambahan -->
-                            <template v-slot:cell(status)="row">
+                            <template v-slot:cell(status_id)="row">
                                 <b-link
                                     :to="{ name:'orders.status', params: { id: row.item.id } }"
-                                    class="btn btn-primary btn-xxsm btn-flat"
-                                    >{{row.item.status.name}}</b-link
-                                >
+                                    class="btn btn-xxsm btn-flat"
+                                    :class="conditionalClass(row.item.status_id)"
+                                    >{{row.item.status.name}}
+                                </b-link>
                             </template>
+                            <!-- :class="{ 'btn-primary': isPrimary, 'btn-info': isInfo, 'btn-warning': isWarning, 'btn-danger': isDanger,
+                                    'btn-success': isSuccess }" -->
                             <!-- Example scoped button tambahan -->
                             <!-- <template v-slot:cell(actions)="row">
                                 <button
@@ -188,10 +191,15 @@ export default {
                 {key: 'created_at', sortable: true},
                 // {key: 'unit.nama', label:'Satuan'},
                 {key: 'total', label:'Total', class:'text-right'},
-                {key: 'status', label: 'Status Order', class:'text-right'},
+                {key: 'status_id', label: 'Status Order', class:'text-right'},
 
             ],
             search:'',
+            isPrimary: false,
+            isInfo: false,
+            isDanger: false,
+            isSuccess: true,
+            isWarning: false,
 
         }
     },
@@ -201,6 +209,7 @@ export default {
             items: state => state.orders,
             meta: state=>state.meta,
         }),
+        
         
         page: {
             get() {
@@ -276,6 +285,29 @@ export default {
     methods: {
         //MENGAMBIL FUNGSI DARI VUEX MODULE order
         ...mapActions("order", ["getOrders"]),
+
+        conditionalClass(val){ 
+            switch (val) {
+                case 2: //proses produksi
+                    return 'btn-info'
+                    break;
+                case 3: //Proses Packing
+                    return 'btn-primary'
+                    break;
+                case 4: //Proses Pengiriman
+                    return 'btn-success'
+                    break;
+                case 5: //Proses terkirim
+                    return 'btn-danger'
+                    break;
+                case 6: //selesai order
+                    return 'btn-dark'
+                    break;            
+                default:
+                    return 'btn-warning'
+                    break;
+            }
+        },
        
     }
 };

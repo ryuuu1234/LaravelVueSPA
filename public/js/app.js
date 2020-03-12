@@ -106923,6 +106923,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 var routes = [{
   path: '/home',
   component: _views_Home_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+  meta: {
+    requiresAuth: true
+  },
   children: [{
     path: '',
     name: 'dashboard',
@@ -106930,7 +106933,7 @@ var routes = [{
       title: 'Dashboard'
     },
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
+      return __webpack_require__.e(/*! import() */ 19).then(__webpack_require__.bind(null, /*! ./views/Dashboard.vue */ "./resources/js/views/Dashboard.vue"));
     }
   }, {
     path: 'categories',
@@ -106948,7 +106951,7 @@ var routes = [{
       title: 'Management Data Items'
     },
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(20), __webpack_require__.e(0), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! ./views/ItemsViewPage.vue */ "./resources/js/views/ItemsViewPage.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! ./views/ItemsViewPage.vue */ "./resources/js/views/ItemsViewPage.vue"));
     }
   }, {
     path: 'register-list',
@@ -106957,7 +106960,7 @@ var routes = [{
       title: 'Management Register User'
     },
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(20), __webpack_require__.e(0), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./views/ListRegister.vue */ "./resources/js/views/ListRegister.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(6)]).then(__webpack_require__.bind(null, /*! ./views/ListRegister.vue */ "./resources/js/views/ListRegister.vue"));
     }
   }, {
     path: 'users-list',
@@ -106966,7 +106969,7 @@ var routes = [{
       title: 'Management User'
     },
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(20), __webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! ./views/ListUser.vue */ "./resources/js/views/ListUser.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(1), __webpack_require__.e(0), __webpack_require__.e(7)]).then(__webpack_require__.bind(null, /*! ./views/ListUser.vue */ "./resources/js/views/ListUser.vue"));
     }
   }, {
     path: 'profile-user',
@@ -106994,14 +106997,18 @@ var routes = [{
   //     }
   // }
 
-}, {
+}, // akhir dari home
+{
   path: '/products',
   component: _views_products_Index_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+  meta: {
+    requiresAuth: true
+  },
   children: [{
     path: '',
     name: 'products.data',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./views/products/Product.vue */ "./resources/js/views/products/Product.vue"));
+      return __webpack_require__.e(/*! import() */ 18).then(__webpack_require__.bind(null, /*! ./views/products/Product.vue */ "./resources/js/views/products/Product.vue"));
     },
     meta: {
       title: 'Manage Product'
@@ -107010,7 +107017,7 @@ var routes = [{
     path: 'add',
     name: 'products.add',
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, /*! ./views/products/Add.vue */ "./resources/js/views/products/Add.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, /*! ./views/products/Add.vue */ "./resources/js/views/products/Add.vue"));
     },
     meta: {
       title: 'Add New Product'
@@ -107019,7 +107026,7 @@ var routes = [{
     path: 'edit/:id',
     name: 'products.edit',
     component: function component() {
-      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, /*! ./views/products/Edit.vue */ "./resources/js/views/products/Edit.vue"));
+      return Promise.all(/*! import() */[__webpack_require__.e(2), __webpack_require__.e(16)]).then(__webpack_require__.bind(null, /*! ./views/products/Edit.vue */ "./resources/js/views/products/Edit.vue"));
     },
     meta: {
       title: 'Edit Product'
@@ -107028,20 +107035,24 @@ var routes = [{
     path: 'order/:id',
     name: 'products.order',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 16).then(__webpack_require__.bind(null, /*! ./views/products/Order.vue */ "./resources/js/views/products/Order.vue"));
+      return __webpack_require__.e(/*! import() */ 17).then(__webpack_require__.bind(null, /*! ./views/products/Order.vue */ "./resources/js/views/products/Order.vue"));
     },
     meta: {
       title: 'Order Product'
     }
   }]
-}, {
+}, // akhir dari products
+{
   path: '/orders',
   component: _views_orders_Index_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  meta: {
+    requiresAuth: true
+  },
   children: [{
     path: '',
     name: 'orders.data',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./views/orders/Order.vue */ "./resources/js/views/orders/Order.vue"));
+      return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/orders/Order.vue */ "./resources/js/views/orders/Order.vue"));
     },
     meta: {
       title: 'Manage Product'
@@ -107050,14 +107061,15 @@ var routes = [{
     path: 'status/:id',
     name: 'orders.status',
     component: function component() {
-      return __webpack_require__.e(/*! import() */ 13).then(__webpack_require__.bind(null, /*! ./views/orders/Status.vue */ "./resources/js/views/orders/Status.vue"));
+      return __webpack_require__.e(/*! import() */ 14).then(__webpack_require__.bind(null, /*! ./views/orders/Status.vue */ "./resources/js/views/orders/Status.vue"));
     },
     meta: {
       title: 'Edit Status Order',
       subtitle: 'With Details Product Order'
     }
   }]
-}, {
+}, // akhir dari orders
+{
   path: '/register',
   name: 'register',
   component: function component() {
@@ -107102,9 +107114,15 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   linkActiveClass: 'active'
 });
 router.beforeEach(function (to, from, next) {
-  // store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
-  if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_5__["isLoggedIn"]()) {
-    next('/login');
+  if (to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  })) {
+    // store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
+    if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_5__["isLoggedIn"]()) {
+      next('/login');
+    } else {
+      next();
+    }
   } else {
     next();
   }
@@ -107640,9 +107658,21 @@ var actions = {
       });
     });
   },
+  updateStatusOrder: function updateStatusOrder(_ref6, payload) {
+    var state = _ref6.state,
+        commit = _ref6.commit;
+    return new Promise(function (resolve, reject) {
+      //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
+      //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
+      //MELALUI STATE order
+      Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().put("/user/orders/".concat(payload), state.order).then(function (response) {
+        resolve(response.data);
+      });
+    });
+  },
   //MENGHAPUS DATA 
-  removeOrder: function removeOrder(_ref6, payload) {
-    var dispatch = _ref6.dispatch;
+  removeOrder: function removeOrder(_ref7, payload) {
+    var dispatch = _ref7.dispatch;
     return new Promise(function (resolve, reject) {
       //MENGIRIM PERMINTAAN KE SERVER UNTUK MENGHAPUS DATA
       //DENGAN METHOD DELETE DAN ID order DI URL
