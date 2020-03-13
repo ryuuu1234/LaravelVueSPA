@@ -38,6 +38,23 @@ class OrderController extends Controller
         );
     }
 
+    // get orders by user_id
+    public function get_by_user_id()
+    {
+        $orders = Order::orderBy('created_at', 'DESC')
+            ->when(request()->q, function($orders) {
+                $orders = $orders->where('user_id', request()->q);
+        })->paginate(10);
+
+        $orders->load('status:id,name');
+        // $user = User::all();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $orders,
+            ]
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      *

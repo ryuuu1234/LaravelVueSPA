@@ -39,16 +39,6 @@ Route::group(['prefix' => 'user'], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::resource('categories', 'CategoryController');
-        // Route::post('edit-category', function () {
-        //     return response()->json([
-        //         'meesage' => 'Admin Access', 'status_code'=>200
-        //     ],200);
-        // })->middleware('scope:Root');
-
-        // Route::post('create-category', function () {
-        //     return response()->json([
-        //         'meesage' => 'Everyone Access', 'status_code'=>200
-        //     ],200);
 
         // })->middleware('scope:Root,Admin');
         Route::get('list-user', 'UserController@list')->middleware('scope:Root,Admin');
@@ -57,13 +47,17 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
         
+        // INI UNTUK MITRA
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
+        Route::get('charts', 'ChartController@index');// akses api get charts by user_id
+
         Route::post('items/delete', 'ItemController@deleteAll');
         Route::post('products/delete', 'ProductController@deleteAll');
         
-        // api/user/orders   ->untuk order dr mitra
+        // api/user/orders   ->untuk order dr mitra 
         Route::resource('orders', 'OrderController'); 
+        Route::get('orders-user', 'OrderController@get_by_user_id'); // untuk akses orders by user_id
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');

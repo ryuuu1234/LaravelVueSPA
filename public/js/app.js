@@ -106913,6 +106913,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_products_Index_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./views/products/Index.vue */ "./resources/js/views/products/Index.vue");
 /* harmony import */ var _views_orders_Index_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./views/orders/Index.vue */ "./resources/js/views/orders/Index.vue");
 /* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./services/auth_service */ "./resources/js/services/auth_service.js");
+/* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
+
 
 
 
@@ -106980,14 +106982,7 @@ var routes = [{
     component: function component() {
       return __webpack_require__.e(/*! import() */ 9).then(__webpack_require__.bind(null, /*! ./views/ProfileUser.vue */ "./resources/js/views/ProfileUser.vue"));
     }
-  } // ini router product yg lama
-  // {
-  //     path: 'products',
-  //     name: 'products',
-  //     meta : {title: 'Management Products'},
-  //     component: () => import('./views/ListProduct.vue')
-  // },
-  ] // ini yang lama
+  }] // ini yang lama
   // beforeEnter(to, from, next) {
   //     //store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
   //     if (!auth.isLoggedIn()) {
@@ -107069,6 +107064,7 @@ var routes = [{
     }
   }]
 }, // akhir dari orders
+// INI TANPA META AUTH
 {
   path: '/register',
   name: 'register',
@@ -107117,7 +107113,8 @@ router.beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
     return record.meta.requiresAuth;
   })) {
-    // store.commit('CLEAR_ERRORS') //TAMBAHKAN BARIS INI
+    _store_js__WEBPACK_IMPORTED_MODULE_6__["default"].commit('CLEAR_ERRORS'); //TAMBAHKAN BARIS INI
+
     if (!_services_auth_service__WEBPACK_IMPORTED_MODULE_5__["isLoggedIn"]()) {
       next('/login');
     } else {
