@@ -14,7 +14,7 @@ class ChartController extends Controller
      */
     public function index() // untuk data keranjang user
     {
-        $charts = Order::orderBy('created_at', 'DESC')
+        $charts = Chart::orderBy('created_at', 'DESC')
             ->when(request()->q, function($charts) {
                 $charts = $charts->where('user_id', request()->q);
         })->paginate(10);
@@ -46,7 +46,31 @@ class ChartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id'=>'required|numeric',
+            'product_id'=>'required|numeric',
+            'harga'=>'required|integer',
+            'qty'=>'required|numeric'
+        ]);
+
+        $chart = new Chart();
+
+        $chart->qty         = 1;
+        $chart->user_id     = $request->user_id;
+        $chart->product_id  = $request->product_id;
+        $chart->harga       = $request->harga;
+
+        if ($chart->save()) {
+            return response()->json([
+                'status'=>'sukses',
+                'message'=>'sukses input to chart',
+                ], 200);  
+        } else {
+            return response()->json([
+                'status'=>'failed',
+                'message'=>'gagal input to chart',
+                ], 500);
+        }
     }
 
     /**
