@@ -12,6 +12,9 @@ use App\DetailOder;
 use Illuminate\Support\Str;
 
 use App\StatusOrder;
+use App\User;
+
+use App\Chart;
 
 class OrderController extends Controller
 {
@@ -163,6 +166,45 @@ class OrderController extends Controller
         // $order->total = $request->total;
         // $order->status = 1;
         // $order->user_id = $request->user_id;
+    }
+
+    public function orderFromChart(Request $request)
+    {
+        $request->validate([
+            'total'=>'required|integer',
+            'user_id'=>'required|numeric'
+        ]);
+
+        $order = new Order();
+        $order->reff = Str::random();
+        $order->total = $request->total;
+        $order->status_id = 1;
+        $order->user_id = $request->user_id;
+
+        
+        //looping cart untuk disimpan ke table order_details
+        if ($order->save()) {
+            $charts = Chart::where('user_id', $request->user_id)->get();
+        
+            foreach ($charts as $key => $row) {
+                $order->detail_order()->create([
+                    'product_id' => $row['product_id'],
+                    'qty' => $row['qty'],
+                    'harga' => $row['harga']
+                ]);
+            }
+            
+            Chart::where('user_id', $request->user_id)->delete();
+        
+            return response()->json([
+                'message' => 'Input Order Successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Input Order Successfully',
+            ], 500);
+        }
+
     }
 
     public function generateInvoice()

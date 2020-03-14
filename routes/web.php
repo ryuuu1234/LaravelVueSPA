@@ -1,5 +1,6 @@
 <?php
 
+// use App\Events\OrderStatusChanged;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +20,12 @@
 //     'uses' => 'PercobaanController@kedua',
 //     'name' => 'coba.kedua'
 // ]);
+
+// INI UNTUK TEST CHANNEL PADA PUSHER
+// Route::get('/fire', function () {
+//     event(new OrderStatusChanged);
+//     return 'Fired';
+// });
 
 Route::get('/{any}', function () {
     return view('welcome');

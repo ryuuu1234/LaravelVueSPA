@@ -51,6 +51,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
         Route::get('charts', 'ChartController@index');// akses api get charts by user_id
+        Route::put('update-charts-qty/{chart}', 'OrderController@update'); // update qty chart
 
         Route::post('items/delete', 'ItemController@deleteAll');
         Route::post('products/delete', 'ProductController@deleteAll');
@@ -58,6 +59,10 @@ Route::group(['prefix' => 'user'], function () {
         // api/user/orders   ->untuk order dr mitra 
         Route::resource('orders', 'OrderController'); 
         Route::get('orders-user', 'OrderController@get_by_user_id'); // untuk akses orders by user_id
+        Route::post('chart-orders', 'OrderController@orderFromChart');
+        // details order
+        Route::get('detail-orders', 'DetailOrderController@index');
+
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');

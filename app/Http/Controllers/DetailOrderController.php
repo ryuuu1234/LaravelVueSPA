@@ -14,7 +14,18 @@ class DetailOrderController extends Controller
      */
     public function index()
     {
-        //
+        $details = DetailOrder::orderBy('created_at', 'DESC')
+            ->when(request()->q, function($details) {
+                $details = $details->where('order_id', request()->q);
+        })->get();
+
+        $details->load('product:id,name');
+        // $user = User::all();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $details,
+            ]
+        );
     }
 
     /**

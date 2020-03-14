@@ -19,7 +19,7 @@ class ChartController extends Controller
                 $charts = $charts->where('user_id', request()->q);
         })->paginate(10);
 
-        // $charts->load('status:id,name');
+        $charts->load('product:id,name');
         // $user = User::all();
         return response()->json([
             'status' => 'success', 
@@ -55,7 +55,7 @@ class ChartController extends Controller
 
         $chart = new Chart();
 
-        $chart->qty         = 1;
+        $chart->qty         = $request->qty;
         $chart->user_id     = $request->user_id;
         $chart->product_id  = $request->product_id;
         $chart->harga       = $request->harga;
@@ -104,7 +104,22 @@ class ChartController extends Controller
      */
     public function update(Request $request, Chart $chart)
     {
-        //
+        $request->validate([
+            'qty'=>'required|numeric',
+        ]);
+
+        $chart->qty = $request->qty;
+
+        if ($chart->save()) {
+            return response()->json($chart,200);
+        } else {
+            
+            $message = [
+                'message'=>'some errors occured, Please try again',
+                'status_code'=>500
+            ];
+            return response()->json($message,500);
+        }
     }
 
     /**
