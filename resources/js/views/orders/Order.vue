@@ -309,6 +309,13 @@ export default {
             }
         },
        
+    },
+     mounted(){
+        window.Echo.channel('capcin-tracker')
+        .listen('OrderStatusChanged', (order) => {
+            console.log('realtime');
+            this.getOrders();
+        });
     }
 };
 </script>

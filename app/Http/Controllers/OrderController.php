@@ -13,8 +13,13 @@ use Illuminate\Support\Str;
 
 use App\StatusOrder;
 use App\User;
+use Auth;
 
 use App\Chart;
+
+// use Illuminate\Support\Facades\Notification;
+// use App\Notifications\OrderNotification;
+use App\Events\OrderStatusChanged;
 
 class OrderController extends Controller
 {
@@ -85,87 +90,53 @@ class OrderController extends Controller
             'harga'=>'required|integer'
         ]);
 
-        $order = new Order();
-        $order->reff = Str::random();
-        $order->total = $request->total;
-        $order->status_id = 1;
-        $order->user_id = $request->user_id;
-        if ($order->save()) {
+        DB::beginTransaction();
+        try {
+
+            $order = Order::create([
+                'reff' => Str::random(),
+                'user_id' => $request->user_id,
+                'total'=>$request->total,
+                'status_id'=> 1, // 
+            ]);
+       
             $order->detail_order()->create([
                         'product_id' => $request->product_id,
                         'qty' => $request->qty,
                         'harga' => $request->harga,
                     ]);
+            
+            // $this->sendEvent($request); 
+            $user = User::find(Auth::id());
+            event(new OrderStatusChanged($order, $user));   
+            //apabila tidak terjadi error, penyimpanan diverifikasi
+            DB::commit();    
             return response()->json([
                 'status'=>'sukses',
                 'message'=>$order->reff,
-                ], 200);        
-        } else {
+                ], 200); 
+
+        } catch (\Exception $e) {
+            //jika ada error, maka akasn dirollback sehingga tidak ada data yang tersimpan 
+            DB::rollback();
+            //pesan gagal akan di-return
             return response()->json([
-                'status'=>'failed',
-                'message'=>'data gagal di simpan',
-                ], 500); 
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
         }
+       
 
-        // DB::beginTransaction();
-        // try {
-            
-        //     //menyimpan data ke table orders
-        //     $order = Order::create([
-        //         'reff' => $this->generateInvoice(),
-        //         'user_id' => $request->user_id,
-        //         'total'=>$request->total,
-        //         'status'=> 1, // 
-        //         // 'total' => array_sum(array_column($result, 'result'))
-                
-        //         //array_sum untuk menjumlahkan value dari result
-        //     ]);
-    
-     
-        //     //looping cart untuk disimpan ke table order_details
-        //     // foreach ($result as $key => $row) {
-        //     //     $order->order_detail()->create([
-        //     //         'product_id' => $key,
-        //     //         'qty' => $row['qty'],
-        //     //         'price' => $row['price']
-        //     //     ]);
-        //     // }
+        
+    }
 
-        //     // SIMPAN KE DETAIL ORDER
-        //     $order->detail_order()->create([
-        //         'product_id' => $request->product_id,
-        //         'qty' => $request->qty,
-        //         'harga' => $request->harga,
-        //     ]);
-
-        //     //apabila tidak terjadi error, penyimpanan diverifikasi
-        //     DB::commit();
-    
-     
-        //     //me-return status dan message berupa code invoice, dan menghapus cookie
-        //     // return response()->json([
-        //     //     'status' => 'success',
-        //     //     'message' => $order->reff,
-        //     // ], 200)->cookie(Cookie::forget('cart'));
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => $order->reff,
-        //     ], 200);
-        // } catch (\Exception $e) {
-        //     //jika ada error, maka akan dirollback sehingga tidak ada data yang tersimpan 
-        //     DB::rollback();
-        //     //pesan gagal akan di-return
-        //     return response()->json([
-        //         'status' => 'failed',
-        //         'message' => $e->getMessage()
-        //     ], 400);
-        // }
-
-        // $order = new Order();
-        // $order->reff = $this->generateInvoice();
-        // $order->total = $request->total;
-        // $order->status = 1;
-        // $order->user_id = $request->user_id;
+    public function sendEvent($oder, $user){
+        //GET USER YANG ROLE-NYA SUPERADMIN DAN FINANCE
+        //KENAPA? KARENA HANYA ROLE ITULAH YANG AKAN MENDAPATKAN NOTIFIKASI
+        $user = $request->user_id;
+        // $users = User::whereIn('role', ['Root', 'Admin'])->get();
+        //KIRIM NOTIFIKASINYA MENGGUNAKAN FACADE NOTIFICATION
+        event(new OrderStatusChanged($order->status_id, $user)); 
     }
 
     public function orderFromChart(Request $request)
@@ -175,17 +146,22 @@ class OrderController extends Controller
             'user_id'=>'required|numeric'
         ]);
 
-        $order = new Order();
-        $order->reff = Str::random();
-        $order->total = $request->total;
-        $order->status_id = 1;
-        $order->user_id = $request->user_id;
-
-        
-        //looping cart untuk disimpan ke table order_details
-        if ($order->save()) {
-            $charts = Chart::where('user_id', $request->user_id)->get();
-        
+        DB::beginTransaction();
+        try {
+            
+            //menyimpan data ke table orders
+            $order = Order::create([
+                'reff' => Str::random(),
+                'user_id' => $request->user_id,
+                'total'=>$request->total,
+                'status_id'=> 1, // 
+                // 'total' => array_sum(array_column($result, 'result'))
+                
+                //array_sum untuk menjumlahkan value dari result
+            ]);
+            
+            // SIMPAN KE DETAIL ORDER
+            $charts = Chart::where('user_id', $request->user_id)->get();    
             foreach ($charts as $key => $row) {
                 $order->detail_order()->create([
                     'product_id' => $row['product_id'],
@@ -193,17 +169,63 @@ class OrderController extends Controller
                     'harga' => $row['harga']
                 ]);
             }
-            
+
             Chart::where('user_id', $request->user_id)->delete();
-        
+
+            //GET USER YANG ROLE-NYA SUPERADMIN DAN FINANCE
+            //KENAPA? KARENA HANYA ROLE ITULAH YANG AKAN MENDAPATKAN NOTIFIKASI
+            $user = $request->user();
+            $users = User::whereIn('role', ['Root', 'Admin'])->get();
+            //KIRIM NOTIFIKASINYA MENGGUNAKAN FACADE NOTIFICATION
+            Notification::send($users, new OrderNotification($order, $user));
+
+            //apabila tidak terjadi error, penyimpanan diverifikasi
+            DB::commit();
+
             return response()->json([
-                'message' => 'Input Order Successfully',
+                'status' => 'success',
+                'message' => $order->reff,
             ], 200);
-        } else {
+
+        } catch (\Exception $e) {
+            //jika ada error, maka akan dirollback sehingga tidak ada data yang tersimpan 
+            DB::rollback();
+            //pesan gagal akan di-return
             return response()->json([
-                'message' => 'Input Order Successfully',
-            ], 500);
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
         }
+
+        // $order = new Order();
+        // $order->reff = Str::random();
+        // $order->total = $request->total;
+        // $order->status_id = 1;
+        // $order->user_id = $request->user_id;
+
+        
+        // //looping cart untuk disimpan ke table order_details
+        // if ($order->save()) {
+        //     $charts = Chart::where('user_id', $request->user_id)->get();
+        
+        //     foreach ($charts as $key => $row) {
+        //         $order->detail_order()->create([
+        //             'product_id' => $row['product_id'],
+        //             'qty' => $row['qty'],
+        //             'harga' => $row['harga']
+        //         ]);
+        //     }
+            
+        //     Chart::where('user_id', $request->user_id)->delete();
+        
+        //     return response()->json([
+        //         'message' => 'Input Order Successfully',
+        //     ], 200);
+        // } else {
+        //     return response()->json([
+        //         'message' => 'Input Order Successfully',
+        //     ], 500);
+        // }
 
     }
 

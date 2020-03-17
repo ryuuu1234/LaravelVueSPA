@@ -130,6 +130,17 @@ class ChartController extends Controller
      */
     public function destroy(Chart $chart)
     {
-        //
+        if ($chart->delete()) {
+            // Storage::delete($chart->image);
+            return response()->json([
+                'message' => 'delete successfully',
+                'status_code' => 200,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'some error occured, please try again',
+                'status_code' => 500,
+            ], 500);
+        }
     }
 }

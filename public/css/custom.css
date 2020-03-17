@@ -3,6 +3,9 @@ body {
 }
 
 /*  CUSTOM NAVBAR nya ========================================================== */
+li.nav-item {
+    margin-left: 10px;
+}
 .mega-image img{
     -webkit-border-radius: 80px;
     -moz-border-radius: 80px;
@@ -15,6 +18,22 @@ body {
 #userDropdown.nav-link.dropdown-toggle::after{
     display:none !important;
 }
+
+.mega-link .mega-icon {
+    font-size: 1.3rem;
+    color: white;
+}
+
+.mega-link .badge {
+    position: absolute;
+    right: 15px;
+    color:white;
+    border-radius: 100%;
+    font-size: 10px;
+    background-color: rgb(241, 53, 69);
+  }
+
+/* ======================================================================================== */
 
 .has-search .form-control-search {
     padding-left: 2.375rem;

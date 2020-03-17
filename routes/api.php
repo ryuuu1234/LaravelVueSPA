@@ -43,6 +43,7 @@ Route::group(['prefix' => 'user'], function () {
         // })->middleware('scope:Root,Admin');
         Route::get('list-user', 'UserController@list')->middleware('scope:Root,Admin');
         Route::put('update-status-user/{user}', 'UserController@update_status')->middleware('scope:Root,Admin');
+        Route::get('user-authenticated', 'UserController@getUserLogin')->name('user.authenticated');
         
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
@@ -51,7 +52,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
         Route::get('charts', 'ChartController@index');// akses api get charts by user_id
-        Route::put('update-charts-qty/{chart}', 'OrderController@update'); // update qty chart
+        Route::post('charts', 'ChartController@store'); // tambah data chart
+        Route::put('update-charts-qty/{chart}', 'ChartController@update'); // update qty chart
 
         Route::post('items/delete', 'ItemController@deleteAll');
         Route::post('products/delete', 'ProductController@deleteAll');
@@ -60,12 +62,18 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('orders', 'OrderController'); 
         Route::get('orders-user', 'OrderController@get_by_user_id'); // untuk akses orders by user_id
         Route::post('chart-orders', 'OrderController@orderFromChart');
+        Route::delete('delete-charts/{chart}', 'ChartController@destroy')->name('chart.destroy'); // delete chart by id
         // details order
         Route::get('detail-orders', 'DetailOrderController@index');
 
 
         Route::put('update-profile/{user}', 'AuthController@update_profile');
         Route::put('update-image/{user}', 'AuthController@update_image');
+
+        // untuk route notifications
+        Route::resource('notification', 'NotificationController')->except(['create', 'destroy']);
+
+        // penambahan broadcast
 
     });
 });

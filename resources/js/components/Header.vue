@@ -15,6 +15,12 @@
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <li class="nav-item dropdown">
+        <a class="mega-link">
+            <span class="mega-icon"><i class="fa fa-bell"></i></span>
+            <span class="badge">{{ notifications.length }}</span>
+        </a>
+      </li>
+      <li class="nav-item dropdown">
         <a 
           class="mega-link"
           @click="toggle"
@@ -42,6 +48,7 @@
         </div> 
       </div>
       </li>
+      
     </ul>
   </nav>
 </template>
@@ -49,7 +56,8 @@
 <script>
 // import {bus} from '../app';
   import * as auth from '../services/auth_service';
-
+  import { mapState, mapActions } from 'vuex';
+  import moment from 'moment'
   export default {
    
     data(){
@@ -63,14 +71,39 @@
       
     },
 
-   
-
     beforeDestroy() {
       window.removeEventListener("click", this.close);
     },
-    methods: {
-
+    computed: {
+    ...mapState('user', {
+        authenticated: state => state.authenticated
+      }),
       
+      //CUKUP TAMBAHKAN BAGIAN INI
+      ...mapState('notification', {
+          notifications: state => state.notifications //MENGAMBIL STATE NOTIFICATIONS
+      })
+    },
+    //TAMBAHKAN JUGA BAGIAN INI
+    filters: {
+        //UNTUK MENGUBAH FORMAT TANGGAL MENJADI TIME AGO
+        formatDate(val) {
+            return moment(new Date(val)).fromNow()
+        }
+    },
+    methods: {
+        ...mapActions('notification', ['readNotification']), //DEFINISIKAN FUNGSI UNTUK READ NOTIF
+        
+        //KETIKA NOTIFIKASI DI KLIK MAKA AKAN MENJALANKAN FUNGSI INI
+        readNotif(row) {
+            //MENGIRIMKAN REQUEST KE SERVER UNTUK MENANDAI BAHWA NOTIFIKASI TELAH DI BACA
+            //KEMUDIAN SELANJUTNYA KITA REDIRECT KE HALAMAN VIEW EXPENSES
+            this.readNotification({ id: row.id}).then(() => this.$router.push({ name: 'expenses.view', params: {id: row.data.expenses.id} }))
+        },
+        
+        //[.. CODE SETELAHNYA ..]
+
+
       logout: async function(){
         auth.logout();
         this.$router.push('/login');
@@ -90,7 +123,7 @@
         e.preventDefault();
         document.querySelector("body").classList.toggle("sb-sidenav-toggled");
       }
-    },
+    }
 
   }
 </script>

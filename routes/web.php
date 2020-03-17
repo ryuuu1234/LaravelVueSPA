@@ -26,7 +26,6 @@
 //     event(new OrderStatusChanged);
 //     return 'Fired';
 // });
-
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');

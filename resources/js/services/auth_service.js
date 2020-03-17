@@ -56,3 +56,4 @@ export function getAccessToken() {
 export function getProfile() {
     return http().get('/auth/profile');
 }
+
