@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderStatusChanged' => [
             'App\Listeners\OrderStatusChangedListener',
         ],
+        'App\Events\RegisterEvent' => [
+            'App\Listeners\RegisterListener',
+        ],
     ];
 
     /**

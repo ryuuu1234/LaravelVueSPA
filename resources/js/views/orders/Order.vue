@@ -313,7 +313,7 @@ export default {
      mounted(){
         window.Echo.channel('capcin-tracker')
         .listen('OrderStatusChanged', (order) => {
-            console.log('realtime');
+            // console.log(order);
             this.getOrders();
         });
     }

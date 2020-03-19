@@ -11,7 +11,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
-{
+{   
+
+    // register untuk admin
     public function register(Request $request) {
 
         $request->validate([

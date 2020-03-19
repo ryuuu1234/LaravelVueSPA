@@ -340,8 +340,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     window.Echo.channel('capcin-tracker').listen('OrderStatusChanged', function (order) {
-      console.log('realtime');
-
+      // console.log(order);
       _this.getOrders();
     });
   }

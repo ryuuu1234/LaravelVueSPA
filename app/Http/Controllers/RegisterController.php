@@ -8,6 +8,8 @@ use Auth;
 use App\Register;
 use App\User;
 
+use App\Events\RegisterEvent;
+
 class RegisterController extends Controller
 {
     public function list() {
@@ -85,6 +87,8 @@ class RegisterController extends Controller
         $register->status   = 0;
 
         if ($register->save()) {
+
+            event(new RegisterEvent($register));
             return response()->json([
                 'message'       => 'User Created Successfully',
                 'status_code'   => 201

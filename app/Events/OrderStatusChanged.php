@@ -24,10 +24,9 @@ class OrderStatusChanged implements ShouldBroadcast
     //  *
     //  * @return void
     //  */
-    public function __construct(Order $order, User $user)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->user = $user->name;
     }
 
     /**
@@ -39,6 +38,16 @@ class OrderStatusChanged implements ShouldBroadcast
     {
         // return new Channel('capcin-tracker'); // ini yang lama untuk channel private
         // return new Channel('capcin-tracker'); // ini untuk pulic channel pusher
-        return ['capcin-tracker'];
+        return ['capcin-tracker.'.$this->order->id, 'capcin-tracker'];
+    }
+
+    public function broadcastWith()
+    {
+        $extra = [
+            'status' => $this->order->status->name,
+            'read'  => false
+        ];
+
+        return array_merge($this->order->toArray(), $extra);
     }
 }

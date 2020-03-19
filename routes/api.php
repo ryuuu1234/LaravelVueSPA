@@ -61,6 +61,7 @@ Route::group(['prefix' => 'user'], function () {
         // api/user/orders   ->untuk order dr mitra 
         Route::resource('orders', 'OrderController'); 
         Route::get('orders-user', 'OrderController@get_by_user_id'); // untuk akses orders by user_id
+        Route::get('orders-all', 'OrderController@get_all_by_id'); // untuk akses orders by user_id
         Route::post('chart-orders', 'OrderController@orderFromChart');
         Route::delete('delete-charts/{chart}', 'ChartController@destroy')->name('chart.destroy'); // delete chart by id
         // details order

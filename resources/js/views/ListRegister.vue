@@ -88,6 +88,14 @@ export default {
         this.loadItemsData()
         // this.kosongkanForm()
     },
+
+    mounted(){
+        window.Echo.channel('capcin-reg')
+        .listen('RegisterEvent', (order) => {
+            console.log('berhasil realtime');
+            this.loadItemsData();
+        });
+    },
     
     data() {
         return {
@@ -107,7 +115,7 @@ export default {
             per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
-            sortByDesc: false, //ASCEDING
+            sortByDesc: true, //ASCEDING
 
             editItemData: {},
             errors:[],

@@ -111,6 +111,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   created: function created() {
     this.loadItemsData(); // this.kosongkanForm()
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    window.Echo.channel('capcin-reg').listen('RegisterEvent', function (order) {
+      console.log('berhasil realtime');
+
+      _this.loadItemsData();
+    });
+  },
   data: function data() {
     return {
       methodForms: "Add",
@@ -139,7 +148,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       search: '',
       sortBy: 'created_at',
       //DEFAULT SORTNYA ADALAH CREATED_AT
-      sortByDesc: false,
+      sortByDesc: true,
       //ASCEDING
       editItemData: {},
       errors: [],
