@@ -104,7 +104,7 @@ class RegisterController extends Controller
             event(new RegisterEvent($register));
             return response()->json([
                 'message'       => 'User Created Successfully',
-                'status_code'   => 201
+                'data'   => $register
             ],201);
         }else {
             return response()->json([
