@@ -68,8 +68,7 @@ class OrderController extends Controller
         
             $orders = Order::orderBy('created_at', 'DESC')
             ->when(request()->q, function($orders) {
-                $orders = $orders->where('user_id', request()->q)
-                                ->andWhere('status_id', '<', 6);
+                $orders = $orders->where([['user_id', request()->q], ['status_id', '<>', 6]]);
             })->get();
             
         // $orders->load('status:id,name');

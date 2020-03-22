@@ -114,9 +114,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var _this = this;
 
-    window.Echo.channel('capcin-reg').listen('RegisterEvent', function (order) {
-      console.log('berhasil realtime');
-
+    window.Echo.channel('capcin-reg').listen('RegisterEvent', function (register) {
       _this.loadItemsData();
     });
   },
@@ -227,7 +225,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 7:
                 response = _context2.sent;
-                console.dir(response);
+                // console.dir(response);
                 getData = response.data.data;
                 this.items = getData.data; //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
 
@@ -243,25 +241,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   to: getData.to
                 };
                 this.showLoading = false;
-                _context2.next = 21;
+                _context2.next = 19;
                 break;
 
-              case 16:
-                _context2.prev = 16;
+              case 15:
+                _context2.prev = 15;
                 _context2.t0 = _context2["catch"](4);
-                console.log('' + _context2.t0);
+                // console.log(''+error)
                 this.flashMessage.error({
                   message: "Some error occured, Please Refresh!",
                   time: 5000
                 });
                 this.showLoading = false;
 
-              case 21:
+              case 19:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[4, 16]]);
+        }, _callee2, this, [[4, 15]]);
       }));
 
       function loadItemsData() {

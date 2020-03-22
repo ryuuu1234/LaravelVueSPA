@@ -46,6 +46,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('user-authenticated', 'UserController@getUserLogin')->name('user.authenticated');
         
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
+        Route::get('notif-register', 'RegisterController@notif')->middleware('scope:Root,Admin');
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
         
         // INI UNTUK MITRA

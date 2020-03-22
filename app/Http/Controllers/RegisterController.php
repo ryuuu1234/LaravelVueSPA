@@ -33,12 +33,24 @@ class RegisterController extends Controller
         );
     }
 
+    public function notif() {
+
+        $register = Register::where('status', '<>', 1)->get();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $register,
+            // 'data_unit' => $unit
+            ]
+        );
+    }
+
     public function update_status(Request $request, Register $register) {
 
         $register->status = 1;
 
         if ($register->save()) {
             // simpan ke user
+
             $cek = User::where('email', $register->email)->first();
             if ($cek != Null) {
                 $message = [
@@ -54,7 +66,8 @@ class RegisterController extends Controller
                 $user->role = $register->role;
                 $user->status = $register->status;
                 $user->save();
-    
+                
+                event(new RegisterEvent($register));
                 return response()->json($register,200);
             }
 

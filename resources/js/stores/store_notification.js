@@ -4,13 +4,17 @@ import {
 } from '../services/http_service';
 
 const state = () => ({
-    notifications: [] //MENAMPUNG DATA NOTIFIKASI
+    notifications: [], //MENAMPUNG DATA NOTIFIKASI
+    reg_notif:[]
 })
 
 const mutations = {
     //ASSIGN DATA NOTIFIKASI KE DALAM STATE NOTIFICATIONS
     ASSIGN_DATA(state, payload) {
         state.notifications = payload
+    },
+    ASSIGN_REG_NOTIF(state, payload) {
+        state.reg_notif = payload
     }
 }
 
@@ -35,7 +39,21 @@ const actions = {
                 dispatch('getNotifications').then(() => resolve(response.data))
             })
         })   
-    }
+    },
+
+    getRegNotif({ commit }) {
+        return new Promise((resolve, reject) => {
+            //REQUEST KE SERVER UNTUK MENGAMBIL NOTIFIKASI
+            http().get(`user/notif-register`)
+            .then((response) => {
+                let getNotif = response.data.data;
+                console.log(getNotif);
+                //DATA YANG DITERIMA DI COMMIT KE MUTATIONS ASSING_DATA
+                commit('ASSIGN_REG_NOTIF', response.data.data)
+                resolve(response.data)
+            })
+        })
+    },
 }
 
 

@@ -35,7 +35,8 @@
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-registered"></i>
                             </div>
-                            Data Register
+                            <span>Data Register</span>
+                            <span class="badge" v-if="!reg_notifs.length === 0">{{reg_notifs.length}}</span>
                         </router-link>
                     </div>
                     <div class="nav-link-ku">
@@ -122,7 +123,11 @@
 
 <script>
 import * as auth from "../services/auth_service";
+import { mapActions, mapState } from "vuex";
 export default {
+    created(){
+        this.getRegNotif();
+    },
     methods: {
         logout: async function() {
             auth.logout();
@@ -134,7 +139,33 @@ export default {
             document
                 .querySelector("body")
                 .classList.toggle("sb-sidenav-toggled");
-        }
-    }
+        },
+
+        ...mapActions("notification", ["getRegNotif"]),
+
+    },
+
+    mounted(){
+        window.Echo.channel('capcin-reg')
+        .listen('RegisterEvent', (register) => {
+            this.getRegNotif();
+        });
+    },
+    computed: {
+         ...mapState("notification", {
+            reg_notifs: state => state.reg_notif,
+        }),
+    },
 };
 </script>
+
+<style scoped>
+.nav-link-ku .badge{
+    position: absolute;
+    right: 15px;
+    color:white;
+    border-radius: 30%;
+    font-size: 10px;
+    background-color: rgb(241, 53, 69);
+}
+</style>

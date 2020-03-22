@@ -91,8 +91,7 @@ export default {
 
     mounted(){
         window.Echo.channel('capcin-reg')
-        .listen('RegisterEvent', (order) => {
-            console.log('berhasil realtime');
+        .listen('RegisterEvent', (register) => {
             this.loadItemsData();
         });
     },
@@ -180,7 +179,7 @@ export default {
             }};
             try {
                 const response = await listRegisterService.loadData(params); 
-                console.dir(response);
+                // console.dir(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                 this.units = response.data.data_unit
@@ -196,7 +195,7 @@ export default {
                 }
                 this.showLoading = false;
             } catch (error) {
-                    console.log(''+error)
+                    // console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
