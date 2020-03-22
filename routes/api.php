@@ -46,8 +46,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('user-authenticated', 'UserController@getUserLogin')->name('user.authenticated');
         
         Route::get('list-register', 'RegisterController@list')->middleware('scope:Root,Admin');
-        Route::get('notif-register', 'RegisterController@notif')->middleware('scope:Root,Admin');
         Route::put('update-status/{register}', 'RegisterController@update_status')->middleware('scope:Root,Admin');
+        Route::get('notif-register', 'RegisterController@notif')->middleware('scope:Root,Admin');
         
         // INI UNTUK MITRA
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
@@ -65,6 +65,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('orders-all', 'OrderController@get_all_by_id'); // untuk akses orders by user_id
         Route::post('chart-orders', 'OrderController@orderFromChart');
         Route::delete('delete-charts/{chart}', 'ChartController@destroy')->name('chart.destroy'); // delete chart by id
+        Route::get('notif-order', 'OrderController@notif');
         // details order
         Route::get('detail-orders', 'DetailOrderController@index');
 

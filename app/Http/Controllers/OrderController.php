@@ -80,6 +80,17 @@ class OrderController extends Controller
         );
     }
 
+    public function notif() {
+
+        $order = Order::where('status_id', 1)->get();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $order,
+            // 'data_unit' => $unit
+            ]
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      *

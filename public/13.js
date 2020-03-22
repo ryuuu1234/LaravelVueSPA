@@ -192,7 +192,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "DataOrders",
@@ -400,17 +399,15 @@ var render = function() {
                   }
                 },
                 [
-                  _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
-                  _vm._v(" "),
                   _c("option", { attrs: { value: "10" } }, [_vm._v("10")]),
                   _vm._v(" "),
-                  _c("option", { attrs: { value: "25" } }, [_vm._v("15")]),
+                  _c("option", { attrs: { value: "20" } }, [_vm._v("20")]),
                   _vm._v(" "),
-                  _c("option", { attrs: { value: "50" } }, [_vm._v("25")]),
+                  _c("option", { attrs: { value: "50" } }, [_vm._v("50")]),
                   _vm._v(" "),
-                  _c("option", { attrs: { value: "100" } }, [_vm._v("50")]),
+                  _c("option", { attrs: { value: "100" } }, [_vm._v("100")]),
                   _vm._v(" "),
-                  _c("option", { attrs: { value: "100" } }, [_vm._v("100")])
+                  _c("option", { attrs: { value: "200" } }, [_vm._v("200")])
                 ]
               ),
               _vm._v(" "),

@@ -51,7 +51,7 @@ new Vue({
     // mounted(){
     //     window.Echo.channel('capcin-tracker')
     //     .listen('OrderStatusChanged', (e) => {
-    //         console.log('realtime pizza tracker');
+    //         console.log('realtime');
     //     });
     // }
     // computed:{

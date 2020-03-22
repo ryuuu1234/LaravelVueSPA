@@ -12,12 +12,11 @@
                                 class="custom-select custom-select-sm"
                                 v-model="per_page"
                             >
-                                <option value="5">5</option>
                                 <option value="10">10</option>
-                                <option value="25">15</option>
-                                <option value="50">25</option>
-                                <option value="100">50</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
                                 <option value="100">100</option>
+                                <option value="200">200</option>
                             </select>
                             <label class="ml-2">Entries</label>
 

@@ -18,7 +18,7 @@ const state = () => ({
     page: 1, //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
     sortBy: 'created_at',//default sorting
     sortByDesc: true,
-    per_page:5 //UNTUK MENCATAT PER PAGE NYA
+    per_page:10 //UNTUK MENCATAT PER PAGE NYA
 })
 
 const mutations = {

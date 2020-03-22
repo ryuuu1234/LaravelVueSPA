@@ -35,6 +35,7 @@ class RegisterEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('capcin-reg');
+        return ['capcin-reg.'.$this->register->id, 'capcin-reg'];
+        // return ['capcin-tracker.'.$this->order->id, 'capcin-tracker'];
     }
 }
