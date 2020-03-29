@@ -1,17 +1,46 @@
 <template>
-    <div class="col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <b-link
-                    :to="{ name: 'products.add' }"
-                    class="btn btn-dark btn-sm btn-flat"
-                    >Tambah</b-link
-                >
-                <div class="pull-right">
-                    <!-- <input type="text" class="form-control" placeholder="Cari..." v-model="search"> -->
+    <div>
+        <div class="container-fluid mt-4">
+            <div class="col-md-12">
+                <!-- TABLE -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-inline">
+                            <!-- <label class="mr-2">Showing</label>
+                            <select
+                                class="custom-select custom-select-sm"
+                                v-model="per_page"
+                            >
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                            </select> -->
+
+                            <!-- <span v-show="tombolAddNew">
+                                <b-button
+                                    pill
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    class="ml-2"
+                                    @click="addNew"
+                                >
+                                    <i class="fa fa-plus"></i> Create New</b-button
+                                >
+                            </span> -->
+                            <span class="ml-1">
+                            <b-link
+                                :to="{ name: 'products.add' }"
+                                class="btn btn-dark btn-sm btn-flat"
+                                >Tambah</b-link
+                            ></span>
+                        </div>
+                    </div>
+                
+                <div class="col-md-6 mb-3">
                     <div class="form-inline float-right has-search">
                         <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
-
                         <span class="fa fa-search form-control-feedback"></span>
                         <input
                             type="text"
@@ -21,8 +50,8 @@
                         />
                     </div>
                 </div>
-            </div>
-            <div class="panel-body">
+                
+            <div class="col-md-12">
                 <b-table
                     striped
                     hover
@@ -34,46 +63,86 @@
                 >
                     <template v-slot:cell(actions)="row">
                         <router-link
-                            :to="{
+                        :to="{
+                                name: 'products.details',
+                                params: { id: row.item.id }
+                            }"
+                        
+                        class="btn btn-xxsm btn-flat btn-dark"
+                        v-b-tooltip.hover
+                        title="Edit Data"
+                        >
+                        <span class="fa fa-pencil-alt"></span>
+                            Details Item Product
+                        </router-link>
+                        <router-link
+                        :to="{
                                 name: 'products.edit',
                                 params: { id: row.item.id }
                             }"
-                            class="btn btn-warning btn-sm"
-                            ><i class="fa fa-pencil-alt"></i
-                        ></router-link>
-                        <button
-                            class="btn btn-danger btn-sm"
-                            @click="deleteProduct(row.item.id)"
+                        
+                        class="tombol-di-table"
+                        v-b-tooltip.hover
+                        title="Edit Data"
                         >
-                            <i class="fa fa-trash"></i>
+                        <span class="fa fa-edit"></span>
+                        </router-link>
+                        <button
+                            class="tombol-di-table"
+                            @click="deleteProduct(row.item.id)"
+                            v-b-tooltip.hover
+                            title="Hapus Data"
+                        >
+                            <span class="fa fa-trash"></span>
                         </button>
                         <!-- <router-link :to="{ name: 'products.order', params: {id: row.item.id} }" class="btn btn-success btn-sm"><i class="fa fa-upload"></i></router-link> -->
                     </template>
                 </b-table>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <p v-if="products.data">
-                            <i class="fa fa-bars"></i>
-                            {{ products.data.length }} item dari
-                            {{ products.total }} total data
-                        </p>
+                <div class="box-bw-table">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- <button
+                                class="tombol-di-bw-table"
+                                @click="removeSelected"
+                                :disabled="!selectedItems.length"
+                            >
+                                <i class="fa fa-trash"></i> Delete Selected Table
+                                Data
+                            </button> -->
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <p style="color:grey; font-size:11px;">
+                                Halaman ke - {{ products.from }} dari {{ products.to }} data
+                                ditemukan, dan dari {{ products.total }} data
+                                keseluruhan
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="pull-right">
+                </div>
+                <div class="col-md-12">
+                        <div class="text-right">
                             <b-pagination
                                 v-model="page"
                                 :total-rows="products.total"
                                 :per-page="products.per_page"
-                                aria-controls="products"
+                                align="right"
+                                aria-controls="dw-datatable"
+                                size="sm"
+                                first-text="First"
+                                prev-text="⏪"
+                                next-text="⏩"
+                                last-text="Last"
+                                class="mt-4"
                                 v-if="products.data && products.data.length > 0"
                             ></b-pagination>
                         </div>
                     </div>
-                </div>
+                
             </div>
         </div>
     </div>
+</div> 
+    </div>   
 </template>
 
 <script>
@@ -91,7 +160,8 @@ export default {
             //AGAR OTOMATIS DI-RENDER
             fields: [
                 { key: "name", sortable: true },
-                { key: "actions", label: "Aksi" }
+                // { key: "details", label: "Detail Items Product", class:'text-right' },
+                { key: "actions", label: "Aksi", class:'text-right' },
             ],
             search: ""
         };

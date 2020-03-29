@@ -25,8 +25,8 @@ class AddRelationsOrdersTableToStatusOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['status_id']);
-        });
+        // Schema::table('orders', function (Blueprint $table) {
+        //     $table->dropForeign(['status_id']);
+        // });
     }
 }

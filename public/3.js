@@ -25,13 +25,25 @@ __webpack_require__.r(__webpack_exports__);
       get: function get() {
         // We extract decimal number, beacause toLocaleString will automagically
         // remove the dot and zeros after it while the user is still typing
+        // if (this.value == '') {
+        //     this.value = 0;
+        // }
         var value = this.value.split(".");
         var decimal = typeof value[1] !== "undefined" ? "." + value[1] : "";
         return Number(value[0]).toLocaleString("en-GB") + decimal;
       },
       set: function set(newValue) {
-        this.$emit("input", newValue.replace(/,/g, ""));
+        this.$emit("input", newValue.replace(/,/g, "")); // if (isNaN(newValue)) {
+        //         newValue = 0
+        // }
       }
+    }
+  },
+  watch: {
+    model: function model() {
+      // ini artinya [^0-9] seluruh angka dr 0-9 di keyboard dan g = global, '' 
+      // selain angka pada keyboard akan diganti string kosong
+      this.model = this.model.replace(/[^0-9]/g, '');
     }
   }
 });
@@ -1076,13 +1088,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************************!*\
   !*** ./resources/js/services/items_service.js ***!
   \************************************************/
-/*! exports provided: createItem, loadData, deleteItem, deleteAllSelected, updateItem, loadMore */
+/*! exports provided: createItem, loadData, getData, deleteItem, deleteAllSelected, updateItem, loadMore */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createItem", function() { return createItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadData", function() { return loadData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getData", function() { return getData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteItem", function() { return deleteItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteAllSelected", function() { return deleteAllSelected; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateItem", function() { return updateItem; });
@@ -1094,6 +1107,9 @@ function createItem(data) {
 }
 function loadData(params) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('user/items', params); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+}
+function getData() {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get('user/items-data'); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 function deleteItem(id) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("user/items/".concat(id)); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)

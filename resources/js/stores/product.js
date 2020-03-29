@@ -5,6 +5,7 @@ import {
 
 const state = () => ({
     products: [], //UNTUK MENAMPUNG DATA products YANG DIDAPATKAN DARI DATABASE
+    detail_items: [],
 
     //UNTUK MENAMPUNG VALUE DARI FORM INPUTAN NANTINYA
     //STATE INI AKAN DIGUNAKAN PADA FORM ADD product YANG AKAN DIBAHAS KEMUDIAN
@@ -14,6 +15,12 @@ const state = () => ({
         stok_awal: '',
         description: ''
     },
+
+    item: {
+        item_id: '',
+        harga: '',
+        qty: 0,
+    },
     page: 1 //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
 })
 
@@ -21,6 +28,10 @@ const mutations = {
     //MEMASUKKAN DATA KE STATE products
     ASSIGN_DATA(state, payload) {
         state.products = payload
+    },
+
+    ASSIGN_DATA_DETAILS(state, payload) {
+        state.detail_items = payload
     },
     //MENGUBAH DATA STATE PAGE
     SET_PAGE(state, payload) {
@@ -35,6 +46,15 @@ const mutations = {
             description: payload.description,
         }
     },
+
+     //MENGUBAH DATA STATE product
+     ASSIGN_FORM_ITEM(state, payload) {
+        state.item = {
+            item_id: payload.name,
+            harga: String(payload.harga),
+            qty: payload.qty,
+        }
+    },
     //ME-RESET STATE product MENJADI KOSONG
     CLEAR_FORM(state) {
         state.product = {
@@ -42,6 +62,14 @@ const mutations = {
             harga: '',
             stok_awal: '',
             description: '',
+        }
+    },
+    //ME-RESET STATE product MENJADI KOSONG
+    CLEAR_FORM_ITEM(state) {
+        state.item = {
+            item_id: '',
+            harga: '',
+            qty: 0,
         }
     }
 }
@@ -111,6 +139,36 @@ const actions = {
                 })
         })
     },
+
+     //FUNGSI UNTUK MENAMBAHKAN DATA BARU
+     submitProductDetail({
+        // dispatch,
+        commit,
+        state
+    }, payload) {
+        return new Promise((resolve, reject) => {
+            //MENGIRIMKAN PERMINTAAN KE SERVER DAN MELAMPIRKAN DATA YANG AKAN DISIMPAN
+            //DARI STATE product
+            http().post(`user/products-add-item/${payload}`, state.item)
+                .then((response) => {
+                    //APABILA BERHASIL KITA MELAKUKAN REQUEST LAGI
+                    //UNTUK MENGAMBIL DATA TERBARU
+                    // dispatch('getDetailsProduct').then(() => {
+                        resolve(response.data)
+                    // })
+                })
+                .catch((error) => {
+                    //APABILA TERJADI ERROR VALIDASI
+                    //DIMANA LARAVEL MENGGUNAKAN CODE 422
+                    if (error.response.status == 422) {
+                        //MAKA LIST ERROR AKAN DIASSIGN KE STATE ERRORS
+                        commit('SET_ERRORS', error.response.data.errors, {
+                            root: true
+                        })
+                    }
+                })
+        })
+    },
     //UNTUK MENGAMBIL SINGLE DATA DARI SERVER BERDASARKAN CODE product
     editProduct({
         commit
@@ -121,6 +179,25 @@ const actions = {
                 .then((response) => {
                     //APABIL BERHASIL, DI ASSIGN KE FORM
                     commit('ASSIGN_FORM', response.data.data)
+                    resolve(response.data)
+                    // console.dir(response.data)
+                })
+        })
+    },
+
+    //UNTUK MENGAMBIL SINGLE DATA DARI SERVER BERDASARKAN CODE product
+    getDetailsProduct({
+        commit
+    }, payload) {
+        return new Promise((resolve, reject) => {
+            //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE product DI URL
+            http().get(`user/products/${payload}/edit`)
+                .then((response) => {
+                    let getData = response.data.data[0].detail_items;
+                    console.dir(getData);
+                    //APABIL BERHASIL, DI ASSIGN KE FORM
+                    commit('ASSIGN_DATA_DETAILS', getData)
+                    commit('ASSIGN_FORM_ITEM', getData)
                     resolve(response.data)
                     // console.dir(response.data)
                 })
@@ -154,6 +231,18 @@ const actions = {
                 .then((response) => {
                     //APABILA BERHASIL, FETCH DATA TERBARU DARI SERVER
                     dispatch('getProducts').then(() => resolve())
+                })
+        })
+    },
+
+    removeDetailProduct({}, payload) {
+        return new Promise((resolve, reject) => {
+            //MENGIRIM PERMINTAAN KE SERVER UNTUK MENGHAPUS DATA
+            //DENGAN METHOD DELETE DAN ID product DI URL
+            http().delete(`/user/products-detail-remove/${payload}`)
+                .then((response) => {
+                    //APABILA BERHASIL, FETCH DATA TERBARU DARI SERVER
+                     resolve(response)
                 })
         })
     }

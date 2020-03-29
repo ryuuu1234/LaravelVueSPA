@@ -23,3 +23,12 @@ export function updateItem(id, data) {
 export function loadMore(page) {
     return http().get(`user/products?page=${page}`); //
 }
+
+// ini baru
+export function getProductById(id) {
+    return http().get(`user/products/${id}/edit`)
+}
+
+export function addDetailItem(id, data) {
+    return httpFile().post(`user/products-add-item/${id}`, data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/products)...karena sdh di definisikan di store maka tgl ('/products)
+}

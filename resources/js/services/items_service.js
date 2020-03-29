@@ -8,6 +8,10 @@ export function loadData(params) {
     return http().get('user/items', params); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }
 
+export function getData() {
+    return http().get('user/items-data'); //ini diambil  dari Route items laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
+}
+
 export function deleteItem(id) {
     return http().delete(`user/items/${id}`); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/items)...karena sdh di definisikan di store maka tgl ('/items)
 }

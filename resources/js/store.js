@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import * as auth from './services/auth_service';
 import product from './stores/product.js';
+import item from './stores/store_item.js';
 import order from './stores/store_order.js';
 import user from './stores/store_user.js';
 import notification from './stores/store_notification.js';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         auth,
         user,
         product,
+        item,
         order,
         notification
     },

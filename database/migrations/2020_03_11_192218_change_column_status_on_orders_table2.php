@@ -14,7 +14,7 @@ class ChangeColumnStatusOnOrdersTable2 extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->unsignedBigInteger('status_id')->nullable()->change();
+            $table->unsignedBigInteger('status_id')->nullable();
         });
     }
 

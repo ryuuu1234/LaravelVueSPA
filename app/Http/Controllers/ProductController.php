@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\DetailProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -100,8 +102,60 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = Product::where('id', $id)->with(['detail_items', 'detail_items.item:id,nama'])->get();
         return response()->json(['status' => 'success', 'data' => $product], 200);
+    }
+
+    public function add_item(Request $request, $id)
+    {   
+        // dd($request->all());
+        $product = Product::where('id', $id)->get();
+        
+
+        $request->validate([
+            'qty'=>'required|numeric',
+            'harga'=>'required|numeric',
+            'item_id'=>'required',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            
+            $detail = DetailProduct::firstOrNew(['item_id' => $request->item_id, 'product_id' => $id]);
+            // $cek = DetailProduct::where([['item_id', 24],['product_id', 9]])->count();
+            // if (count($detail->where([['item_id', $request->item_id],['product_id', $id]])) > 0) {
+            //     # code...
+            // }
+            // $user = User::firstOrNew(['name' => 'Laravel Recipes']);
+            // $user->age = Input::get('age');
+            // $user->save();
+                // $detail->createOrUpdate(['item_id' => $request->item_id, 'product_id' => $id],
+                // [
+                //     'qty' => $request->qty,
+                //     'harga' => $request->harga,
+                //     'item_id' => $request->item_id,
+                //     'product_id'=>$id
+                // ]);
+            $detail->qty = $request->qty;
+            $detail->harga = $request->harga;
+            $detail->item_id = $request->item_id;
+            $detail->product_id = $id;
+            $detail->save();
+
+            DB::commit();    
+            return response()->json([
+                'status'=>'sukses'
+                ], 200); 
+
+        } catch (\Exception $e) {
+            //jika ada error, maka akasn dirollback sehingga tidak ada data yang tersimpan 
+            DB::rollback();
+            //pesan gagal akan di-return
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
@@ -145,11 +199,30 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
-    {
+    {   
+        // $this->detail_items();
+
         if ($product->delete()) {
             // Storage::delete($item->image);
             return response()->json([
                 'message' => 'delete Product successfully',
+                'status_code' => 200,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'some error occured, please try again',
+                'status_code' => 500,
+            ], 500);
+        }
+    }
+
+    public function remove_item($id)
+    {   
+        $detail = DetailProduct::where('id', $id)->first();
+        if ($detail->delete()) {
+            // Storage::delete($item->image);
+            return response()->json([
+                'message' => 'delete detail Product successfully',
                 'status_code' => 200,
             ], 200);
         } else {

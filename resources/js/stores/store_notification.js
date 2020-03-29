@@ -51,7 +51,6 @@ const actions = {
             http().get(`user/notif-register`)
             .then((response) => {
                 let getNotif = response.data.data;
-                console.log(getNotif);
                 //DATA YANG DITERIMA DI COMMIT KE MUTATIONS ASSING_DATA
                 commit('ASSIGN_REG_NOTIF', response.data.data)
                 resolve(response.data)
@@ -65,7 +64,7 @@ const actions = {
             http().get(`user/notif-order`)
             .then((response) => {
                 let getNotif = response.data.data;
-                console.log(getNotif);
+                // console.log(getNotif);
                 //DATA YANG DITERIMA DI COMMIT KE MUTATIONS ASSING_DATA
                 commit('ASSIGN_ORDER_NOTIF', response.data.data)
                 resolve(response.data)

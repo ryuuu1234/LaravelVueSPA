@@ -37,6 +37,15 @@ class ItemController extends Controller
         );
     }
 
+    public function get_all_data()
+    {
+        $items = Item::all();
+        return response()->json([
+            'data' => $items,
+            ]
+        );
+    }
+
     public function test()
     {
         $items = Item::with(['unit'])->orderBy('created_at', 'DESC')->get();
@@ -92,7 +101,8 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        //
+        // $item = Item::where('id', $id)->get();
+        // return response()->json($item, 200);
     }
 
     /**
@@ -103,7 +113,8 @@ class ItemController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = Item::where('id', $id)->get();
+        return response()->json($item, 200);
     }
 
     /**

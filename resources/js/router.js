@@ -118,6 +118,15 @@ const routes = [{
                 meta: {
                     title: 'Order Product'
                 }
+            },
+            {
+                path: 'details/:id',
+                name: 'products.details',
+                component: () => import('./views/products/DetailsItem.vue'),
+                meta: {
+                    title: 'Details Item',
+                    subtitle: 'Details item Product'
+                }
             }
         ],
     },// akhir dari products
