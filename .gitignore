@@ -47,7 +47,8 @@ Homestead.json
 
 ### Vuejs ###
 # Recommended template: Node.gitignore
-
+/public/*.js
+/public/js
 dist/
 
 ### Windows ###
