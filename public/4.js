@@ -33,12 +33,23 @@ __webpack_require__.r(__webpack_exports__);
         return Number(value[0]).toLocaleString("en-GB") + decimal;
       },
       set: function set(newValue) {
+<<<<<<< HEAD
         this.$emit("input", newValue.replace(/,/g, ""));
+=======
+        this.$emit("input", newValue.replace(/,/g, "")); // if (isNaN(newValue)) {
+        //         newValue = 0
+        // }
+>>>>>>> wawan
       }
     }
   },
   watch: {
     model: function model() {
+<<<<<<< HEAD
+=======
+      // ini artinya [^0-9] seluruh angka dr 0-9 di keyboard dan g = global, '' 
+      // selain angka pada keyboard akan diganti string kosong
+>>>>>>> wawan
       this.model = this.model.replace(/[^0-9]/g, '');
     }
   }
@@ -61,9 +72,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_khusus_InputNumber_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/khusus/InputNumber.vue */ "./resources/js/components/khusus/InputNumber.vue");
 /* harmony import */ var _services_items_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/items_service */ "./resources/js/services/items_service.js");
 
+<<<<<<< HEAD
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
+=======
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+>>>>>>> wawan
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -204,6 +221,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -224,6 +242,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+=======
+>>>>>>> wawan
  //IMPORT COMPONENT DATATABLENYA
 // import MyCurrencyInput from '../components/khusus/MyCurrencyInput.vue'
 
@@ -258,13 +278,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, // {key: 'unit.nama', label:'Satuan'},
       {
         key: 'harga_beli',
+<<<<<<< HEAD
         label: 'Harga Bl',
+=======
+        label: 'Harga',
+>>>>>>> wawan
         formatter: function formatter(value, key, item) {
           return "Rp " + new Intl.NumberFormat().format(item.harga_beli) + " / " + item.unit.nama;
         },
         sortable: true,
         "class": 'text-right'
       }, {
+<<<<<<< HEAD
         key: 'harga_jual',
         label: 'Harga Jl',
         formatter: function formatter(value, key, item) {
@@ -273,6 +298,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         sortable: true,
         "class": 'text-right'
       }, {
+=======
+>>>>>>> wawan
         key: 'stok_awal',
         sortable: true,
         "class": 'text-right'
@@ -289,7 +316,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       //JUGA BERLAKU UNTUK META
       current_page: 1,
       //DEFAULT PAGE YANG AKTIF ADA PAGE 1
+<<<<<<< HEAD
       per_page: 10,
+=======
+      per_page: 5,
+>>>>>>> wawan
       //DEFAULT LOAD PERPAGE ADALAH 5
       search: '',
       sortBy: 'created_at',
@@ -300,7 +331,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: [],
       currencyInput: '',
       // husus input angka
+<<<<<<< HEAD
       hargaJual: '',
+=======
+>>>>>>> wawan
       isInputActive: false,
       selectedRowsId: [],
       // pengaturan tombol
@@ -500,6 +534,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context3.prev = 2;
                 _context3.next = 5;
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["deleteItem"](item.id);
+<<<<<<< HEAD
 
               case 5:
                 // this.items = this.items.filter(obj => {
@@ -507,6 +542,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // });
                 this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
 
+=======
+
+              case 5:
+                // this.items = this.items.filter(obj => {
+                //     return obj.id != item.id;
+                // });
+                this.loadItemsData(); //DAN LOAD DATA BARU BERDASARKAN SORT
+
+>>>>>>> wawan
                 this.flashMessage.success({
                   message: "Item DELETED successfully!",
                   time: 5000
@@ -540,7 +584,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editItemData = _objectSpread({}, item); // this.currencyInput = this.editItemData.harga_beli;
 
       this.currencyInput = String(this.editItemData.harga_beli);
+<<<<<<< HEAD
       this.hargaJual = String(this.editItemData.harga_jual);
+=======
+>>>>>>> wawan
       this.methodForms = "Edit";
       this.showEditDataModal();
     },
@@ -559,10 +606,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.editItemData.nama = "";
       this.editItemData.unit_id = "";
       this.editItemData.harga_beli = "";
+<<<<<<< HEAD
       this.editItemData.harga_jual = "";
       this.editItemData.stok_awal = "";
       this.currencyInput = "";
       this.hargaJual = "";
+=======
+      this.editItemData.stok_awal = "";
+      this.currencyInput = "";
+>>>>>>> wawan
     },
     // create dan update data
     updateData: function () {
@@ -570,6 +622,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(item) {
         var formData, response, _response;
+<<<<<<< HEAD
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
@@ -592,6 +645,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["createItem"](formData);
 
               case 10:
+=======
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                formData = new FormData();
+                formData.append("nama", this.editItemData.nama);
+                formData.append("harga_beli", this.currencyInput);
+                formData.append("unit_id", this.editItemData.unit_id);
+                formData.append("stok_awal", this.editItemData.stok_awal);
+
+                if (!(this.methodForms == 'Add')) {
+                  _context4.next = 27;
+                  break;
+                }
+
+                _context4.prev = 6;
+                _context4.next = 9;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["createItem"](formData);
+
+              case 9:
+>>>>>>> wawan
                 response = _context4.sent;
                 //    jika sukses
                 //    this.items.unshift(response.data);
@@ -602,6 +678,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Category stored successfully!",
                   time: 5000
                 });
+<<<<<<< HEAD
                 _context4.next = 26;
                 break;
 
@@ -617,10 +694,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context4.abrupt("break", 26);
 
               case 24:
+=======
+                _context4.next = 25;
+                break;
+
+              case 16:
+                _context4.prev = 16;
+                _context4.t0 = _context4["catch"](6);
+                _context4.t1 = _context4.t0.response.status;
+                _context4.next = _context4.t1 === 422 ? 21 : 23;
+                break;
+
+              case 21:
+                this.errors = _context4.t0.response.data.errors;
+                return _context4.abrupt("break", 25);
+
+              case 23:
+>>>>>>> wawan
                 this.flashMessage.error({
                   message: "Some error occured, Please Try Again!",
                   time: 5000
                 });
+<<<<<<< HEAD
                 return _context4.abrupt("break", 26);
 
               case 26:
@@ -635,6 +730,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["updateItem"](this.editItemData.id, formData);
 
               case 32:
+=======
+                return _context4.abrupt("break", 25);
+
+              case 25:
+                _context4.next = 40;
+                break;
+
+              case 27:
+                // ini untuk edit data
+                formData.append('_method', 'put');
+                _context4.prev = 28;
+                _context4.next = 31;
+                return _services_items_service__WEBPACK_IMPORTED_MODULE_3__["updateItem"](this.editItemData.id, formData);
+
+              case 31:
+>>>>>>> wawan
                 _response = _context4.sent;
                 this.items.map(function (item) {
                   if (item.id === _response.data.id) {
@@ -649,23 +760,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Item Updated successfully!",
                   time: 5000
                 });
+<<<<<<< HEAD
                 _context4.next = 41;
                 break;
 
               case 38:
                 _context4.prev = 38;
                 _context4.t2 = _context4["catch"](29);
+=======
+                _context4.next = 40;
+                break;
+
+              case 37:
+                _context4.prev = 37;
+                _context4.t2 = _context4["catch"](28);
+>>>>>>> wawan
                 this.flashMessage.error({
                   message: _context4.t2.response.data.message,
                   time: 5000
                 });
 
+<<<<<<< HEAD
               case 41:
+=======
+              case 40:
+>>>>>>> wawan
               case "end":
                 return _context4.stop();
             }
           }
+<<<<<<< HEAD
         }, _callee4, this, [[7, 17], [29, 38]]);
+=======
+        }, _callee4, this, [[6, 16], [28, 37]]);
+>>>>>>> wawan
       }));
 
       function updateData(_x3) {
@@ -878,6 +1006,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
+<<<<<<< HEAD
                     _c(
                       "div",
                       { staticClass: "form-group-sm" },
@@ -916,6 +1045,8 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6" }, [
+=======
+>>>>>>> wawan
                     _c("div", { staticClass: "form-group-sm mb-2" }, [
                       _c("label", { attrs: { for: "unit_id" } }, [
                         _vm._v("Satuan")

@@ -11,10 +11,21 @@
                         <i class="fas fa-plus-circle"></i>
                         Add
                     </button>
+<!-- 
+                    <button type='button' class="btn btn-info btn-xsm" @click="edit">
+                        <i class="fas fa-pencil"></i>
+                        edit
+                    </button>
+                    -->
                     </div>
                     
                     <!-- INI CONTENTNYA -->
-                    <div>
+                    <!-- ==================tambahan========== -->
+                    <div v-if="!detail_items.length">
+                    <daftar-item></daftar-item>
+                    </div>
+                    <!-- ==================================== -->
+                    <div v-if="detail_items.length">
                         <table class="table table-responsive">
                             <thead>
                                 <tr>
@@ -97,10 +108,12 @@
 import { mapActions, mapState, mapMutations } from "vuex";
 import FormItemProduct from './FormItem.vue';
 import * as productService from '../../services/product_service.js';
+import DaftarItem from './DaftarItem.vue'
 export default {
     name: 'details-item-product',
     components: {
-        'item-form': FormItemProduct
+        'item-form': FormItemProduct,
+        'daftar-item':DaftarItem
     },
     created(){
         this.getDetailsProduct(this.$route.params.id)
@@ -110,6 +123,7 @@ export default {
     data(){
         return{
             title_form: '',
+            active:false
             // item:{},
         }
     },
@@ -184,6 +198,9 @@ export default {
         cancelForm(){
             this.CLEAR_FORM_ITEM();
             this.$refs.modalForm.hide();
+        },
+        edit(){
+            this.active=!this.active
         },
         submit() {
             let id_product = this.$route.params.id;
