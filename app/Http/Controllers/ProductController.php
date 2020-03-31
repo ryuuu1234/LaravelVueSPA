@@ -64,7 +64,7 @@ class ProductController extends Controller
         // dd($request->all());
         $request->validate([
             'name'=>'required|min:3',
-            'harga'=>'required|numeric',
+            // 'harga'=>'required|numeric', matikan dulu
             'stok_awal'=>'required|numeric',
             'description'=>'required'
         ]);
@@ -72,7 +72,7 @@ class ProductController extends Controller
         $item = new Product();
         $item->name = $request->name;
         $item->description = $request->description;
-        $item->harga = $request->harga;
+        // $item->harga = $request->harga;
         $item->stok_awal = $request->stok_awal;
 
         if ($item->save()) {

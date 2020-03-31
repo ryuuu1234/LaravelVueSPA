@@ -101,6 +101,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -218,32 +220,6 @@ var render = function() {
             ])
           : _vm._e()
       ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "form-group", class: { "has-error": _vm.errors.harga } },
-      [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Harga")]),
-        _vm._v(" "),
-        _c("input-number", {
-          staticClass: "form-control",
-          model: {
-            value: _vm.product.harga,
-            callback: function($$v) {
-              _vm.$set(_vm.product, "harga", $$v)
-            },
-            expression: "product.harga"
-          }
-        }),
-        _vm._v(" "),
-        _vm.errors.harga
-          ? _c("p", { staticClass: "text-danger" }, [
-              _vm._v(_vm._s(_vm.errors.harga[0]))
-            ])
-          : _vm._e()
-      ],
-      1
     ),
     _vm._v(" "),
     _c(

@@ -11,7 +11,7 @@ const state = () => ({
     //STATE INI AKAN DIGUNAKAN PADA FORM ADD product YANG AKAN DIBAHAS KEMUDIAN
     product: {
         name: '',
-        harga: '',
+        // harga: '',  //disable harga karena harga nanti akan disesuaikan dengan harga items
         stok_awal: '',
         description: ''
     },

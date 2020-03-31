@@ -49,6 +49,9 @@ Homestead.json
 # Recommended template: Node.gitignore
 /public/*.js
 /public/js
+public/*.js
+public/js
+
 dist/
 
 ### Windows ###
