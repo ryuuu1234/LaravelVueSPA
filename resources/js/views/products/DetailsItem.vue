@@ -37,8 +37,10 @@
                                     <th class="text-right">Subtotal Jual</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr v-for="(item, row) in detail_items" :key="row">
+                            <tbody v-for="(item, row) in detail_items" :key="row">
+                                
+                                <update-item @qty='addQty' :item="item"/>
+                                <!-- <tr v-for="(item, row) in detail_items" :key="row">
                                     <td>
                                         <button
                                             class="tombol-di-table red-color"
@@ -51,10 +53,17 @@
                                     </td>
                                     <td>{{ item.item.nama }}</td>
                                     <td class="text-right">{{ item.harga_beli | numeral('0,0') }}</td>
-                                    <td class="text-right">{{ item.harga | numeral('0,0') }}</td>
-                                    <td class="text-right">{{ item.qty }}</td>
+                                    <td class="text-right">
+                                        {{ item.harga | numeral('0,0') }}
+                                        <input type="number"  >
+                                    </td>
+                                    <td class="text-right">
+                                        {{ item.qty }}
+                                        <input type="number"  >
+                                    </td>
                                     <td class="text-right">{{ item.harga * item.qty | numeral('0,0')}}</td>
-                                </tr>
+                                </tr> -->
+                                
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -109,11 +118,13 @@ import { mapActions, mapState, mapMutations } from "vuex";
 import FormItemProduct from './FormItem.vue';
 import * as productService from '../../services/product_service.js';
 import DaftarItem from './DaftarItem.vue'
+import UpdateItem from './updateItem.vue'
 export default {
     name: 'details-item-product',
     components: {
         'item-form': FormItemProduct,
-        'daftar-item':DaftarItem
+        'daftar-item':DaftarItem,
+        'update-item':UpdateItem
     },
     created(){
         this.getDetailsProduct(this.$route.params.id)
@@ -159,6 +170,12 @@ export default {
     methods: {
         ...mapActions('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']),
         ...mapMutations('product', ['CLEAR_FORM_ITEM']), //PANGGIL MUTATIONS CLEAR_FORM
+
+        addQty(e){
+            let id_product = this.$route.params.id;
+            this.submitProductDetail(id_product)
+            // console.log(e)
+        },
 
         saveTotal: async function saveTotal(total) {
 
@@ -250,6 +267,10 @@ export default {
 
 .red-color {
     color:#DC3545;
+}
+td > input{
+ width: 50px;
+ text-align: center;
 }
 </style>
 

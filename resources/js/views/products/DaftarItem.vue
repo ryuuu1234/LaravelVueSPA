@@ -5,9 +5,10 @@
       <tr>
         <th>#</th>
         <th>Nama Item</th>
-        <th>Harga</th>
+        <th>Harga Beli</th>
+        <th>Harga Jual</th>
         <th>Qty</th>
-        <th class="text-right">Subtotal</th>
+        <th class="text-right">Subtotal Jual</th>
       </tr>
     </thead>
     <tbody v-for="(item, row) in items" :key="row">
@@ -21,10 +22,16 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4" class="text-right"><b>TOTAL : </b></td>
-        <td class="text-right">
-          {{total | numeral('0,0')}}
-        </td>
+          <td colspan="5" class="text-right"><b>TOTAL HARGA JUAL: </b></td>
+          <td class="text-right">
+              <b>{{total | numeral('0,0')}}</b>
+          </td>
+      </tr>
+      <tr>
+          <td colspan="5" class="text-right"><b>TOTAL HARGA BELI: </b></td>
+          <td class="text-right">
+              <b>{{total_beli | numeral('0,0')}}</b>
+          </td>
       </tr>
     </tfoot>
 </table>
@@ -40,7 +47,8 @@ export default {
   },
   data(){
     return {
-      total:0
+      total:0,
+      total_beli:0
     }
   },
     created(){
@@ -88,9 +96,13 @@ export default {
         if(e.qty==undefined){e.qty=0}
       })
       let j = this.items.reduce(function (sum, item) {
-        return sum + item.harga_beli * item.qty
+        return sum + item.harga_jual * item.qty
         }, 0)
         this.total = j
+      let i = this.items.reduce(function (sum, item) {
+        return sum + item.harga_beli * item.qty
+        }, 0)
+        this.total_beli = i
 
         
       let id_product = this.$route.params.id;
