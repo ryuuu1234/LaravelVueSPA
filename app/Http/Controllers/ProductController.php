@@ -16,26 +16,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // $items = Product::orderBy(request()->sortby, request()->sortbydesc)
-        //     ->when(request()->q, function($items) {
-        //         $items = $items->where('name', 'LIKE', '%' . request()->q . '%');
-        //             // ->orWhere('harga', 'LIKE', '%' . request()->q . '%');
-        // })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
-
-        // // $items->load('unit:id,nama');
-        // // $unit = Unit::all();
-        // return response()->json([
-        //     'status' => 'success', 
-        //     'data' => $items,
-        //     ]
-        // );
-
+        
         // ini yg baru
         $products = Product::orderBy('created_at', 'DESC')
         ->when(request()->q, function($products) {
             $products = $products->where('name', 'LIKE', '%' . request()->q . '%');
             
-        })->paginate(5);
+        })->paginate(10);
         return response()->json([
             'status' => 'success', 
             'data' => $products,
@@ -64,7 +51,6 @@ class ProductController extends Controller
         // dd($request->all());
         $request->validate([
             'name'=>'required|min:3',
-            'harga'=>'required|numeric',
             'stok_awal'=>'required|numeric',
             'description'=>'required'
         ]);
@@ -72,7 +58,7 @@ class ProductController extends Controller
         $item = new Product();
         $item->name = $request->name;
         $item->description = $request->description;
-        $item->harga = $request->harga;
+        $item->harga = 0;
         $item->stok_awal = $request->stok_awal;
 
         if ($item->save()) {
@@ -91,7 +77,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product = Product::find($product); // panggil data by Id
-        dd($product);
+        // dd($product);
     }
 
     /**
@@ -115,6 +101,7 @@ class ProductController extends Controller
         $request->validate([
             'qty'=>'required|numeric',
             'harga'=>'required|numeric',
+            'harga_beli'=>'required|numeric',
             'item_id'=>'required',
         ]);
 
@@ -138,6 +125,7 @@ class ProductController extends Controller
                 // ]);
             $detail->qty = $request->qty;
             $detail->harga = $request->harga;
+            $detail->harga_beli = $request->harga_beli;
             $detail->item_id = $request->item_id;
             $detail->product_id = $id;
             $detail->save();
@@ -170,13 +158,11 @@ class ProductController extends Controller
         // dd($request->all());
         $request->validate([
             'name'=>'required',
-            'harga'=>'required|numeric',
             'description'=>'required',
             'stok_awal'=>'required'
         ]);
 
         $product->name = $request->name;
-        $product->harga = $request->harga;
         $product->description = $request->description;
         $product->stok_awal = $request->stok_awal;
 
@@ -191,6 +177,55 @@ class ProductController extends Controller
             return response()->json($message,500);
         }
     }
+
+    // -----------------------------------------------------------------
+    public function update_harga_product(Request $request, $id){
+
+        // dd($request->all());
+        $request->validate([
+            'harga'=>'required|numeric'
+        ]);
+
+        $save = Product::where('id',$id)->update(['harga' => $request->harga]);
+        if ($save) {
+            return response()->json([
+                'message' => 'success',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'failed',
+            ], 500);
+        }
+
+    }
+
+    public function update_harga_beli_product(Request $request, $id){
+
+        // dd($request->all());
+        $request->validate([
+            'harga_beli'=>'required|numeric'
+        ]);
+        DB::beginTransaction();
+        try {
+            $save = Product::where('id',$id)->update(['harga_beli' => $request->harga_beli]);
+            
+        DB::commit();    
+            return response()->json([
+                'status'=>'sukses'
+                ], 200); 
+
+        } catch (\Exception $e) {  
+            
+        DB::rollback();
+            //pesan gagal akan di-return
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
+        }  
+    }
+    // -----------------------------------------------------------------
+    
 
     /**
      * Remove the specified resource from storage.

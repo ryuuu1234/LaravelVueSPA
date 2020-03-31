@@ -10,11 +10,11 @@
             <input type="text" class="form-control" v-model="product.name">
             <p class="text-danger" v-if="errors.name">{{ errors.name[0] }}</p>
         </div>
-        <div class="form-group" :class="{ 'has-error': errors.harga }">
+        <!-- <div class="form-group" :class="{ 'has-error': errors.harga }">
             <label for="">Harga</label>
             <input-number class="form-control" v-model="product.harga"></input-number>
             <p class="text-danger" v-if="errors.harga">{{ errors.harga[0] }}</p>
-        </div>
+        </div> -->
         <div class="form-group" :class="{ 'has-error': errors.stok_awal }">
             <label for="">Stok Awal</label>
             <input type="number" class="form-control" v-model="product.stok_awal">

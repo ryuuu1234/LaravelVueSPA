@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Item;
 use App\unit;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -55,28 +56,14 @@ class ItemController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
             'nama'=>'required|min:3',
             'unit_id'=>'required|numeric',
             'harga_beli'=>'required|numeric',
+            'harga_jual'=>'required|numeric',
             'stok_awal'=>'required|numeric',
         ]);
 
@@ -84,6 +71,7 @@ class ItemController extends Controller
         $item->nama = $request->nama;
         $item->unit_id = $request->unit_id;
         $item->harga_beli = $request->harga_beli;
+        $item->harga_jual = $request->harga_jual;
         $item->stok_awal = $request->stok_awal;
 
         if ($item->save()) {
@@ -93,24 +81,7 @@ class ItemController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        // $item = Item::where('id', $id)->get();
-        // return response()->json($item, 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         $item = Item::where('id', $id)->get();
@@ -130,12 +101,14 @@ class ItemController extends Controller
         $request->validate([
             'nama'=>'required',
             'harga_beli'=>'required|numeric',
+            'harga_jual'=>'required|numeric',
             'unit_id'=>'required|numeric',
             'stok_awal'=>'required'
         ]);
 
         $item->nama = $request->nama;
         $item->harga_beli = $request->harga_beli;
+        $item->harga_jual = $request->harga_jual;
         $item->unit_id = $request->unit_id;
         $item->stok_awal = $request->stok_awal;
 
@@ -182,6 +155,32 @@ class ItemController extends Controller
                 'message' => 'delete category successfully',
                 'status_code' => 200,
             ], 200);
+        
+    }
+
+    public function update_harga_jual(Request $request, $id)
+    {   
+        $request->validate([
+            'harga_jual'=>'required|numeric'
+        ]);
+        DB::beginTransaction();
+        try {
+            $save = Item::where('id',$id)->update(['harga_jual' => $request->harga_jual]);
+            
+        DB::commit();    
+            return response()->json([
+                'status'=>'sukses'
+                ], 200); 
+
+        } catch (\Exception $e) {  
+            
+        DB::rollback();
+            //pesan gagal akan di-return
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
+        }  
         
     }
 }

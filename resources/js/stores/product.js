@@ -11,7 +11,6 @@ const state = () => ({
     //STATE INI AKAN DIGUNAKAN PADA FORM ADD product YANG AKAN DIBAHAS KEMUDIAN
     product: {
         name: '',
-        harga: '',
         stok_awal: '',
         description: ''
     },
@@ -19,6 +18,7 @@ const state = () => ({
     item: {
         item_id: '',
         harga: '',
+        harga_beli: '',
         qty: 0,
     },
     page: 1 //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
@@ -41,7 +41,6 @@ const mutations = {
     ASSIGN_FORM(state, payload) {
         state.product = {
             name: payload.name,
-            harga: String(payload.harga),
             stok_awal: payload.stok_awal,
             description: payload.description,
         }
@@ -52,6 +51,7 @@ const mutations = {
         state.item = {
             item_id: payload.name,
             harga: String(payload.harga),
+            harga_beli: String(payload.harga_beli),
             qty: payload.qty,
         }
     },
@@ -59,7 +59,6 @@ const mutations = {
     CLEAR_FORM(state) {
         state.product = {
             name: '',
-            harga: '',
             stok_awal: '',
             description: '',
         }
@@ -69,6 +68,7 @@ const mutations = {
         state.item = {
             item_id: '',
             harga: '',
+            harga_beli: '',
             qty: 0,
         }
     }

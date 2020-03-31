@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue';
 import IndexProduct from './views/products/Index.vue';
 import IndexOrder from './views/orders/Index.vue';
+import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
 
@@ -156,6 +157,23 @@ const routes = [{
             }
         ],
     },// akhir dari orders
+    {
+        path: '/coba-coba',
+        component: IndexPercobaan,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'coba-coba.data',
+            component: () => import('./views/cobacoba/PercobaanPage.vue'),
+                meta: {
+                    title: 'Manage Percobaan',
+                },
+            },
+        ],
+    },// akhir dari percobaan
 
     // INI TANPA META AUTH
     {
@@ -183,12 +201,6 @@ const routes = [{
         component: () => import('./views/authentication/ResetPassword.vue'),
     },
 
-    //route ini dihapus
-    {
-        path: '/percobaan',
-        name: 'percobaan',
-        component: () => import('./views/Percobaan.vue'),
-    },
     {
         path: '/preloader',
         name: 'preloader',

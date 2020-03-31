@@ -32,3 +32,11 @@ export function getProductById(id) {
 export function addDetailItem(id, data) {
     return httpFile().post(`user/products-add-item/${id}`, data); //ini diambil  dari Route item laravel nama routenya ('api/(prefix=user)/products)...karena sdh di definisikan di store maka tgl ('/products)
 }
+
+export function updateHarga(id, data) {
+    return http().post(`user/products-update-harga/${id}`, data); 
+}
+
+export function updateHargaBeli(id, data) {
+    return http().post(`user/products-update-harga-beli/${id}`, data); 
+}

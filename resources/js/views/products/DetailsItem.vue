@@ -20,9 +20,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Nama Item</th>
-                                    <th>Harga</th>
+                                    <th>Harga Beli</th>
+                                    <th>Harga Jual</th>
                                     <th>Qty</th>
-                                    <th class="text-right">Subtotal</th>
+                                    <th class="text-right">Subtotal Jual</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,6 +39,7 @@
                                         </button>
                                     </td>
                                     <td>{{ item.item.nama }}</td>
+                                    <td class="text-right">{{ item.harga_beli | numeral('0,0') }}</td>
                                     <td class="text-right">{{ item.harga | numeral('0,0') }}</td>
                                     <td class="text-right">{{ item.qty }}</td>
                                     <td class="text-right">{{ item.harga * item.qty | numeral('0,0')}}</td>
@@ -45,9 +47,15 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="4" class="text-right"><b>TOTAL : </b></td>
+                                    <td colspan="5" class="text-right"><b>TOTAL HARGA JUAL: </b></td>
                                     <td class="text-right">
-                                        {{total | numeral('0,0')}}
+                                        <b>{{total | numeral('0,0')}}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" class="text-right"><b>TOTAL HARGA BELI: </b></td>
+                                    <td class="text-right">
+                                        <b>{{total_beli | numeral('0,0')}}</b>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -72,7 +80,7 @@
                 <item-form></item-form>
                 <hr class="batas-dark"/>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-danger btn-xsm"
+                    <button type="submit" class="btn btn-danger btn-xsm" 
                         @click.prevent="submit"
                     >submit</button>
                     <button type="submit" class="btn btn-dark btn-xsm"
@@ -88,6 +96,7 @@
 
 import { mapActions, mapState, mapMutations } from "vuex";
 import FormItemProduct from './FormItem.vue';
+import * as productService from '../../services/product_service.js';
 export default {
     name: 'details-item-product',
     components: {
@@ -116,7 +125,14 @@ export default {
         },
         total() {
             return this.detail_items.reduce(function (sum, item) {
-            return sum + item.harga * item.qty
+                let total = sum + item.harga * item.qty;
+                return total
+            }, 0)
+        },
+        total_beli() {
+            return this.detail_items.reduce(function (sum, item) {
+                let total = sum + item.harga_beli * item.qty;
+                return total
             }, 0)
         },
 
@@ -130,11 +146,33 @@ export default {
         ...mapActions('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']),
         ...mapMutations('product', ['CLEAR_FORM_ITEM']), //PANGGIL MUTATIONS CLEAR_FORM
 
-        // computeSubTotal: function(invoice_item) {
-        //     //formatPrice is removed here because its not defined in the question
-        //     return ((parseFloat(invoice_item.rate) * parseFloat(invoice_item.quantity) + parseFloat(invoice_item.activation_fee)));
-        //     },
-        // }
+        saveTotal: async function saveTotal(total) {
+
+            const formData = new FormData();
+            formData.append("harga", total);
+            formData.append('_method', 'put');
+
+            try {
+                const response = await productService.updateHarga(this.$route.params.id, formData);
+                console.log(response);
+            } catch (error) {
+                console.error(error.response);
+            }
+        },
+
+        saveTotalBeli: async function saveTotalBeli(total_beli) {
+
+            const formData = new FormData();
+            formData.append("harga_beli", total_beli);
+            formData.append('_method', 'put');
+
+            try {
+                const response = await productService.updateHargaBeli(this.$route.params.id, formData);
+                console.log(response);
+            } catch (error) {
+                console.error(error);
+            }
+        },
 
         addNew(){
             this.$refs.modalForm.show();
@@ -145,6 +183,7 @@ export default {
         },
         cancelForm(){
             this.CLEAR_FORM_ITEM();
+            this.$refs.modalForm.hide();
         },
         submit() {
             let id_product = this.$route.params.id;
@@ -178,7 +217,12 @@ export default {
                     }
                 });
         }    
-    }
+    },
+
+    watch:{
+        total: 'saveTotal',
+        total_beli: 'saveTotalBeli'
+    },
 }
 </script>
 

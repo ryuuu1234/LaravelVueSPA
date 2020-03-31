@@ -33,16 +33,12 @@ __webpack_require__.r(__webpack_exports__);
         return Number(value[0]).toLocaleString("en-GB") + decimal;
       },
       set: function set(newValue) {
-        this.$emit("input", newValue.replace(/,/g, "")); // if (isNaN(newValue)) {
-        //         newValue = 0
-        // }
+        this.$emit("input", newValue.replace(/,/g, ""));
       }
     }
   },
   watch: {
     model: function model() {
-      // ini artinya [^0-9] seluruh angka dr 0-9 di keyboard dan g = global, '' 
-      // selain angka pada keyboard akan diganti string kosong
       this.model = this.model.replace(/[^0-9]/g, '');
     }
   }
@@ -218,32 +214,6 @@ var render = function() {
             ])
           : _vm._e()
       ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "form-group", class: { "has-error": _vm.errors.harga } },
-      [
-        _c("label", { attrs: { for: "" } }, [_vm._v("Harga")]),
-        _vm._v(" "),
-        _c("input-number", {
-          staticClass: "form-control",
-          model: {
-            value: _vm.product.harga,
-            callback: function($$v) {
-              _vm.$set(_vm.product, "harga", $$v)
-            },
-            expression: "product.harga"
-          }
-        }),
-        _vm._v(" "),
-        _vm.errors.harga
-          ? _c("p", { staticClass: "text-danger" }, [
-              _vm._v(_vm._s(_vm.errors.harga[0]))
-            ])
-          : _vm._e()
-      ],
-      1
     ),
     _vm._v(" "),
     _c(

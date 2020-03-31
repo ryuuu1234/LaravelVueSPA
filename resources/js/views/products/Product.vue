@@ -160,7 +160,12 @@ export default {
             //AGAR OTOMATIS DI-RENDER
             fields: [
                 { key: "name", sortable: true },
-                // { key: "details", label: "Detail Items Product", class:'text-right' },
+                { key: "harga_beli", label: "Harga Beli", formatter: (value, key, item) => {
+                            return "Rp " + new Intl.NumberFormat().format(item.harga_beli) 
+                            }, class:'text-right' },
+                { key: "harga", label: "Harga Jual Product", formatter: (value, key, item) => {
+                            return "Rp " + new Intl.NumberFormat().format(item.harga) 
+                            }, class:'text-right' },
                 { key: "actions", label: "Aksi", class:'text-right' },
             ],
             search: ""
@@ -188,11 +193,12 @@ export default {
             //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
             this.getProducts();
         },
-        search() {
-            //APABILA VALUE DARI SEARCH BERUBAH MAKA AKAN MEMINTA DATA
-            //SESUAI DENGAN DATA YANG SEDANG DICARI
-            this.getProducts(this.search);
-        }
+        // search() {
+        //     //APABILA VALUE DARI SEARCH BERUBAH MAKA AKAN MEMINTA DATA
+        //     //SESUAI DENGAN DATA YANG SEDANG DICARI
+        //     this.getProducts(this.search);
+        // }
+        search:'getProducts',
     },
     methods: {
         //MENGAMBIL FUNGSI DARI VUEX MODULE product

@@ -10,6 +10,7 @@ class Item extends Model
     use SoftDeletes;
     
     protected $guarded = [];
+    // protected $fillable = ['nama', 'unit_id', 'harga_beli', 'harga_jual', 'stok_awal'];
 
     /**
      * RELASI. ke tabel units

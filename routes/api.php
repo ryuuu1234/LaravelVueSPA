@@ -58,9 +58,12 @@ Route::group(['prefix' => 'user'], function () {
         Route::put('update-charts-qty/{chart}', 'ChartController@update'); // update qty chart
 
         Route::post('items/delete', 'ItemController@deleteAll');
+        Route::put('items-update-harga-jual/{id}', 'ItemController@update_harga_jual');
         Route::post('products/delete', 'ProductController@deleteAll');
         Route::post('products-add-item/{id}', 'ProductController@add_item');
         Route::delete('products-detail-remove/{id}', 'ProductController@remove_item');
+        Route::put('products-update-harga/{id}', 'ProductController@update_harga_product');
+        Route::put('products-update-harga-beli/{id}', 'ProductController@update_harga_beli_product');
         
         // api/user/orders   ->untuk order dr mitra 
         Route::resource('orders', 'OrderController'); 
