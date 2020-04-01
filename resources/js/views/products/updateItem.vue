@@ -1,22 +1,6 @@
+
 <template>
-  <tr class="input-item">
-    <!-- <td><button
-          class="tombol-di-table red-color"
-          @click="removeData(item.id)"
-          v-b-tooltip.hover
-          title="Hapus Data"
-      >
-          <span class="fa fa-trash"></span>
-      </button></td>
-    <td>{{ item.nama }}</td>
-    <td class="text-right">{{ item.harga_beli | numeral('0,0') }}</td>
-    <td class="text-right">      
-      <input type="number" v-model="jual" @change.prevent="add" >
-    </td>
-    <td class="text-centered" >
-      <input type="number" v-model="qty" @change.prevent="add" >
-    </td>
-    <td class="text-right">{{ subtotal | numeral('0,0')}}</td> -->
+  <tr class="input-item">    
     <td>
         <button
             class="tombol-di-table red-color"

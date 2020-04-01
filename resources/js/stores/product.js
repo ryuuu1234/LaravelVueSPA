@@ -29,10 +29,14 @@ const mutations = {
     ASSIGN_DATA(state, payload) {
         state.products = payload
     },
-
+//====================modifikasi========
     ASSIGN_DATA_DETAILS(state, payload) {
+        payload.forEach(item =>{
+            item.edit = false
+        })
         state.detail_items = payload
     },
+//=========================================
     //MENGUBAH DATA STATE PAGE
     SET_PAGE(state, payload) {
         state.page = payload
