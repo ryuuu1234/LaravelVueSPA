@@ -51,6 +51,7 @@ class ProductController extends Controller
         // dd($request->all());
         $request->validate([
             'name'=>'required|min:3',
+            // 'harga'=>'required|numeric', matikan dulu
             'stok_awal'=>'required|numeric',
             'description'=>'required'
         ]);
@@ -59,6 +60,7 @@ class ProductController extends Controller
         $item->name = $request->name;
         $item->description = $request->description;
         $item->harga = 0;
+        // $item->harga = $request->harga;
         $item->stok_awal = $request->stok_awal;
 
         if ($item->save()) {
@@ -88,7 +90,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::where('id', $id)->with(['detail_items', 'detail_items.item:id,nama'])->get();
+        $product = Product::where('id', $id)->with(['detail_items', 'detail_items.item:id,nama,harga_beli,harga_jual,unit_id', 'detail_items.item.unit:id,nama'])->get();
         return response()->json(['status' => 'success', 'data' => $product], 200);
     }
 
