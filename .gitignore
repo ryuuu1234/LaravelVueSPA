@@ -47,6 +47,8 @@ Homestead.json
 
 ### Vuejs ###
 # Recommended template: Node.gitignore
+# vuepress build output
+.vuepress/dist
 /public/*.js
 /public/js
 public/*.js
