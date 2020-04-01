@@ -1,5 +1,5 @@
 <template>
-  <tr class="input-item">
+  <tr>
     <td>
       <button
           class="tombol-di-table red-color"
@@ -39,7 +39,7 @@
     <td class="text-right">      
       <!-- <div class="form-group" :class="{ 'has-error': errors.harga }"> -->
         <!-- <label for="">Harga Jual</label> -->
-        <input-number class="form-control" v-model="item.harga" :disabled="disabled"></input-number>
+        <input-number class="form-control" @change="ganti" v-model="item.harga" :disabled="disabled"></input-number>
         <p class="text-danger" v-if="errors.harga">{{ errors.harga[0] }}</p>
       <!-- </div> -->
     </td>
@@ -106,11 +106,17 @@ computed:{
     subtotal(){
    return this.item.harga * new Intl.NumberFormat().format(this.item.qty)  
   },
+  updateHargaJual(){
+      return this.item.harga;
+  }
 },
 
 methods:{
   ...mapMutations('product', ['CLEAR_FORM_ITEM']), //PANGGIL MUTATIONS CLEAR_FORM
   ...mapActions('item', ['getItems', 'getItemById']),
+  ganti(){
+    console.log('ganti')
+  },
 
     onChange(value){
       return new Promise((resolve, reject) => {
@@ -143,6 +149,7 @@ methods:{
     },
     cancel(){
       this.$emit('cancel')
+      this.CLEAR_FORM_ITEM()
     },
     editQty(){
       this.qtyEdit=true
@@ -152,15 +159,6 @@ methods:{
     },
     doneEditQty(){
       this.qtyEdit=false
-    },
-    carHargaJual(){
-      if(this.item.harga){
-        this.jual = this.item.harga
-      }else if(this.item.harga_jual){
-        this.jual = this.item.harga_jual
-      }else {
-        this.jual = 0
-      }
     },
   addNew(){
    // console.log('item', this.item)

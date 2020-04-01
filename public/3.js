@@ -177,7 +177,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_product_service_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/product_service.js */ "./resources/js/services/product_service.js");
 /* harmony import */ var _DaftarItem_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DaftarItem.vue */ "./resources/js/views/products/DaftarItem.vue");
 /* harmony import */ var _updateItem_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./updateItem.vue */ "./resources/js/views/products/updateItem.vue");
-/* harmony import */ var _InputItem_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./InputItem.vue */ "./resources/js/views/products/InputItem.vue");
+/* harmony import */ var _services_http_service_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../services/http_service.js */ "./resources/js/services/http_service.js");
+/* harmony import */ var _InputItem_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./InputItem.vue */ "./resources/js/views/products/InputItem.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -358,6 +359,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -370,7 +376,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     'item-form': _FormItem_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     'daftar-item': _DaftarItem_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
     'update-item': _updateItem_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'input-item': _InputItem_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+    'input-item': _InputItem_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   },
   directives: {
     focus: {
@@ -387,15 +393,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       title_form: '',
       active: false,
-      edited: false
+      edited: false //memastikan bahwa update product detail dilakukan jika benar2 sudah d edit
+
     };
   },
-  // updated(){
-  //     console.log('addEEdit')
-  //     this.detail_items.forEach(e => {
-  //         e.edit = false
-  //     })
-  // },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('product', {
     detail_items: function detail_items(state) {
       return state.detail_items;
@@ -405,39 +406,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.items;
     } //MENGAMBIL STATE PRODUCT
 
+  }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])('product', {
+    item: function item(state) {
+      return state.item;
+    } //MENGAMBIL STATE PRODUCT
+
   }), {
     bottomAdd: function bottomAdd() {
-      if (this.items != undefined) {
-        if (this.detail_items.length < this.items.length) {
+      console.log('Items computed', this.items.legth);
+
+      if (this.items.length) {
+        if (this.detail_items.length < this.items.length && !this.active) {
           return true;
+        } else {
+          return false;
         }
+      } else if (!this.items.length) {
+        return true;
       } else {
         return false;
       }
     },
-    subtotal: function subtotal() {
-      var subtotal = detail_items.harga * detail_items.qty;
-      return subtotal;
-    },
+    // subtotal: function() {
+    //     let subtotal = detail_items.item.harga_jual * detail_items.qty;
+    //     return subtotal;
+    // },
     total: function total() {
       return this.detail_items.reduce(function (sum, item) {
-        var total = sum + item.harga * item.qty;
+        var total = sum + item.item.harga_jual * item.qty;
         return total;
       }, 0);
     },
     total_beli: function total_beli() {
       return this.detail_items.reduce(function (sum, item) {
-        var total = sum + item.harga_beli * item.qty;
+        var total = sum + item.item.harga_beli * item.qty;
         return total;
       }, 0);
     },
-    itemsWithSubTotal: function itemsWithSubTotal() {
-      return this.detail_items.map(function (item) {
-        return {
-          item: item,
-          subtotal: "blblbl"
-        };
-      });
+    // itemsWithSubTotal() {
+    //     return this.detail_items.map(item => ({item, subtotal: "blblbl"
+    //     }))
+    // },
+    updateHargaJual: function updateHargaJual() {
+      return this.item.harga;
     }
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('product', ['CLEAR_FORM_ITEM']), {
@@ -450,8 +461,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // console.log("done typing" ,data)
       var payload = {
         name: String(data.item_id),
-        harga: String(data.harga),
-        harga_beli: String(data.harga_beli),
+        harga: String(data.item.harga_jual),
+        harga_beli: String(data.item.harga_beli),
         qty: String(data.qty)
       };
       this.$store.commit('product/ASSIGN_FORM_ITEM', payload);
@@ -473,6 +484,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
       this.edited = false; // console.log('done edit harga', item.id ,item.edit)
+    },
+    updateHargaJualItem: function updateHargaJualItem(value) {
+      var _this2 = this;
+
+      console.log('jual ', value, ' id ', this.item.item_id);
+
+      if (this.item.item_id) {
+        console.log('JALAN', value != undefined, value != 'undefined', !this.item.item_id);
+        return new Promise(function (resolve, reject) {
+          var formData = new FormData();
+          formData.append("harga_jual", value);
+          formData.append('_method', 'put'); // ini mengupdate harga jual item
+
+          Object(_services_http_service_js__WEBPACK_IMPORTED_MODULE_6__["http"])().post("/user/items-update-harga-jual/".concat(_this2.item.item_id), formData).then(function (response) {
+            console.log('ok');
+          });
+        });
+      }
     },
     //==================================================
     saveTotal: function () {
@@ -567,31 +596,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     cancelNew: function cancelNew() {
       this.CLEAR_FORM_ITEM();
+      this.$store.commit('CLEAR_ERRORS');
       this.active = false;
     },
     //===================================
-    cancelForm: function cancelForm() {
-      this.CLEAR_FORM_ITEM();
-      this.$refs.modalForm.hide();
-    },
     submit: function submit() {
-      var _this2 = this;
+      var _this3 = this;
 
       var id_product = this.$route.params.id; //KETIKA TOMBOL DITEKAN MAKA FUNGSI INI AKAN DIJALANKAN
       //DIMANA FUNGSI INI TELAH DIBUAT PADA SESI SEBELUMNYA
 
-      this.submitProductDetail(id_product).then(function () {
-        //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /products
-        // this.$refs.modalForm.hide();
-        _this2.active = false;
+      console.log(this.item.harga, ' item ', !this.item.harga);
 
-        _this2.CLEAR_FORM_ITEM();
+      if (this.item.harga) {
+        this.submitProductDetail(id_product).then(function () {
+          //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /products
+          // this.$refs.modalForm.hide();
+          _this3.active = false;
 
-        _this2.getDetailsProduct(id_product);
-      });
+          _this3.CLEAR_FORM_ITEM();
+
+          _this3.getDetailsProduct(id_product);
+        });
+      }
+    },
+    cancelForm: function cancelForm() {
+      this.CLEAR_FORM_ITEM();
+      this.$refs.modalForm.hide();
     },
     removeData: function removeData(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       var id_product = this.$route.params.id;
       this.$swal({
@@ -606,9 +640,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         //JIKA DISETUJUI
         if (result.value) {
           //MAKA FUNGSI removeproduct AKAN DIJALANKAN
-          _this3.removeDetailProduct(id).then(function () {
+          _this4.removeDetailProduct(id).then(function () {
             //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /products
-            _this3.getDetailsProduct(id_product);
+            _this4.getDetailsProduct(id_product);
           });
         }
       });
@@ -616,7 +650,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   watch: {
     total: 'saveTotal',
-    total_beli: 'saveTotalBeli'
+    total_beli: 'saveTotalBeli',
+    updateHargaJual: 'updateHargaJualItem'
   }
 });
 
@@ -898,9 +933,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {
     subtotal: function subtotal() {
       return this.item.harga * new Intl.NumberFormat().format(this.item.qty);
+    },
+    updateHargaJual: function updateHargaJual() {
+      return this.item.harga;
     }
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])('product', ['CLEAR_FORM_ITEM']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('item', ['getItems', 'getItemById']), {
+    ganti: function ganti() {
+      console.log('ganti');
+    },
     onChange: function onChange(value) {
       var _this = this;
 
@@ -932,6 +973,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     cancel: function cancel() {
       this.$emit('cancel');
+      this.CLEAR_FORM_ITEM();
     },
     editQty: function editQty() {
       this.qtyEdit = true;
@@ -941,15 +983,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     doneEditQty: function doneEditQty() {
       this.qtyEdit = false;
-    },
-    carHargaJual: function carHargaJual() {
-      if (this.item.harga) {
-        this.jual = this.item.harga;
-      } else if (this.item.harga_jual) {
-        this.jual = this.item.harga_jual;
-      } else {
-        this.jual = 0;
-      }
     },
     addNew: function addNew() {
       // console.log('item', this.item)
@@ -1439,39 +1472,45 @@ var render = function() {
           _c("hr", { staticClass: "batas-dark" }),
           _vm._v(" "),
           _c("div", { staticClass: "px-4 m-0" }, [
-            _c("div", { staticClass: "mb-1" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-info btn-xsm",
-                  attrs: { type: "button" },
-                  on: { click: _vm.addNew }
-                },
-                [
-                  _c("i", { staticClass: "fas fa-plus-circle" }),
-                  _vm._v("\n                        Add\n                    ")
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _vm.detail_items.length
-              ? _c("div", [
-                  _c("table", { staticClass: "table table-responsive" }, [
-                    _vm._m(0),
+            _c("div", [
+              _c("table", { staticClass: "table table-responsive" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  [
+                    _vm.active
+                      ? _c("input-item", {
+                          on: { cancel: _vm.cancelNew, submit: _vm.submit }
+                        })
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "tbody",
-                      [
-                        _vm.active
-                          ? _c("input-item", {
-                              on: { cancel: _vm.cancelNew, submit: _vm.submit }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm._l(_vm.detail_items, function(item, row) {
-                          return _c("tr", { key: row }, [
-                            _c("td", [
-                              _c(
+                    _vm._l(_vm.detail_items, function(item, row) {
+                      return _c("tr", { key: row }, [
+                        _c("td", [
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "b-tooltip",
+                                  rawName: "v-b-tooltip.hover",
+                                  modifiers: { hover: true }
+                                }
+                              ],
+                              staticClass: "tombol-di-table red-color",
+                              attrs: { title: "Hapus Data" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.removeData(item.id)
+                                }
+                              }
+                            },
+                            [_c("span", { staticClass: "fa fa-trash " })]
+                          ),
+                          _vm._v(" "),
+                          !item.edit
+                            ? _c(
                                 "button",
                                 {
                                   directives: [
@@ -1481,278 +1520,267 @@ var render = function() {
                                       modifiers: { hover: true }
                                     }
                                   ],
-                                  staticClass: "tombol-di-table red-color",
-                                  attrs: { title: "Hapus Data" },
+                                  staticClass: "tombol-di-table blue-color",
+                                  attrs: { title: "Edit Data" },
                                   on: {
                                     click: function($event) {
-                                      return _vm.removeData(item.id)
+                                      return _vm.edit(item)
                                     }
                                   }
                                 },
-                                [_c("span", { staticClass: "fa fa-trash " })]
-                              ),
-                              _vm._v(" "),
-                              !item.edit
-                                ? _c(
-                                    "button",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "b-tooltip",
-                                          rawName: "v-b-tooltip.hover",
-                                          modifiers: { hover: true }
-                                        }
-                                      ],
-                                      staticClass: "tombol-di-table blue-color",
-                                      attrs: { title: "Edit Data" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.edit(item)
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("span", {
-                                        staticClass: "fa fa-pencil-alt "
-                                      })
-                                    ]
-                                  )
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(item.item.nama))]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-right" }, [
-                              _vm._v(
-                                _vm._s(
-                                  _vm._f("numeral")(item.harga_beli, "0,0")
-                                )
+                                [
+                                  _c("span", {
+                                    staticClass: "fa fa-pencil-alt "
+                                  })
+                                ]
                               )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-right" }, [
-                              !item.edit
-                                ? _c("div", { staticClass: "text-right" }, [
-                                    _vm._v(
-                                      "\n                                        " +
-                                        _vm._s(
-                                          _vm._f("numeral")(item.harga, "0,0")
-                                        ) +
-                                        "\n                                        "
-                                    )
-                                  ])
-                                : _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: item.harga,
-                                        expression: "item.harga"
-                                      },
-                                      { name: "focus", rawName: "v-focus" }
-                                    ],
-                                    staticClass: "text-right",
-                                    attrs: { type: "number" },
-                                    domProps: { value: item.harga },
-                                    on: {
-                                      change: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.saveEdit(item)
-                                      },
-                                      keyup: function($event) {
-                                        if (
-                                          !$event.type.indexOf("key") &&
-                                          _vm._k(
-                                            $event.keyCode,
-                                            "enter",
-                                            13,
-                                            $event.key,
-                                            "Enter"
-                                          )
-                                        ) {
-                                          return null
-                                        }
-                                        return _vm.doneEdit(item)
-                                      },
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          item,
-                                          "harga",
-                                          $event.target.value
-                                        )
-                                      }
+                            : _vm._e()
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(item.item.nama))]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _vm._v(
+                            _vm._s(
+                              _vm._f("numeral")(item.item.harga_beli, "0,0")
+                            )
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          !item.edit
+                            ? _c("div", { staticClass: "text-right" }, [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(
+                                      _vm._f("numeral")(
+                                        item.item.harga_jual,
+                                        "0,0"
+                                      )
+                                    ) +
+                                    "\n                                        "
+                                )
+                              ])
+                            : _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: item.item.harga_jual,
+                                    expression: "item.item.harga_jual"
+                                  },
+                                  { name: "focus", rawName: "v-focus" }
+                                ],
+                                staticClass: "text-right",
+                                attrs: { type: "text" },
+                                domProps: { value: item.item.harga_jual },
+                                on: {
+                                  change: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.saveEdit(item)
+                                  },
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
                                     }
-                                  })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-right" }, [
-                              !item.edit
-                                ? _c("div", { staticClass: "text-right" }, [
-                                    _vm._v(
-                                      "\n                                            " +
-                                        _vm._s(item.qty) +
-                                        "\n                                        "
-                                    )
-                                  ])
-                                : _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: item.qty,
-                                        expression: "item.qty"
-                                      }
-                                    ],
-                                    staticClass: "text-right",
-                                    attrs: { type: "number" },
-                                    domProps: { value: item.qty },
-                                    on: {
-                                      change: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.saveEdit(item)
-                                      },
-                                      keyup: function($event) {
-                                        if (
-                                          !$event.type.indexOf("key") &&
-                                          _vm._k(
-                                            $event.keyCode,
-                                            "enter",
-                                            13,
-                                            $event.key,
-                                            "Enter"
-                                          )
-                                        ) {
-                                          return null
-                                        }
-                                        return _vm.doneEdit(item)
-                                      },
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          item,
-                                          "qty",
-                                          $event.target.value
-                                        )
-                                      }
+                                    return _vm.doneEdit(item)
+                                  },
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
                                     }
-                                  })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", { staticClass: "text-right" }, [
-                              item.edit
-                                ? _c(
-                                    "button",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "b-tooltip",
-                                          rawName: "v-b-tooltip.hover",
-                                          modifiers: { hover: true }
-                                        }
-                                      ],
-                                      staticClass:
-                                        "tombol-di-table green-color",
-                                      attrs: { title: "Simpan Data" },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.doneEdit(item)
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("span", {
-                                        staticClass: "fas fa-check fa-2x"
-                                      })
-                                    ]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
-                              !item.edit
-                                ? _c("span", [
-                                    _vm._v(
-                                      "\n                                            " +
-                                        _vm._s(
-                                          _vm._f("numeral")(
-                                            item.harga * item.qty,
-                                            "0,0"
-                                          )
-                                        ) +
-                                        "\n                                        "
+                                    _vm.$set(
+                                      item.item,
+                                      "harga_jual",
+                                      $event.target.value
                                     )
-                                  ])
-                                : _vm._e()
-                            ])
-                          ])
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c("tfoot", [
-                      _vm.bottomAdd
-                        ? _c("tr", [
-                            _c(
-                              "td",
+                                  }
+                                }
+                              })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          {
+                            directives: [
                               {
-                                staticClass: "text-center",
-                                attrs: { colspan: "6" }
+                                name: "b-tooltip",
+                                rawName: "v-b-tooltip.hover",
+                                modifiers: { hover: true }
+                              }
+                            ],
+                            staticClass: "text-right",
+                            attrs: { title: "Doble click to edit" }
+                          },
+                          [
+                            !item.edit
+                              ? _c("div", { staticClass: "text-right" }, [
+                                  _vm._v(
+                                    "\n                                            " +
+                                      _vm._s(item.qty) +
+                                      " " +
+                                      _vm._s(item.item.unit.nama) +
+                                      "\n                                        "
+                                  )
+                                ])
+                              : _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: item.qty,
+                                      expression: "item.qty"
+                                    }
+                                  ],
+                                  staticClass: "text-right",
+                                  attrs: { type: "number" },
+                                  domProps: { value: item.qty },
+                                  on: {
+                                    change: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.saveEdit(item)
+                                    },
+                                    keyup: function($event) {
+                                      if (
+                                        !$event.type.indexOf("key") &&
+                                        _vm._k(
+                                          $event.keyCode,
+                                          "enter",
+                                          13,
+                                          $event.key,
+                                          "Enter"
+                                        )
+                                      ) {
+                                        return null
+                                      }
+                                      return _vm.doneEdit(item)
+                                    },
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(item, "qty", $event.target.value)
+                                    }
+                                  }
+                                })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          item.edit
+                            ? _c(
+                                "button",
+                                {
+                                  directives: [
+                                    {
+                                      name: "b-tooltip",
+                                      rawName: "v-b-tooltip.hover",
+                                      modifiers: { hover: true }
+                                    }
+                                  ],
+                                  staticClass: "tombol-di-table green-color",
+                                  attrs: { title: "Simpan Data" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.doneEdit(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("span", {
+                                    staticClass: "fas fa-check fa-2x"
+                                  })
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !item.edit
+                            ? _c("span", [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(
+                                      _vm._f("numeral")(
+                                        item.item.harga_jual * item.qty,
+                                        "0,0"
+                                      )
+                                    ) +
+                                    "\n                                        "
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("tfoot", [
+                  _vm.bottomAdd
+                    ? _c("tr", [
+                        _c(
+                          "td",
+                          {
+                            staticClass: "text-center",
+                            attrs: { colspan: "6" }
+                          },
+                          [
+                            _c(
+                              "button",
+                              {
+                                directives: [
+                                  {
+                                    name: "b-tooltip",
+                                    rawName: "v-b-tooltip.hover",
+                                    modifiers: { hover: true }
+                                  }
+                                ],
+                                staticClass: "tombol-di-table blue-color",
+                                attrs: { title: "Tambah data" },
+                                on: { click: _vm.addNew }
                               },
                               [
-                                _c(
-                                  "button",
-                                  {
-                                    directives: [
-                                      {
-                                        name: "b-tooltip",
-                                        rawName: "v-b-tooltip.hover",
-                                        modifiers: { hover: true }
-                                      }
-                                    ],
-                                    staticClass: "tombol-di-table blue-color",
-                                    attrs: { title: "Tambah data" },
-                                    on: { click: _vm.addNew }
-                                  },
-                                  [
-                                    _c("span", {
-                                      staticClass: "fas fa-plus-circle fa-4x"
-                                    })
-                                  ]
-                                )
+                                _c("span", {
+                                  staticClass: "fas fa-plus-circle fa-4x"
+                                })
                               ]
                             )
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-right" }, [
-                          _c("b", [
-                            _vm._v(_vm._s(_vm._f("numeral")(_vm.total, "0,0")))
-                          ])
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "text-right" }, [
-                          _c("b", [
-                            _vm._v(
-                              _vm._s(_vm._f("numeral")(_vm.total_beli, "0,0"))
-                            )
-                          ])
-                        ])
+                          ]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-right" }, [
+                      _c("b", [
+                        _vm._v(_vm._s(_vm._f("numeral")(_vm.total, "0,0")))
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("tr", [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-right" }, [
+                      _c("b", [
+                        _vm._v(_vm._s(_vm._f("numeral")(_vm.total_beli, "0,0")))
                       ])
                     ])
                   ])
                 ])
-              : _vm._e()
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("hr", { staticClass: "batas-dark" }),
@@ -2089,7 +2117,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", { staticClass: "input-item" }, [
+  return _c("tr", [
     _c("td", [
       _c(
         "button",
@@ -2196,6 +2224,7 @@ var render = function() {
         _c("input-number", {
           staticClass: "form-control",
           attrs: { disabled: _vm.disabled },
+          on: { change: _vm.ganti },
           model: {
             value: _vm.item.harga,
             callback: function($$v) {

@@ -6,18 +6,19 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{ $route.meta.subtitle }}</h6>
                 <hr class="batas-dark"/>
                 <div class="px-4 m-0">
+<!-- 
                     <div class="mb-1">
                     <button type='button' class="btn btn-info btn-xsm" @click="addNew">
                         <i class="fas fa-plus-circle"></i>
                         Add
                     </button>
-<!-- 
+
                     <button type='button' class="btn btn-info btn-xsm" @click="edit">
                         <i class="fas fa-pencil"></i>
                         edit
                     </button>
-                    -->
                     </div>
+                    -->
                     
                     <!-- INI CONTENTNYA -->
                     <!-- ==================tambahan========== -->
@@ -25,7 +26,8 @@
                     <daftar-item></daftar-item>
                     </div> -->
                     <!-- ==================================== -->
-                    <div v-if="detail_items.length">
+                    <!-- <div v-if="detail_items.length"> -->
+                    <div >
                         <table class="table table-responsive">
                             <thead>
                                 <tr>
@@ -40,7 +42,6 @@
                             <tbody>
                                 <!-- ============ Edit ========================= -->
                                 <input-item v-if="active" @cancel="cancelNew" @submit="submit"/>
-                                
                                 <tr v-for="(item, row) in detail_items" :key="row">
                                     <td>
                                         <button
@@ -63,24 +64,27 @@
                                         
                                     </td>
                                     <td>{{ item.item.nama }}</td>
-                                    <td class="text-right">{{ item.harga_beli | numeral('0,0') }}</td>
+                                    <td class="text-right">{{ item.item.harga_beli | numeral('0,0') }}</td>
                                     <td class="text-right">
                                         <div class="text-right" v-if="!item.edit" >
-                                        {{ item.harga | numeral('0,0') }}
+                                        {{ item.item.harga_jual | numeral('0,0') }}
                                         </div>
                                         <input
                                             v-else
                                             class="text-right"
-                                            type="number"
-                                            v-model="item.harga"
+                                            type="text"
+                                            v-model="item.item.harga_jual"
                                             @change.prevent="saveEdit(item)"
                                             @keyup.enter="doneEdit(item)"
                                             v-focus 
                                             >
                                     </td>
-                                    <td class="text-right">
+                                    <td class="text-right"
+                                        v-b-tooltip.hover
+                                        title="Doble click to edit"
+                                    >
                                         <div class="text-right" v-if="!item.edit" >
-                                            {{ item.qty }}
+                                            {{ item.qty  }} {{item.item.unit.nama}}
                                         </div>
                                         <input
                                             v-else
@@ -102,7 +106,7 @@
                                             <span class="fas fa-check fa-2x"></span>
                                         </button>
                                         <span v-if="!item.edit">
-                                            {{ item.harga * item.qty | numeral('0,0')}}
+                                            {{ item.item.harga_jual * item.qty | numeral('0,0')}}
                                         </span>
                                     </td>
                                 </tr>
@@ -173,6 +177,7 @@ import FormItemProduct from './FormItem.vue';
 import * as productService from '../../services/product_service.js';
 import DaftarItem from './DaftarItem.vue'
 import UpdateItem from './updateItem.vue'
+import {http} from '../../services/http_service.js';
 import InputItem from './InputItem.vue'
 export default {
     name: 'details-item-product',
@@ -199,15 +204,9 @@ export default {
         return{
             title_form: '',
             active:false,
-            edited:false
+            edited:false //memastikan bahwa update product detail dilakukan jika benar2 sudah d edit
         }
     },
-// updated(){
-//     console.log('addEEdit')
-//     this.detail_items.forEach(e => {
-//         e.edit = false
-//     })
-// },
     computed: {
         ...mapState('product', {
             detail_items: state => state.detail_items,
@@ -215,37 +214,48 @@ export default {
         ...mapState('item', {
             items: state => state.items, //MENGAMBIL STATE PRODUCT
         }),
+        ...mapState('product', {
+            item: state => state.item, //MENGAMBIL STATE PRODUCT
+        }),
         bottomAdd(){
-            if(this.items!=undefined){
-                if(this.detail_items.length<this.items.length){
+            console.log('Items computed',this.items.legth)
+            if(this.items.length){
+                if(this.detail_items.length<this.items.length && !this.active){
                     return true
+                }else{
+                    return false
                 }
+            }else if(!this.items.length){
+                return true
             }else{
                 return false
             }
         },
-        subtotal: function() {
-            let subtotal = detail_items.harga * detail_items.qty;
-            return subtotal;
+        // subtotal: function() {
+        //     let subtotal = detail_items.item.harga_jual * detail_items.qty;
+        //     return subtotal;
             
-        },
+        // },
         total() {
             return this.detail_items.reduce(function (sum, item) {
-                let total = sum + item.harga * item.qty;
+                let total = sum + item.item.harga_jual * item.qty;
                 return total
             }, 0)
         },
         total_beli() {
             return this.detail_items.reduce(function (sum, item) {
-                let total = sum + item.harga_beli * item.qty;
+                let total = sum + item.item.harga_beli * item.qty;
                 return total
             }, 0)
         },
 
-        itemsWithSubTotal() {
-            return this.detail_items.map(item => ({item, subtotal: "blblbl"
-            }))
-        },
+        // itemsWithSubTotal() {
+        //     return this.detail_items.map(item => ({item, subtotal: "blblbl"
+        //     }))
+        // },
+        updateHargaJual(){
+            return this.item.harga;
+        }
     },
 
     methods: {
@@ -261,8 +271,8 @@ export default {
             // console.log("done typing" ,data)
             let payload = {
                 name: String(data.item_id),
-                harga: String(data.harga),
-                harga_beli: String(data.harga_beli),
+                harga: String(data.item.harga_jual),
+                harga_beli: String(data.item.harga_beli),
                 qty: String(data.qty)
                 }
             this.$store.commit('product/ASSIGN_FORM_ITEM', payload)
@@ -283,6 +293,22 @@ export default {
             //pastikan nilai edited adalah false
             this.edited = false
             // console.log('done edit harga', item.id ,item.edit)
+        },
+        updateHargaJualItem(value){
+            console.log('jual ',value, ' id ', this.item.item_id)
+            if(this.item.item_id){
+                        console.log('JALAN', value!=undefined, value!='undefined', !this.item.item_id);
+                return new Promise((resolve, reject) => {
+                    const formData = new FormData();
+                    formData.append("harga_jual", value);
+                    formData.append('_method', 'put');
+                    // ini mengupdate harga jual item
+                    http().post(`/user/items-update-harga-jual/${this.item.item_id}`, formData)
+                    .then((response) => {
+                        console.log('ok');
+                    })
+                })  
+            }
         },
         //==================================================
 
@@ -324,24 +350,28 @@ export default {
         },
         cancelNew(){            
             this.CLEAR_FORM_ITEM();
+            this.$store.commit('CLEAR_ERRORS')
             this.active = false
         },
         //===================================
-        cancelForm(){
-            this.CLEAR_FORM_ITEM();
-            this.$refs.modalForm.hide();
-        },
         submit() {
             let id_product = this.$route.params.id;
             //KETIKA TOMBOL DITEKAN MAKA FUNGSI INI AKAN DIJALANKAN
             //DIMANA FUNGSI INI TELAH DIBUAT PADA SESI SEBELUMNYA
-            this.submitProductDetail(id_product).then(() => {
-                //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /products
-                // this.$refs.modalForm.hide();
-                this.active = false
-                this.CLEAR_FORM_ITEM();
-                this.getDetailsProduct(id_product);
-            })
+            console.log(this.item.harga,' item ',!this.item.harga)
+            if(this.item.harga){
+                this.submitProductDetail(id_product).then(() => {
+                    //APABILA BERHASIL MAKA AKAN DI-DIRECT KE HALAMAN /products
+                    // this.$refs.modalForm.hide();
+                    this.active = false
+                    this.CLEAR_FORM_ITEM();
+                    this.getDetailsProduct(id_product);
+                })
+            }
+        },
+        cancelForm(){
+            this.CLEAR_FORM_ITEM();
+            this.$refs.modalForm.hide();
         },
         removeData(id){
              let id_product = this.$route.params.id;
@@ -368,7 +398,8 @@ export default {
 
     watch:{
         total: 'saveTotal',
-        total_beli: 'saveTotalBeli'
+        total_beli: 'saveTotalBeli',
+        updateHargaJual: 'updateHargaJualItem'
     },
 }
 </script>

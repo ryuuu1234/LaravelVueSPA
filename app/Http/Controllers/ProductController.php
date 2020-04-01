@@ -90,7 +90,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::where('id', $id)->with(['detail_items', 'detail_items.item:id,nama'])->get();
+        $product = Product::where('id', $id)->with(['detail_items', 'detail_items.item:id,nama,harga_beli,harga_jual,unit_id', 'detail_items.item.unit:id,nama'])->get();
         return response()->json(['status' => 'success', 'data' => $product], 200);
     }
 
