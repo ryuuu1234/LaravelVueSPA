@@ -79,10 +79,7 @@
                                             v-focus 
                                             >
                                     </td>
-                                    <td class="text-right"
-                                        v-b-tooltip.hover
-                                        title="Doble click to edit"
-                                    >
+                                    <td class="text-right">
                                         <div class="text-right" v-if="!item.edit" >
                                             {{ item.qty  }} {{item.item.unit.nama}}
                                         </div>
@@ -197,6 +194,10 @@ export default {
     },
     created(){
         this.getDetailsProduct(this.$route.params.id)
+        if(!this.items.length){
+            // console.log('details item get item')
+            this.getItems()
+        }
         // this.lookConsole();
     },
 
@@ -218,15 +219,13 @@ export default {
             item: state => state.item, //MENGAMBIL STATE PRODUCT
         }),
         bottomAdd(){
-            console.log('Items computed',this.items.legth)
+            console.log('Items computed',this.items.length)
             if(this.items.length){
                 if(this.detail_items.length<this.items.length && !this.active){
                     return true
                 }else{
                     return false
                 }
-            }else if(!this.items.length){
-                return true
             }else{
                 return false
             }
@@ -261,7 +260,7 @@ export default {
     methods: {
         ...mapActions('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']),
         ...mapMutations('product', ['CLEAR_FORM_ITEM']), //PANGGIL MUTATIONS CLEAR_FORM
-
+        ...mapActions('item', ['getItems']),
         //===========================================================================
         edit(item){
             item.edit=true

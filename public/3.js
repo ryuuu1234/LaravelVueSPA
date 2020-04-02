@@ -360,9 +360,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
 
 
 
@@ -387,7 +384,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   created: function created() {
-    this.getDetailsProduct(this.$route.params.id); // this.lookConsole();
+    this.getDetailsProduct(this.$route.params.id);
+
+    if (!this.items.length) {
+      // console.log('details item get item')
+      this.getItems();
+    } // this.lookConsole();
+
   },
   data: function data() {
     return {
@@ -413,7 +416,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   }), {
     bottomAdd: function bottomAdd() {
-      console.log('Items computed', this.items.legth);
+      console.log('Items computed', this.items.length);
 
       if (this.items.length) {
         if (this.detail_items.length < this.items.length && !this.active) {
@@ -421,8 +424,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } else {
           return false;
         }
-      } else if (!this.items.length) {
-        return true;
       } else {
         return false;
       }
@@ -451,8 +452,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.item.harga;
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('product', ['CLEAR_FORM_ITEM']), {
-    //PANGGIL MUTATIONS CLEAR_FORM
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('product', ['getDetailsProduct', 'submitProductDetail', 'removeDetailProduct']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapMutations"])('product', ['CLEAR_FORM_ITEM']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('item', ['getItems']), {
     //===========================================================================
     edit: function edit(item) {
       item.edit = true; // this.active=!this.active
@@ -1608,72 +1608,58 @@ var render = function() {
                               })
                         ]),
                         _vm._v(" "),
-                        _c(
-                          "td",
-                          {
-                            directives: [
-                              {
-                                name: "b-tooltip",
-                                rawName: "v-b-tooltip.hover",
-                                modifiers: { hover: true }
-                              }
-                            ],
-                            staticClass: "text-right",
-                            attrs: { title: "Doble click to edit" }
-                          },
-                          [
-                            !item.edit
-                              ? _c("div", { staticClass: "text-right" }, [
-                                  _vm._v(
-                                    "\n                                            " +
-                                      _vm._s(item.qty) +
-                                      " " +
-                                      _vm._s(item.item.unit.nama) +
-                                      "\n                                        "
-                                  )
-                                ])
-                              : _c("input", {
-                                  directives: [
-                                    {
-                                      name: "model",
-                                      rawName: "v-model",
-                                      value: item.qty,
-                                      expression: "item.qty"
-                                    }
-                                  ],
-                                  staticClass: "text-right",
-                                  attrs: { type: "number" },
-                                  domProps: { value: item.qty },
-                                  on: {
-                                    change: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.saveEdit(item)
-                                    },
-                                    keyup: function($event) {
-                                      if (
-                                        !$event.type.indexOf("key") &&
-                                        _vm._k(
-                                          $event.keyCode,
-                                          "enter",
-                                          13,
-                                          $event.key,
-                                          "Enter"
-                                        )
-                                      ) {
-                                        return null
-                                      }
-                                      return _vm.doneEdit(item)
-                                    },
-                                    input: function($event) {
-                                      if ($event.target.composing) {
-                                        return
-                                      }
-                                      _vm.$set(item, "qty", $event.target.value)
-                                    }
+                        _c("td", { staticClass: "text-right" }, [
+                          !item.edit
+                            ? _c("div", { staticClass: "text-right" }, [
+                                _vm._v(
+                                  "\n                                            " +
+                                    _vm._s(item.qty) +
+                                    " " +
+                                    _vm._s(item.item.unit.nama) +
+                                    "\n                                        "
+                                )
+                              ])
+                            : _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: item.qty,
+                                    expression: "item.qty"
                                   }
-                                })
-                          ]
-                        ),
+                                ],
+                                staticClass: "text-right",
+                                attrs: { type: "number" },
+                                domProps: { value: item.qty },
+                                on: {
+                                  change: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.saveEdit(item)
+                                  },
+                                  keyup: function($event) {
+                                    if (
+                                      !$event.type.indexOf("key") &&
+                                      _vm._k(
+                                        $event.keyCode,
+                                        "enter",
+                                        13,
+                                        $event.key,
+                                        "Enter"
+                                      )
+                                    ) {
+                                      return null
+                                    }
+                                    return _vm.doneEdit(item)
+                                  },
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(item, "qty", $event.target.value)
+                                  }
+                                }
+                              })
+                        ]),
                         _vm._v(" "),
                         _c("td", { staticClass: "text-right" }, [
                           item.edit

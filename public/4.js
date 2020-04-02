@@ -86,6 +86,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: String,
+      required: true
+    }
+  },
+  // bisa update input per digit
+  computed: {
+    model: {
+      get: function get() {
+        var value = this.value.split(".");
+        var decimal = typeof value[1] !== "undefined" ? "." + value[1] : "";
+        return Number(value[0]).toLocaleString("en-GB") + decimal;
+      },
+      set: function set(newValue) {
+        this.$emit("input", newValue.replace(/,/g, ""));
+      }
+    }
+  },
+  // kirim hasil inputan jadi
+  methods: {
+    kirimValue: function kirimValue() {
+      this.$emit('change', this.model.replace(/,/g, ""));
+    }
+  },
+  watch: {
+    model: function model() {
+      this.model = this.model.replace(/[^0-9]/g, ''); // this.kirimValue();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/cobacoba/PercobaanPage.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/cobacoba/PercobaanPage.vue?vue&type=script&lang=js& ***!
@@ -97,6 +145,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/base/BaseInput.vue */ "./resources/js/components/base/BaseInput.vue");
 /* harmony import */ var _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/base/BaseButton.vue */ "./resources/js/components/base/BaseButton.vue");
+/* harmony import */ var _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/khusus/InputNumberTwo.vue */ "./resources/js/components/khusus/InputNumberTwo.vue");
 //
 //
 //
@@ -117,21 +166,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     BaseInput: _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    BaseButton: _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    BaseButton: _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'n-input': _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
       username: "",
       password: "",
-      nyentuh: 0
+      nyentuh: 0,
+      number: '',
+      price: null,
+      previousPrice: null
     };
   },
+  mounted: function mounted() {// let stringValue = e.target.value.toString();
+  },
   methods: {
+    //    handleInput (e) {
+    //         let stringValue = e.target.value.toString();
+    //         let value = stringValue.split(".");
+    //         let decimal = typeof value[1] !== "undefined"? "." + value[1]: "";
+    //         let jadi = Number(value[0]).toLocaleString("de-DE") + decimal;
+    //         // console.log(jadi);
+    //         this.previousPrice = jadi;
+    //     },
     consoleClick: function consoleClick(e) {
       // alert('ok')
       this.nyentuh = 0;
@@ -142,8 +215,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     mouseNyentuh: function mouseNyentuh() {
       this.nyentuh++;
+    },
+    onChange: function onChange(e) {
+      var value = e.target.value;
+      console.group('values');
+      console.log(new Intl.NumberFormat('en-CA', {
+        style: 'decimal'
+      }).format(value));
+      console.log(new Intl.NumberFormat('fr-CA', {
+        style: 'decimal'
+      }).format(value));
+      console.log(new Intl.NumberFormat('de-DE', {
+        style: 'decimal'
+      }).format(value));
+      console.groupEnd('values'); // group currency
+
+      console.group('currency');
+      console.log(new Intl.NumberFormat('en-CA', {
+        style: 'currency',
+        currency: 'CAD'
+      }).format(value));
+      console.log(new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP'
+      }).format(value));
+      console.log(new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'IDR'
+      }).format(value));
+      console.groupEnd('currency');
+    },
+    changeInput: function changeInput(e) {
+      console.log(e);
+      console.log(this.number);
     }
-  }
+  } // watch: {
+  //     number: 'changeInput',
+  // }
+
 });
 
 /***/ }),
@@ -254,6 +363,49 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.model,
+        expression: "model"
+      }
+    ],
+    attrs: { type: "string" },
+    domProps: { value: _vm.model },
+    on: {
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.model = $event.target.value
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/cobacoba/PercobaanPage.vue?vue&type=template&id=911e876c&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/cobacoba/PercobaanPage.vue?vue&type=template&id=911e876c&scoped=true& ***!
@@ -275,6 +427,7 @@ var render = function() {
     [
       _c("BaseInput", {
         attrs: { label: "Username", type: "text", placeholder: "Username" },
+        on: { change: _vm.onChange },
         model: {
           value: _vm.username,
           callback: function($$v) {
@@ -311,7 +464,26 @@ var render = function() {
           }
         },
         [_vm._v("\n        yo "), _c("i", { staticClass: "fa fa-home" })]
-      )
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        [
+          _c("n-input", {
+            on: { change: _vm.changeInput },
+            model: {
+              value: _vm.number,
+              callback: function($$v) {
+                _vm.number = $$v
+              },
+              expression: "number"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("br")
     ],
     1
   )
@@ -456,6 +628,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseInput_vue_vue_type_template_id_51dfbf26___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseInput_vue_vue_type_template_id_51dfbf26___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/InputNumberTwo.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/khusus/InputNumberTwo.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./InputNumberTwo.vue?vue&type=template&id=f3d24598& */ "./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598&");
+/* harmony import */ var _InputNumberTwo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InputNumberTwo.vue?vue&type=script&lang=js& */ "./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _InputNumberTwo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/khusus/InputNumberTwo.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InputNumberTwo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./InputNumberTwo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InputNumberTwo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./InputNumberTwo.vue?vue&type=template&id=f3d24598& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/khusus/InputNumberTwo.vue?vue&type=template&id=f3d24598&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InputNumberTwo_vue_vue_type_template_id_f3d24598___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
