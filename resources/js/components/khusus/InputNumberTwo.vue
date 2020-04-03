@@ -1,5 +1,5 @@
 <template>
-    <input type="string" v-model="model" >
+    <input type="string" v-model="model" @change="kirimValue">
 </template>
 
 <script>
@@ -37,8 +37,7 @@ export default {
     watch: {
         model(){
             this.model = this.model.replace(/[^0-9]/g, '');
-            // this.kirimValue();
         }
-    }
+    },
 }
 </script>

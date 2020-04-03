@@ -101,6 +101,14 @@
                                     >Data Products</router-link
                                 >
                             </div>
+                            <div class="nav-link-ku">
+                                <router-link
+                                    to="/data-bubuk"
+                                    class="nav-link"
+                                    exact
+                                    >Data Bubuk</router-link
+                                >
+                            </div>
                         </nav>
                     </div>
                     <div class="nav-link-ku">

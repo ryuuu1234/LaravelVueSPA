@@ -141,7 +141,7 @@ class OrderController extends Controller
             DB::commit();    
             return response()->json([
                 'status'=>'sukses',
-                'message'=>$order->reff,
+                'data'=> $order,
                 ], 200); 
 
         } catch (\Exception $e) {

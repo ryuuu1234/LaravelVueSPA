@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue';
 import IndexProduct from './views/products/Index.vue';
 import IndexOrder from './views/orders/Index.vue';
+import IndexBubuk from './views/bubuk/Index.vue';
 import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
@@ -157,6 +158,25 @@ const routes = [{
             }
         ],
     },// akhir dari orders
+
+    {
+        path: '/data-bubuk',
+        component: IndexBubuk,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'bubuk.data',
+            component: () => import('./views/bubuk/Bubuk.vue'),
+                meta: {
+                    title: 'Manage Data Bubuk',
+                },
+            },
+        ],
+    },// akhir dari Bubuk
+
     {
         path: '/coba-coba',
         component: IndexPercobaan,

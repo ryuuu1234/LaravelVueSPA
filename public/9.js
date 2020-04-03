@@ -135,7 +135,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       //JUGA BERLAKU UNTUK META
       current_page: 1,
       //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-      per_page: 5,
+      per_page: 10,
       //DEFAULT LOAD PERPAGE ADALAH 5
       search: '',
       sortBy: 'created_at',
@@ -569,11 +569,11 @@ var render = function() {
                         },
                         [
                           _c("option", { attrs: { value: "1" } }, [
-                            _vm._v("Konfirmasi")
+                            _vm._v("Activated")
                           ]),
                           _vm._v(" "),
                           _c("option", { attrs: { value: "0" } }, [
-                            _vm._v("Batalkan")
+                            _vm._v("In Avtivated")
                           ])
                         ]
                       )

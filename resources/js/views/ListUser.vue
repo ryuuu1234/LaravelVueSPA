@@ -41,8 +41,8 @@
                                 <select class="form-control form-control-sm" id="status" name="status"
                                     v-model="editItemData.status"
                                 >
-                                    <option value="1">Konfirmasi</option>
-                                    <option value="0">Batalkan</option>
+                                    <option value="1">Activated</option>
+                                    <option value="0">In Avtivated</option>
                                 </select>
                             </div>
                         </div> 
@@ -105,7 +105,7 @@ export default {
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-            per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
+            per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 5
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: false, //ASCEDING

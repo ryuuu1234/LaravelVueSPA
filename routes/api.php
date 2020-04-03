@@ -87,6 +87,17 @@ Route::group(['prefix' => 'user'], function () {
     });
 });
 
+// khusus Mitra
+Route::group(['prefix' => 'mitra'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('bubuk-all', 'BubukController@index')->name('bubuk.index'); // bubuk get all
+        Route::post('bubuk-save', 'BubukController@adding_data')->name('bubuk.add'); // bubuk add
+        Route::get('bubuk-edit/{id}/edit', 'BubukController@edit_data')->name('bubuk.edit'); // bubuk edit
+        Route::put('bubuk-update/{id}', 'BubukController@update_data')->name('bubuk.update'); // bubuk update
+        Route::delete('bubuk-delete/{id}', 'BubukController@delete_data')->name('bubuk.delete'); // bubuk delete
+    });
+});
+
 
 
 //untuk register selain root dan admin
