@@ -141,8 +141,9 @@ class OrderController extends Controller
             DB::commit();    
             return response()->json([
                 'status'=>'sukses',
-                'data'=> $order,
-                ], 200); 
+                'data'=>$order,
+                // 'message'=>$order->reff,
+                ], 200);    
 
         } catch (\Exception $e) {
             //jika ada error, maka akasn dirollback sehingga tidak ada data yang tersimpan 

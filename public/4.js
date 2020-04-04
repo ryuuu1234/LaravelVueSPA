@@ -127,7 +127,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     model: function model() {
-      this.model = this.model.replace(/[^0-9]/g, '');
+      this.model = this.model.replace(/[^0-9]/g, ''); // this.kirimValue();
     }
   }
 });
@@ -390,7 +390,6 @@ var render = function() {
     attrs: { type: "string" },
     domProps: { value: _vm.model },
     on: {
-      change: _vm.kirimValue,
       input: function($event) {
         if ($event.target.composing) {
           return
