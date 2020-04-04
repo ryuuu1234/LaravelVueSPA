@@ -53,6 +53,19 @@
                     </div>
 
                     <div class="nav-link-ku">
+                        <router-link
+                            to="/data-mitra"
+                            class="nav-link"
+                            exact
+                        >
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            Data Mitra
+                        </router-link>
+                    </div>
+
+                    <div class="nav-link-ku">
                         <a
                             class="nav-link collapsed"
                             href="#"

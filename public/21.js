@@ -246,14 +246,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     meta: function meta(state) {
       return state.meta;
+    },
+    page: function page(state) {
+      return state.page;
     }
   }), {
     page: {
       get: function get() {
-        return this.$store.state.bubuk.page; // console.log(this.$store.state.bubuk.page)
+        return this.$store.state.bubuk.page; // return this.page
       },
       set: function set(val) {
-        this.$store.commit("bubuk/SET_PAGE", val);
+        // this.$store.commit("bubuk/SET_PAGE", val);
+        this.SET_PAGE(val);
       }
     },
     per_page: {
@@ -261,7 +265,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.$store.state.bubuk.per_page;
       },
       set: function set(val) {
-        this.$store.commit("bubuk/SET_PER_PAGE", val);
+        // this.$store.commit("bubuk/SET_PER_PAGE", val);
+        this.SET_PER_PAGE(val);
       }
     },
     sortBy: {
@@ -269,7 +274,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return this.$store.state.bubuk.sortBy;
       },
       set: function set(val) {
-        this.$store.commit("bubuk/SET_SORT_BY", val);
+        // this.$store.commit("bubuk/SET_SORT_BY", val);
+        this.SET_SORT_BY(val);
       }
     },
     sortByDesc: {
@@ -286,29 +292,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   watch: {
     page: function page() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
       this.getBubuks();
     },
     per_page: function per_page() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
       this.getBubuks();
     },
     sortBy: function sortBy() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
       this.getBubuks();
     },
     sortByDesc: function sortByDesc() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
       this.getBubuks();
     },
-    search: function search() {
-      //APABILA VALUE DARI SEARCH BERUBAH MAKA AKAN MEMINTA DATA
-      //SESUAI DENGAN DATA YANG SEDANG DICARI
-      this.getBubuks(this.search);
-    } // search: 'getBubuks',
-
+    search: 'getBubuks'
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('bubuk', ['getBubuks', 'saveData', 'editData', 'updateData', 'deleteData']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('bubuk', ['getBubuks', 'saveData', 'editData', 'updateData', 'deleteData']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])("bubuk", ['SET_PAGE', 'SET_PER_PAGE', 'SET_SORT_BY', 'SET_SORT_BY_DESC', 'CLEAR_FORM']), {
     addNew: function addNew() {
       this.$refs.myModal.show();
     },
