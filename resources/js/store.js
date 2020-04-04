@@ -7,6 +7,8 @@ import item from './stores/store_item.js';
 import order from './stores/store_order.js';
 import user from './stores/store_user.js';
 import bubuk from './stores/store_bubuk.js';
+import mitra from './stores/store_mitra.js';
+import stokMitra from './stores/store_stok_mitra.js';
 import notification from './stores/store_notification.js';
 
 
@@ -21,6 +23,8 @@ export default new Vuex.Store({
         item,
         order,
         bubuk,
+        mitra,
+        stokMitra,
         notification
     },
     // =====================

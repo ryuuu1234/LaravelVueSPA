@@ -73,28 +73,6 @@ const actions = {
         }
 
     },
-    // getBubuks({commit, state}, payload) {
-    //     let search = typeof payload != 'undefined' ? payload : ''
-    //     let sorting = state.sortByDesc ? 'DESC' : 'ASC';
-    //     let params = {
-    //         params: {
-    //             page: state.page,
-    //             per_page: state.per_page,
-    //             q: search,
-    //             sortby: state.sortBy,
-    //             sortbydesc: sorting
-    //         }
-    //     };
-    //     return new Promise((resolve, reject) => {
-    //         http().get(`/mitra/bubuk-all`, params)
-    //             .then((response) => {
-    //                 let getData = response.data.data
-    //                 console.log(getData)
-    //                 commit('ASSIGN_DATA', getData)
-    //                 resolve(getData)
-    //             })
-    //     })
-    // },
 
     saveData({dispatch,commit,state}) {
         return new Promise((resolve, reject) => {
@@ -102,17 +80,12 @@ const actions = {
             //DARI STATE order
             http().post(`/mitra/bubuk-save`, state.item)
                 .then((response) => {
-                    //APABILA BERHASIL KITA MELAKUKAN REQUEST LAGI
-                    //UNTUK MENGAMBIL DATA TERBARU
                     dispatch('getBubuks').then(() => {
                         resolve(response.data)
                     })
                 })
                 .catch((error) => {
-                    //APABILA TERJADI ERROR VALIDASI
-                    //DIMANA LARAVEL MENGGUNAKAN CODE 422
                     if (error.response.status == 422) {
-                        //MAKA LIST ERROR AKAN DIASSIGN KE STATE ERRORS
                         commit('SET_ERRORS', error.response.data.errors, {
                             root: true
                         })
@@ -123,23 +96,16 @@ const actions = {
 
     editData({commit}, payload) {
         return new Promise((resolve, reject) => {
-            //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE order DI URL
             http().get(`mitra/bubuk-edit/${payload}/edit`)
                 .then((response) => {
-                    //APABIL BERHASIL, DI ASSIGN KE FORM
-                    console.log(response.data.data)
                     commit('ASSIGN_FORM', response.data.data)
                     resolve(response.data)
-                    // console.dir(response.data)
                 })
         })
     },
     //UNTUK MENGUPDATE DATA BERDASARKAN CODE YANG SEDANG DIEDIT
     updateData({dispatch, state,commit}, payload) {
         return new Promise((resolve, reject) => {
-            //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
-            //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
-            //MELALUI STATE order
             http().put(`/mitra/bubuk-update/${payload}`, state.item)
                 .then((response) => {
                     dispatch('getBubuks').then(() => {

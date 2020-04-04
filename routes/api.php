@@ -98,6 +98,15 @@ Route::group(['prefix' => 'mitra'], function () {
     });
 });
 
+// khusus admin lagi
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('mitra-all', 'Mitra\MitraController@index')->name('mitra.index'); // bubuk get all
+        Route::get('mitra-items/{id}', 'Mitra\MitraController@det_item_mitra_by_id_user')->name('bubuk.mitra'); // bubuk get by mitra id
+        Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
+    });
+});
+
 
 
 //untuk register selain root dan admin

@@ -146,7 +146,7 @@
     </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
     import FormItemsBubuk from './Form.vue';
 export default {
     name: "DataBubuk",
@@ -182,16 +182,18 @@ export default {
         ...mapState("bubuk", {
             items: state => state.items,
             meta: state=>state.meta,
+            page: state=>state.page,
         }),
         
         
         page: {
             get() {
                 return this.$store.state.bubuk.page;
-                // console.log(this.$store.state.bubuk.page)
+                // return this.page
             },
             set(val) {
-                this.$store.commit("bubuk/SET_PAGE", val);
+                // this.$store.commit("bubuk/SET_PAGE", val);
+                this.SET_PAGE(val);
             }
         },
         per_page: {
@@ -199,7 +201,8 @@ export default {
                 return this.$store.state.bubuk.per_page;
             },
             set(val) {
-                this.$store.commit("bubuk/SET_PER_PAGE", val);
+                // this.$store.commit("bubuk/SET_PER_PAGE", val);
+                this.SET_PER_PAGE(val);
             }
         },
         sortBy: {
@@ -207,7 +210,8 @@ export default {
                 return this.$store.state.bubuk.sortBy;
             },
             set(val) {
-                this.$store.commit("bubuk/SET_SORT_BY", val);
+                // this.$store.commit("bubuk/SET_SORT_BY", val);
+                this.SET_SORT_BY(val);
             }
         },
         sortByDesc: {
@@ -227,31 +231,23 @@ export default {
    
     watch: {
         page() {
-            //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
             this.getBubuks();
         },
         per_page() {
-            //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
             this.getBubuks();
         },
-         sortBy() {
-            //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
+        sortBy() {
             this.getBubuks();
         },
         sortByDesc() {
-            //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
             this.getBubuks();
         },
-        search() {
-            //APABILA VALUE DARI SEARCH BERUBAH MAKA AKAN MEMINTA DATA
-            //SESUAI DENGAN DATA YANG SEDANG DICARI
-            this.getBubuks(this.search);
-        }
-        // search: 'getBubuks',
+        search: 'getBubuks',
     },
 
     methods: {
         ...mapActions('bubuk', ['getBubuks', 'saveData', 'editData', 'updateData', 'deleteData']),
+        ...mapMutations("bubuk", ['SET_PAGE', 'SET_PER_PAGE', 'SET_SORT_BY', 'SET_SORT_BY_DESC', 'CLEAR_FORM']),
 
         addNew(){
             this.$refs.myModal.show();
