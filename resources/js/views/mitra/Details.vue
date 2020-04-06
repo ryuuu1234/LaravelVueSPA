@@ -7,21 +7,6 @@
                 <hr class="batas-dark"/>
                 <div class="px-4 m-0">
                     <div >
-                        <!-- <div class="mb-2">
-                            <b-button
-                            v-if="tombol_update"
-                            pill
-                            variant="outline-secondary"
-                            size="sm"
-                            class="ml-2"
-                            @click="updateData($route.params.id)"
-                            >
-                                <i class="fa fa-plus"></i> Update Data</b-button
-                            >
-
-                            <span class="ml-2">Anda harap meng-update data ini, klik tombol disamping </span>
-
-                        </div> -->
                         <table class="table">
                             <thead>
                                 <tr>
@@ -36,10 +21,10 @@
                             <tbody>
                                 <tr v-for="(item, row) in items" :key="row">
                                     <td>{{ row + 1 }}</td>
-                                    <td>{{item.bubuk_id}}</td>
+                                    <td>{{item.bubuk.nama}}</td>
                                     <td>{{item.stok_awal}}</td>
-                                    <td>stok berjalan</td>
-                                    <td>stok_awal + stok berjalan</td>
+                                    <td>{{item.stok_berjalan}}</td>
+                                    <td>{{item.stok_akhir}}</td>
                                     <td>lihat details</td>
                                 </tr>
                             </tbody>
@@ -90,7 +75,13 @@ export default {
                 return "valid";
             }
              return "invalid";
-        }
+        },
+
+        // itemsWithSubTotal() {
+        //     return this.items.map(item => (
+        //         {item, subtotal: this.hitungStokBerjalan(item)}
+        //         ))
+        // },
     },
 
     methods: {
@@ -101,13 +92,28 @@ export default {
                 this.tombol_update = false;    
             }
             this.tombol_update = true;
-        }
+        },
+
+        // hitungStokBerjalan: function(item) {
+        //     // return ((parseFloat(item.sum_masuk) - parseFloat(item.sum_keluar)));
+        //     return parseInt(item.sum_masuk);
+        // },
     },
 
     watch: {
         cek_data(val){
             this.cekValidData(val);
-        }
+        },
+        items:{
+            handler:function(newval,oldval) {
+                this.items.forEach(p => {
+                    let masuk = p.sum_masuk == null? 0: parseInt(p.sum_masuk);
+                    let keluar = p.sum_keluar == null? 0 : parseInt(p.sum_keluar);
+                    p.stok_berjalan = masuk - keluar;
+                    p.stok_akhir = parseInt(p.stok_awal) + parseInt(p.stok_berjalan);
+                });
+            }, deep:true
+        },
     },
     
 }

@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Bubuk extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 't_bubuks';
     protected $guarded = [];
+
+    public function bubuk_mitra()
+    {
+        return $this->hasMany('App\ItemMitra');
+    }
 }

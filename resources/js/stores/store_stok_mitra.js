@@ -25,7 +25,7 @@ const actions = {
             http().get(`/admin/mitra-items/${payload}`)
                 .then((response) => {
                     let getData = response.data.data
-                    console.log(getData.length)
+                    console.log(getData)
                     commit('ASSIGN_DATA', getData)
                     resolve(getData)
                 })

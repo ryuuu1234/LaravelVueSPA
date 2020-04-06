@@ -43,5 +43,8 @@ class User extends Authenticatable
         'image' => 'users_images/nouser.png',
     ];
 
-   
+    public function bubuk_user()
+    {
+        return $this->hasMany('App\ItemMitra');
+    }
 }
