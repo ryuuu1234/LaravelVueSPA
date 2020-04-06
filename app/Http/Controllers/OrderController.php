@@ -73,6 +73,11 @@ class OrderController extends Controller
             
         // $orders->load('status:id,name');
         // $user = User::all();
+        //====coba masukan key baru==========
+        foreach($orders as $key){
+            $key->read=false;
+        }
+        //==================================
         return response()->json([
             'status' => 'success', 
             'data' => $orders,
