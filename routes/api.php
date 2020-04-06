@@ -95,6 +95,7 @@ Route::group(['prefix' => 'mitra'], function () {
         Route::get('bubuk-edit/{id}/edit', 'BubukController@edit_data')->name('bubuk.edit'); // bubuk edit
         Route::put('bubuk-update/{id}', 'BubukController@update_data')->name('bubuk.update'); // bubuk update
         Route::delete('bubuk-delete/{id}', 'BubukController@delete_data')->name('bubuk.delete'); // bubuk delete
+        
     });
 });
 
@@ -104,6 +105,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('mitra-all', 'Mitra\MitraController@index')->name('mitra.index'); // bubuk get all
         Route::get('mitra-items/{id}', 'Mitra\MitraController@det_item_mitra_by_id_user')->name('bubuk.mitra'); // bubuk get by mitra id
         Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
+        // bawah ini kalo sukses di hapus
+        // Route::put('mitra-update-stok/{id}', 'Mitra\MitraController@update_stok_awal')->name('mitra.update');// kalo sukses di hapus
+        Route::post('mitra-input-penjualan', 'Mitra\MitraController@input_penjualan')->name('mitra.penjualan');
     });
 });
 
