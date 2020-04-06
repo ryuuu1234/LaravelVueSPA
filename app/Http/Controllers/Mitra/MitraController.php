@@ -50,7 +50,7 @@ class MitraController extends Controller
                 ->getQuery();
             // $sumBerjalan = $sumMasuk - $sumKeluar;    
 
-            $data = ItemMitra::select('t_items_mitra.*')
+            $data = ItemMitra::select('t_items_mitra.*')->where('user_id', $id)
                 ->selectSub($sumMasuk, 'sum_masuk')->selectSub($sumKeluar, 'sum_keluar')
                 ->get();
 
