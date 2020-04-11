@@ -16,4 +16,11 @@ class Bubuk extends Model
     {
         return $this->hasMany('App\ItemMitra');
     }
+
+    public function bubuk_order()
+    {
+        return $this->hasMany('App\DetailBubukOrder');
+    }
+
+
 }

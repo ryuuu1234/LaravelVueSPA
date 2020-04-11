@@ -16,6 +16,7 @@ use App\User;
 use Auth;
 
 use App\Chart;
+use App\Bubuk;
 
 // use Illuminate\Support\Facades\Notification;
 // use App\Notifications\OrderNotification;
@@ -55,7 +56,7 @@ class OrderController extends Controller
         })->paginate(10);
 
         $orders->load('status:id,name');
-        // $user = User::all();
+        // $user = User::all(); 
         return response()->json([
             'status' => 'success', 
             'data' => $orders,
@@ -139,6 +140,14 @@ class OrderController extends Controller
                         'harga' => $request->harga,
                     ]);
             
+            // ====================================================INI BARU 
+            $bubuk = Bubuk::all();
+            foreach ($bubuk as $key => $row) {
+                $order->details_bubuk()->create([
+                    'bubuk_id'=>$row['id'],
+                    'qty'=>0,
+                ]);
+            };
             // $this->sendEvent($request); 
             $user = User::find(Auth::id());
             event(new OrderStatusChanged($order, $user));   
@@ -297,8 +306,15 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order = Order::where('id', $id)->first();
+        $order = Order::where('id', $id)->with(
+            ['detail_order_one.product:id,name', 'details_bubuk', 'details_bubuk.bubuk:id,nama']
+        )->first();
         $order->load('user:id,name,role');
+        $order->load('status:id,name');
+        $order->load('packing:id,user_id,order_id');
+        $order->load('supplier:id,user_id,order_id');
+        // $order->load('detail_order_one.product:id,name');
+        
         $status = StatusOrder::all();
         return response()->json([
             'status' => $status, 

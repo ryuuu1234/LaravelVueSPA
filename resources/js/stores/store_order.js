@@ -13,7 +13,10 @@ const state = () => ({
         reff: '',
         total: '',
         status_id: '',
-        user_id: ''
+        user_id: '',
+        user_packing: '',
+        user_supplier: '',
+        
     },
     page: 1, //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
     sortBy: 'created_at',//default sorting
@@ -54,7 +57,11 @@ const mutations = {
             status_id   : payload.status_id,
             user_id     : payload.user_id,
             user        : payload.user.name,
-            user_role   : payload.user.role
+            user_role   : payload.user.role,
+            product_id  : payload.detail_order_one.product_id,
+            product_name: payload.detail_order_one.product.name,
+            user_packing: payload.supplier == null? '': payload.packing.user_id,
+            user_supplier: payload.supplier == null? '': payload.supplier.user_id,
             
         }
     },
@@ -153,6 +160,7 @@ const actions = {
                     let getStatus = response.data.status
                     console.log(getData)
                     //APABIL BERHASIL, DI ASSIGN KE FORM
+                    commit('ASSIGN_DATA', getData)
                     commit('ASSIGN_FORM', getData)
                     commit('ASSIGN_STATUS', getStatus)
                     resolve(response.data)
@@ -185,6 +193,18 @@ const actions = {
                 })
         })
     },
+
+    // updateDetailsBubuk({state,commit}, payload) {
+    //     return new Promise((resolve, reject) => {
+    //         //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
+    //         //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
+    //         //MELALUI STATE order
+    //         http().put(`/user/orders/${payload}`, state.order)
+    //             .then((response) => {
+    //                 resolve(response.data)
+    //             })
+    //     })
+    // },
     //MENGHAPUS DATA 
     removeOrder({
         dispatch

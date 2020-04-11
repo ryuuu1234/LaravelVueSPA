@@ -14,9 +14,29 @@ class Order extends Model
         return $this->hasMany(DetailOrder::class);
     }
 
+    public function detail_order_one()
+    {
+        return $this->hasOne(DetailOrder::class);
+    }
+
     public function status_order()
     {
         return $this->hasMany(StatusOrder::class);
+    }
+
+    public function details_bubuk()
+    {
+        return $this->hasMany(DetailBubukOrder::class);
+    }
+
+    public function packing()
+    {
+        return $this->hasOne(DetailPacking::class);
+    }
+
+    public function supplier()
+    {
+        return $this->hasOne(DetailSupplier::class);
     }
 
     public function status()

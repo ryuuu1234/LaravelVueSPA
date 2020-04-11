@@ -11,6 +11,7 @@ use App\User;
 use App\ItemMitra;
 use App\Bubuk;
 use App\DetailStokMitra;
+use App\DetailBubukOrder;
 
 class MitraController extends Controller
 {
@@ -107,7 +108,7 @@ class MitraController extends Controller
             $stok = new DetailStokMitra();
             foreach($input as $key=> $row ){
                 $stok->create([
-                    'reff' => 'bbbbbbbbbbbbbbbbbbs',
+                    'reff' => 'bbbbbbbbbbbbbbbbbbs',// ini nanti di ganti str_random
                     'keluar'=> $row['keluar'],
                     'item_mitra_id'=> $row['item_mitra_id'],
                     'keterangan'=> 'PENJUALAN',
@@ -124,5 +125,19 @@ class MitraController extends Controller
                 'message' => $e->getMessage()
             ], 400);
         }
+    }
+
+    public function update_qty_bubuk_pengiriman(Request $request, $id){
+        $request->validate([
+            'qty'=>'required|integer',
+        ]);
+        
+        $update = DetailBubukOrder::where('id', $id)->update(['qty' => $request->qty ]);
+        if ($update) {
+            return response()->json(['status'=>'sukses'], 200); 
+        }else{
+            return response()->json(['status'=>'failed'], 500); 
+        }
+
     }
 }

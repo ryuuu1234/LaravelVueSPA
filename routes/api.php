@@ -107,6 +107,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
         Route::put('mitra-update-stok/{id}', 'Mitra\MitraController@update_stok_awal')->name('mitra.update');
         Route::post('mitra-input-penjualan', 'Mitra\MitraController@input_penjualan')->name('mitra.penjualan');
+        Route::put('mitra-update-qty-bubuk/{id}', 'Mitra\MitraController@update_qty_bubuk_pengiriman')->name('mitra.pengiriman');
+
+        // packing
+        Route::get('packing-all', 'Packing\PackingController@get_packing_all')->name('packing.get_all');
+        Route::post('packing-update-created', 'Packing\PackingController@create_or_update')->name('packing.create_or_update');
+
+        // supplier
+        Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
+        Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
     });
 });
 

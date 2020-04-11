@@ -7,55 +7,49 @@
                 <hr class="batas-dark"/>
                     <!-- ini untuk lihat stok akhir mitra -->
                     <div class="row">
-                        <div class="col-md-6">
-                        <div>
-                            <table class="table">
-                                <tr>
-                                    <td width="150px">no Reff</td>
-                                    <td>: {{order.reff}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Pemesan</td>
-                                    <td>: {{order.user_role}} - {{order.user}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Total Rp</td>
-                                    <td>: {{order.total | numeral('0,0')}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Status Order</td>
-                                    <b-form-select v-model="order.status_id" size="sm" class="mt-3">
-                                        <b-form-select-option v-for="status in status_orders" :key="status.id" :value='status.id' >{{ status.name }}</b-form-select-option>
-                                    </b-form-select>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                   <div class="col-md-6">
-                        <h6 class="card-title text-dark">Stok Mitra - {{order.user}}</h6>
-                        <table class="table table-bordered">
-                                <thead>
+                        <div class="col-md-4">
+                            <div>
+                                <table class="table table-dark">
                                     <tr>
-                                        <th>#</th>
-                                        <th>Nama Item</th>
-                                        <th>Sisa Stok</th>
+                                        <td width="150px">no Reff</td>
+                                        <td>: {{order.reff}}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(item, row) in items" :key="row">
-                                        <td>{{ row + 1 }}</td>
-                                        <td>{{item.bubuk.nama}}</td>
-                                        <td>{{item.stok_awal}}</td>
+                                    <tr>
+                                        <td>Pemesan</td>
+                                        <td>: {{order.user_role}} - {{order.user}}</td>
                                     </tr>
-                                </tbody>
-                                <!-- ============ Edit ========================= -->
+                                    <tr>
+                                        <td>Total Rp</td>
+                                        <td>: {{order.total | numeral('0,0')}}</td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>Status Order</td>
+                                        <b-form-select v-model="order.status_id" size="sm" class="mt-3">
+                                            <b-form-select-option v-for="status in status_orders" :key="status.id" :value='status.id' >{{ status.name }}</b-form-select-option>
+                                        </b-form-select>
+                                    </tr> -->
+                                    <tr>
+                                        <td>Product</td>
+                                        <td>: {{order.product_name}}</td>
+                                    </tr>
+                                </table>
+                                <h6>Rincian Product</h6>
+                                <b-list-group v-for="(item, index) in detail_items" :key="index">
+                                    <b-list-group-item class="d-flex align-items-center">
+                                        <span class="mr-auto">{{item.item.nama}}</span>
+                                        <span style="color:red;">{{item.qty}}</span>
+                                    </b-list-group-item>
                                     
-                            </table>
-                   </div>
+                                </b-list-group>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <Progress  />
+                        </div>
                     </div>
                     <!-- end of stok akhir mitra -->
                 
-                <hr class="batas-dark"/>
+                <!-- <hr class="batas-dark"/>
                 <div class="text-right">
                     <button type="submit" class="btn btn-danger btn-xsm"
                         @click.prevent="submit"
@@ -63,7 +57,7 @@
                     <button type="submit" class="btn btn-dark btn-xsm"
                         @click="$router.go(-1)"
                     >Kembali</button>
-                </div>
+                </div> -->
             </div>
         </div>
        
@@ -72,8 +66,12 @@
 </template>
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
+import Progress from './Progress';
 export default {
     name: "DetailStatusOrder",
+    components:{
+        Progress
+    },
     created(){
         this.getOrderById(this.$route.params.id)
     },
@@ -83,21 +81,23 @@ export default {
         ...mapState("order", {
             order: state => state.order,
             status_orders: state=>state.status_orders,
+            orders: state=>state.orders,
         }),
 
-        ...mapState("stokMitra", {
-            items: state => state.items,
-            bubuks: state => state.bubuks
-        }),
+        ...mapState("product", {detail_items: state => state.detail_items})
     },
-    
-    // updated(){
-    //     this.getItemById(this.order.user_id);
-    // },
+
+    data(){
+        return {
+            keluar: [],
+        }
+    },
+
     methods: {
-        //MENGAMBIL FUNGSI DARI VUEX MODULE order
+        //MENGAMBIL FUNGSI DARI VUEX MODULE order getDetailsProduct
         ...mapActions("order", ["getOrderById", "updateStatusOrder"]),
         ...mapActions("stokMitra", ["getItemById"]),
+        ...mapActions("product", ["getDetailsProduct"]),
 
         submit: function(){
             this.updateStatusOrder(this.$route.params.id).then(() => {
@@ -113,7 +113,10 @@ export default {
     watch :{
         order(newValue, oldValue){
             this.getItemById(this.order.user_id);
-        }, deep:true
+            this.getDetailsProduct(this.order.product_id);
+        }, deep:true,
+        
     },
+    
 }
 </script>

@@ -111,20 +111,6 @@ class ProductController extends Controller
         try {
             
             $detail = DetailProduct::firstOrNew(['item_id' => $request->item_id, 'product_id' => $id]);
-            // $cek = DetailProduct::where([['item_id', 24],['product_id', 9]])->count();
-            // if (count($detail->where([['item_id', $request->item_id],['product_id', $id]])) > 0) {
-            //     # code...
-            // }
-            // $user = User::firstOrNew(['name' => 'Laravel Recipes']);
-            // $user->age = Input::get('age');
-            // $user->save();
-                // $detail->createOrUpdate(['item_id' => $request->item_id, 'product_id' => $id],
-                // [
-                //     'qty' => $request->qty,
-                //     'harga' => $request->harga,
-                //     'item_id' => $request->item_id,
-                //     'product_id'=>$id
-                // ]);
             $detail->qty = $request->qty;
             $detail->harga = $request->harga;
             $detail->harga_beli = $request->harga_beli;

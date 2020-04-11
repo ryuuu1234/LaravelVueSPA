@@ -6,6 +6,7 @@ import IndexProduct from './views/products/Index.vue';
 import IndexOrder from './views/orders/Index.vue';
 import IndexBubuk from './views/bubuk/Index.vue';
 import IndexMitra from './views/mitra/Index.vue';
+import IndexPacking from './views/packing/Index.vue';
 import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
@@ -204,6 +205,34 @@ const routes = [{
                         subtitle: 'Dengan detail Stok ',
                     },
             },
+        ],
+    },// akhir dari Mitra
+
+    {
+        path: '/data-packing',
+        name: 'packing-list',
+        component: IndexPacking,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'packing.data',
+            component: () => import('./views/packing/Packing.vue'),
+                meta: {
+                    title: 'Manage Data Packing',
+                },
+            },
+            // {
+            //     path: 'details-item-mitra/:id',
+            //     name: 'item-detail.mitra',
+            //     component: () => import('./views/mitra/details.vue'),
+            //         meta: {
+            //             title: 'Stok Item Bubuk',
+            //             subtitle: 'Dengan detail Stok ',
+            //         },
+            // },
         ],
     },// akhir dari Mitra
 
