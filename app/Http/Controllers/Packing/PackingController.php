@@ -19,9 +19,11 @@ class PackingController extends Controller
         $role = 'Packing';
         $data = User::orderBy(request()->sortby, request()->sortbydesc)
         ->Where([['role', $role],['status', 1]])
-        ->when(request()->q, function($mitra) {
-                $mitra = $mitra->where('name', 'LIKE', '%' . request()->q . '%');
-        })->paginate(request()->per_page); 
+        ->when(request()->q, function($packing) {
+                $packing = $packing->where('name', 'LIKE', '%' . request()->q . '%');
+        })->paginate(request()->per_page);
+        
+        $data->load('details_packing');
 
         return response()->json([
             'status' => 'success', 
@@ -62,5 +64,21 @@ class PackingController extends Controller
                 'status' => 'failed'
                 ]);
         }
+    }
+
+    public function get_details_packing_by_id_user($id){
+
+        $data = DetailPacking::where([
+            ['user_id', '=', $id],
+            ['status', '=', 0]])->get();
+        
+        $data->load(['order', 'order.detail_order_one', 'order.detail_order_one.product']);
+        
+            return response()->json([
+                'status' => 'success', 
+                'data' => $data,
+                ]
+            );   
+
     }
 }
