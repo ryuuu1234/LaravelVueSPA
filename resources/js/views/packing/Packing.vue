@@ -165,8 +165,8 @@ export default {
         //MENGAMBIL DATA packings dan meta DARI STATE packings
         ...mapState("packing", {
             packings: state => state.packings,
-            meta: state=>state.meta,
-            details_packing: state=>details_packing
+            meta: state => state.meta,
+            details_packing: state => state.details_packing
         }),
         
         

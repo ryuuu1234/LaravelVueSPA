@@ -185,19 +185,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     meta: function meta(state) {
       return state.meta;
     },
-    details_packing: function (_details_packing) {
-      function details_packing(_x) {
-        return _details_packing.apply(this, arguments);
-      }
-
-      details_packing.toString = function () {
-        return _details_packing.toString();
-      };
-
-      return details_packing;
-    }(function (state) {
-      return details_packing;
-    })
+    details_packing: function details_packing(state) {
+      return state.details_packing;
+    }
   }), {
     page: {
       get: function get() {

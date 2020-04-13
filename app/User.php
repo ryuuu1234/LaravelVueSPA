@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\DetailPacking')->where('status','=', 0);
     }
+
+    public function details_supplier()
+    {
+        return $this->hasMany('App\DetailSupplier')->where('status','=', 0);
+    }
 }

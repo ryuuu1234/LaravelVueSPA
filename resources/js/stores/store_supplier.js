@@ -57,7 +57,7 @@ const actions = {
                 .then((response) => {
                     let getData = response.data.data
                     // console.dir(getData.data)
-                    // console.dir(getData)
+                    console.log(getData)
                     //SIMPAN DATA KE STATE MELALUI MUTATIONS
                     commit('ASSIGN_DATA', getData)
                     resolve(getData)
