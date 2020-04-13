@@ -7,6 +7,7 @@ import IndexOrder from './views/orders/Index.vue';
 import IndexBubuk from './views/bubuk/Index.vue';
 import IndexMitra from './views/mitra/Index.vue';
 import IndexPacking from './views/packing/Index.vue';
+import IndexSupplier from './views/supplier/TheIndex.vue';
 import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
@@ -234,7 +235,34 @@ const routes = [{
                     },
             },
         ],
-    },// akhir dari Mitra
+    },// akhir dari packing
+    {
+        path: '/data-supplier',
+        name: 'supplier-list',
+        component: IndexSupplier,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'supplier.data',
+            component: () => import('./views/supplier/TheSupplier.vue'),
+                meta: {
+                    title: 'Manage Data Supplier',
+                },
+            },
+            // {
+            //     path: 'details-item-supplier/:id',
+            //     name: 'item-details.supplier',
+            //     component: () => import('./views/supplier/TheDetails.vue'),
+            //         meta: {
+            //             title: 'Details Packing',
+            //             subtitle: 'Proses Pengiriman yg belum selesai',
+            //         },
+            // },
+        ],
+    },// akhir dari supplier
 
     {
         path: '/coba-coba',

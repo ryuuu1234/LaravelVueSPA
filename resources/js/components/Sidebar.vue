@@ -72,9 +72,22 @@
                             exact
                         >
                             <div class="sb-nav-link-icon">
-                                <i class="fas fa-handshake"></i>
+                                <i class="fas fa-box"></i>
                             </div>
                             Data Packing
+                        </router-link>
+                    </div>
+
+                    <div class="nav-link-ku">
+                        <router-link
+                            to="/data-supplier"
+                            class="nav-link"
+                            exact
+                        >
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            Data Supplier
                         </router-link>
                     </div>
 

@@ -18,9 +18,11 @@ class SupplierController extends Controller
         $role = 'Supplier';
         $data = User::orderBy(request()->sortby, request()->sortbydesc)
         ->Where([['role', $role],['status', 1]])
-        ->when(request()->q, function($mitra) {
-                $mitra = $mitra->where('name', 'LIKE', '%' . request()->q . '%');
+        ->when(request()->q, function($supplier) {
+                $supplier = $supplier->where('name', 'LIKE', '%' . request()->q . '%');
         })->paginate(request()->per_page); 
+
+        $data->load('details_supplier');
 
         return response()->json([
             'status' => 'success', 
