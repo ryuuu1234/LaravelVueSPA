@@ -110,8 +110,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('mitra-update-qty-bubuk/{id}', 'Mitra\MitraController@update_qty_bubuk_pengiriman')->name('mitra.pengiriman');
 
         // packing
+        Route::get('packing-all-with-params', 'Packing\PackingController@index')->name('packing.index');
         Route::get('packing-all', 'Packing\PackingController@get_packing_all')->name('packing.get_all');
         Route::post('packing-update-created', 'Packing\PackingController@create_or_update')->name('packing.create_or_update');
+        Route::get('packing-by-id-user/{id}', 'Packing\PackingController@get_details_packing_by_id_user')->name('packing.get_by_id_user');
 
         // supplier
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');

@@ -6,6 +6,7 @@ import {
 const state = () => ({
     packings : [],
     meta : [],
+    details_packing : [],
 
     page: 1, //UNTUK MENCATAT PAGE PAGINATE YANG SEDANG DIAKSES
     sortBy: 'created_at',//default sorting
@@ -18,6 +19,10 @@ const mutations = {
         state.packings = payload,
         state.meta = payload
     },
+    ASSIGN_PACKING(state, payload) {
+        state.details_packing = payload
+    },
+
     SET_PAGE(state, payload) {
         state.page = payload
     },
@@ -56,7 +61,7 @@ const actions = {
             http().get(`/admin/packing-all-with-params`, params)
                 .then((response) => {
                     let getData = response.data.data
-                    // console.dir(getData.data)
+                    // console.log(getData)
                     // console.dir(getData)
                     //SIMPAN DATA KE STATE MELALUI MUTATIONS
                     commit('ASSIGN_DATA', getData)
@@ -76,6 +81,18 @@ const actions = {
                     commit('ASSIGN_DATA', getData)
                     resolve(getData)
                 })
+        })
+    },
+
+    getPackingByIdUser({commit, state}, payload) {
+        return new Promise((resolve, reject) => {
+            http().get(`admin/packing-by-id-user/${payload}`)
+            .then((response) => {
+                let getData = response.data.data
+                console.log(getData)
+                commit('ASSIGN_PACKING', getData)
+                resolve(getData)
+            })
         })
     },
 };

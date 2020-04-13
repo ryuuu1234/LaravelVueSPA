@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\ItemMitra');
     }
+
+    public function details_packing()
+    {
+        return $this->hasMany('App\DetailPacking')->where('status','=', 0);
+    }
 }

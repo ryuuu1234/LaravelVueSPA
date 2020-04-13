@@ -224,15 +224,15 @@ const routes = [{
                     title: 'Manage Data Packing',
                 },
             },
-            // {
-            //     path: 'details-item-mitra/:id',
-            //     name: 'item-detail.mitra',
-            //     component: () => import('./views/mitra/details.vue'),
-            //         meta: {
-            //             title: 'Stok Item Bubuk',
-            //             subtitle: 'Dengan detail Stok ',
-            //         },
-            // },
+            {
+                path: 'details-item-packing/:id',
+                name: 'item-details.packing',
+                component: () => import('./views/packing/Details.vue'),
+                    meta: {
+                        title: 'Details Packing',
+                        subtitle: 'Proses Packing yg belum selesai',
+                    },
+            },
         ],
     },// akhir dari Mitra
 

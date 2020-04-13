@@ -48,7 +48,7 @@ class SupplierController extends Controller
         ]);
         $detail = DetailSupplier::updateOrCreate(
             ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
-            ['user_id'=>$request->user_id], //ini value yg ingin di masukkan atau update
+            ['user_id'=>$request->user_id] //ini value yg ingin di masukkan atau update
         );
 
         if ($detail) {
