@@ -119,6 +119,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('supplier-all-with-params', 'Supplier\SupplierController@index')->name('supplier.index');
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
         Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
+        Route::get('supplier-by-id-user/{id}', 'Supplier\SupplierController@get_details_supplier_by_id_user')->name('supplier.get_by_id_user');
     });
 });
 

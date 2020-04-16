@@ -63,4 +63,20 @@ class SupplierController extends Controller
                 ]);
         }
     }
+
+    public function get_details_supplier_by_id_user($id){
+
+        $data = DetailSupplier::where([
+            ['user_id', '=', $id],
+            ['status', '=', 0]])->get();
+        
+        $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role', 'order.detail_order_one.product']);
+        
+            return response()->json([
+                'status' => 'success', 
+                'data' => $data,
+                ]
+            );   
+
+    }
 }
