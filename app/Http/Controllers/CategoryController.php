@@ -49,11 +49,12 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, Category $category)
-    {
+    {   
+        // dd($request->all());
         $request->validate([
             'name'=>'required|min:3'
         ]);
-
+        
         $category->name = $request->name;
         $old_path = $category->image;
 

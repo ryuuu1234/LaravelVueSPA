@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
-{
+{   
+    use SoftDeletes;
+    
     protected $guarded = [];
+    // protected $fillable = ['nama', 'unit_id', 'harga_beli', 'harga_jual', 'stok_awal'];
 
     /**
      * RELASI. ke tabel units

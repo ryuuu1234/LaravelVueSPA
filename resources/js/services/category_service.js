@@ -1,21 +1,21 @@
 import {http, httpFile} from './http_service';
 
 export function createCategory(data) {
-    return httpFile().post('/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+    return httpFile().post('/user/categories', data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 
 export function loadCategories() {
-    return http().get('/categories'); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+    return http().get('/user/categories'); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 
 export function deleteCategory(id) {
-    return http().delete(`/categories/${id}`); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+    return http().delete(`/user/categories/${id}`); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 
 export function updateCategory(id, data) {
-    return httpFile().put(`/categories/${id}`, data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
+    return httpFile().post(`/user/categories/${id}`, data); //ini diambil  dari Route category laravel nama routenya ('api/categies)...karena sdh di definisikan di store maka tgl ('/categories)
 }
 
 export function loadMore(page) {
-    return http().get(`/categories?page=${page}`);
+    return http().get(`/user/categories?page=${page}`);
 }

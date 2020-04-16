@@ -21,6 +21,7 @@
                             @selectedId="selectedDataId"
                             :tombolAddNew="tombolAddNew"
                             :tombolEdit="tombolEdit"
+                            :isBusy="showLoading"
                         />
                         
                    
@@ -66,6 +67,26 @@
                                     
                                 <div class="invalid-feedback" v-if="errors.harga_beli">
                                     {{ errors.harga_beli[0] }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group-sm">
+                                <label for="harga_jual">Harga Jual </label>
+                                
+                                    <input-number
+                                        class="form-control form-control-sm" 
+                                        id="harga_jual"
+                                        placeholder="Masukkan Harga Jual Item"
+                                        v-model="hargaJual"
+                                    >
+                                
+                                    </input-number>   
+                                    
+                                    
+                                <div class="invalid-feedback" v-if="errors.harga_jual">
+                                    {{ errors.harga_jual[0] }}
                                 </div>
                             </div>
                         </div>
@@ -163,8 +184,11 @@ export default {
                 {key: 'index', label:'index'},
                 {key: 'nama', sortable: true},
                 // {key: 'unit.nama', label:'Satuan'},
-                {key: 'harga_beli', label:'Harga', formatter: (value, key, item) => {
+                {key: 'harga_beli', label:'Harga Bl', formatter: (value, key, item) => {
                             return "Rp " + new Intl.NumberFormat().format(item.harga_beli) + " / "+ item.unit.nama
+                            }, sortable: true, class:'text-right'},
+                {key: 'harga_jual', label:'Harga Jl', formatter: (value, key, item) => {
+                            return "Rp " + new Intl.NumberFormat().format(item.harga_jual) + " / "+ item.unit.nama
                             }, sortable: true, class:'text-right'},
                 {key: 'stok_awal', sortable: true, class:'text-right'},
                 {key: 'actions', label: 'Actions', class:'text-right'}
@@ -174,7 +198,7 @@ export default {
             units: [], //DATA UNIT
             meta: [], //JUGA BERLAKU UNTUK META
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-            per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
+            per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 5
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: false, //ASCEDING
@@ -182,6 +206,7 @@ export default {
             editItemData: {},
             errors:[],
             currencyInput: '', // husus input angka
+            hargaJual: '',
             isInputActive: false,
 
             selectedRowsId:[],
@@ -189,6 +214,7 @@ export default {
             // pengaturan tombol
             tombolAddNew: true,
             tombolEdit:true,
+            showLoading:false,
         }
     },
     
@@ -233,7 +259,7 @@ export default {
         
         //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
         loadItemsData: async function() {
-            this.isBusy = true;
+            this.showLoading = true;
             // this.handleLoading(true);
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
@@ -261,12 +287,14 @@ export default {
                     from: getData.from,
                     to: getData.to 
                 }
+                this.showLoading = false;
             } catch (error) {
                     console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
                 });
+                this.showLoading = false;
             }
         },
         
@@ -328,6 +356,7 @@ export default {
             this.editItemData = {...item};
             // this.currencyInput = this.editItemData.harga_beli;
             this.currencyInput = String(this.editItemData.harga_beli);
+            this.hargaJual = String(this.editItemData.harga_jual);
             this.methodForms = "Edit";
             this.showEditDataModal();
         },
@@ -350,8 +379,10 @@ export default {
             this.editItemData.nama = "";
             this.editItemData.unit_id = "";
             this.editItemData.harga_beli = "";
+            this.editItemData.harga_jual = "";
             this.editItemData.stok_awal = "";
             this.currencyInput ="";
+            this.hargaJual ="";
         },
 
         // create dan update data
@@ -360,6 +391,7 @@ export default {
             const formData = new FormData();
             formData.append("nama", this.editItemData.nama);
             formData.append("harga_beli", this.currencyInput);
+            formData.append("harga_jual", this.hargaJual);
             formData.append("unit_id", this.editItemData.unit_id);
             formData.append("stok_awal", this.editItemData.stok_awal);
             

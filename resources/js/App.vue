@@ -20,6 +20,7 @@ import * as auth from './services/auth_service';
         } catch (error) {
             auth.logout();
         }
-    }  
+    } 
+    
   }
 </script>

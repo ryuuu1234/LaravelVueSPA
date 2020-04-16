@@ -1,0 +1,272 @@
+<template>
+    <div>
+        <div class="click-out" @click="modal = false"></div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-dark">{{ $route.meta.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ $route.meta.subtitle }}</h6>
+                <hr class="batas-dark"/>
+                <div class="px-4">
+                    
+                    
+                    <!-- INI CONTENTNYA -->
+                    
+                    <div>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Item</th>
+                                    <th>Harga</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <!-- <Autocomplete :items="customers"
+                                            filterby="nama"
+                                            @change="onChange"
+                                            title="Search Items"
+                                            @selected="customerSelected"/> -->
+                                            <input type="text" class="form-control indx" 
+                                                v-model="state"  @focus="modal = true" 
+                                            />
+                                            <div v-if="filteredStates && modal" class="indx">
+                                                <ul class="drop-autocomplete">
+                                                    <li 
+                                                        class="list-autocomplete" 
+                                                        v-for="(filteredState, index) in filteredStates" :key="index"
+                                                        @click="setState(index)" 
+                                                        >{{ filteredState }}</li>
+                                                </ul>
+                                                <!-- awalnya  @click="setState(filteredState)-->
+                                            </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" v-model="harga">
+                                    </td>
+                                    <td>asfa</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br><br><br><br>
+                    </div>
+                    <!-- <tr v-for="(invoice_product, k) in invoice_products" :key="k">
+                        <td scope="row" class="trashIconContainer">
+                            <i class="far fa-trash-alt" @click="deleteRow(k, invoice_product)"></i>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" v-model="invoice_product.product_no" />
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" v-model="invoice_product.product_name" />
+                        </td>
+                        <td>
+                            <input class="form-control text-right" type="number" min="0" step=".01" v-model="invoice_product.product_price" @change="calculateLineTotal(invoice_product)"
+                            />
+                        </td>
+                        <td>
+                            <input class="form-control text-right" type="number" min="0" step=".01" v-model="invoice_product.product_qty" @change="calculateLineTotal(invoice_product)"
+                            />
+                        </td>
+                        <td>
+                            <input readonly class="form-control text-right" type="number" min="0" step=".01" v-model="invoice_product.line_total" />
+                        </td>
+                    </tr>
+                    <hr />
+                    <button type='button' class="btn btn-info" @click="addNewRow">
+                        <i class="fas fa-plus-circle"></i>
+                        Add
+                    </button> -->
+
+                <!-- Akhir Content -->
+                </div>
+                <hr class="batas-dark"/>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-danger btn-xsm"
+                        @click.prevent="submit"
+                    >Update Status</button>
+                    <button type="submit" class="btn btn-dark btn-xsm"
+                        @click="$router.go(-1)"
+                    >Kembali</button>
+                </div>
+            </div>
+        </div>
+       
+       
+    </div>
+</template>
+<script>
+// ini percobaan component
+import Autocomplete from '../../components/khusus/Autocomplete';
+import Autocompletetwo from '../../components/khusus/AutocompleteTwo';
+// import customers from '../../services/lists.js';
+import * as itemService from "../../services/items_service";
+export default {
+    components: {
+        Autocomplete
+    },
+     created() {
+        //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
+        this.loadItemsData();
+        // this.handleLoading(true)
+    },
+    // mounted(){
+    //     this.customers = customers;
+    // },
+    data(){
+        return {
+            // invoice_subtotal: 0,
+            // invoice_total: 0,
+            // invoice_tax: 5,
+            // invoice_products: [{
+            //     product_no: '',
+            //     product_name: '',
+            //     product_price: '',
+            //     product_qty: '',
+            //     line_total: 0
+            // }],
+            // items:[],
+            // filterby: '',
+            customers: [],
+            harga:0,
+            state:'',
+            states: ['Florida', 'Alaska', 'Texas', 'Alabama'],
+            filteredStates: [],
+            modal: false,
+        } 
+    },
+
+    methods: {
+        
+        filterStates: function(){
+            // memfilter states pada inputan model state tanpa case sensitive
+            this.filteredStates = this.states.filter(state => {
+                return state.toLowerCase().startsWith(this.state.toLowerCase());
+            });
+        },
+
+        setState: function(index){
+            // this.selectedItem = this.matches[this.selected];
+            this.state = this.filteredStates[index];
+            this.modal = false;
+        },
+
+        customerSelected(customer) {
+            console.log(`Customer Selected:\nid: ${customer.id}\nname: ${customer.nama}`);
+            },
+            onChange(value) {
+            // do something with the current value
+                this.harga = 'hhh';
+            },
+        //METHOD INI AKAN MENGHANDLE REQUEST DATA KE API
+        loadItemsData: async function() {
+            // this.handleLoading(true);
+           
+            try {
+                const response = await itemService.getData(); 
+                let getData = response.data.data
+                // console.log(getData.data)
+                this.customers = getData //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+                // console.log(this.units)
+                // console.log(this.items[0].nama);
+                //DAN ASSIGN INFORMASI LAINNYA KE DALAM VARIABLE META
+            } catch (error) {
+                    console.log(''+error)
+                    this.flashMessage.error({
+                    message: "Some error occured, Please Refresh!",
+                    time: 5000
+                });
+                this.showLoading = false;
+            }
+        },
+        // saveInvoice() {
+        //     console.log(JSON.stringify(this.invoice_products));
+        // },
+        // calculateTotal() {
+        //     var subtotal, total;
+        //     subtotal = this.invoice_products.reduce(function (sum, product) {
+        //         var lineTotal = parseFloat(product.line_total);
+        //         if (!isNaN(lineTotal)) {
+        //             return sum + lineTotal;
+        //         }
+        //     }, 0);
+
+        //     this.invoice_subtotal = subtotal.toFixed(2);
+
+        //     total = (subtotal * (this.invoice_tax / 100)) + subtotal;
+        //     total = parseFloat(total);
+        //     if (!isNaN(total)) {
+        //         this.invoice_total = total.toFixed(2);
+        //     } else {
+        //         this.invoice_total = '0.00'
+        //     }
+        // },
+        // calculateLineTotal(invoice_product) {
+        //     var total = parseFloat(invoice_product.product_price) * parseFloat(invoice_product.product_qty);
+        //     if (!isNaN(total)) {
+        //         invoice_product.line_total = total.toFixed(2);
+        //     }
+        //     this.calculateTotal();
+        // },
+        // deleteRow(index, invoice_product) {
+        //     var idx = this.invoice_products.indexOf(invoice_product);
+        //     console.log(idx, index);
+        //     if (idx > -1) {
+        //         this.invoice_products.splice(idx, 1);
+        //     }
+        //     this.calculateTotal();
+        // },
+        // addNewRow() {
+        //     this.invoice_products.push({
+        //         product_no: '',
+        //         product_name: '',
+        //         product_price: '',
+        //         product_qty: '',
+        //         line_total: 0
+        //     });
+        // }
+    },
+    watch: {
+        state(){
+            this.filterStates();
+        }
+    }
+}
+</script>
+
+<style  scoped>
+ul.drop-autocomplete {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li.list-autocomplete {
+    padding: 5px 12px;
+}
+
+li.list-autocomplete:hover, 
+li.list-autocomplete:focus {
+        background: #343a40;
+        color: white;
+}
+
+.click-out {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+.indx {
+    z-index: 10;
+    position: relative;
+}
+</style>

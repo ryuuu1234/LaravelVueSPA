@@ -58,8 +58,9 @@
                 :sort-desc.sync="sortDesc"
                 show-empty
                 responsive="sm"
+                :busy.sync="isBusy"
             >   
-                <template v-slot:table-busy>
+                 <template v-slot:table-busy>
                     <div class="text-center my-2">
                     <b-spinner class="align-middle"></b-spinner>
                     <strong>Loading...</strong>
@@ -94,9 +95,9 @@
                 <template v-slot:cell(status)="row">
                      <button v-if="row.item.status == 0"
                      @click="konfirmStatus(row.item)" 
-                     class="btn btn-danger btn-xsm">inActive</button>
+                     class="btn btn-danger btn-xxsm">inActive</button>
                      <button 
-                     class="btn btn-primary btn-xsm"
+                     class="btn btn-primary btn-xxsm"
                      v-else
                      @click="konfirmStatus(row.item)"
                      >Active
@@ -163,7 +164,6 @@
                     ></b-pagination>
                 </div>
             </div>
-        
     
     </div>
 </template>
@@ -202,6 +202,11 @@ export default {
         tombolEdit: {
             type: Boolean,
             required:true
+        },
+
+        isBusy: {
+            type: Boolean,
+            reguired: true
         }
         
     },
@@ -220,6 +225,8 @@ export default {
             booleanValue: false,
 
             isVisible: false,
+            // isBusy : true,
+            
         };
     },
     watch: {
@@ -246,6 +253,9 @@ export default {
         // }
     },
     methods: {
+        // toggleBusy() {
+        //     this.isBusy != this.isBusy
+        // },
         selectAllRows() {
             this.items.forEach(item => (item = event.target.checked));
             if (this.selectedItems.length === this.items.length) {
@@ -275,6 +285,7 @@ export default {
             return this.allSelected
                 ? this.selectAllRows()
                 : this.clearSelected();
+
         },
 
         // clearSelected() {

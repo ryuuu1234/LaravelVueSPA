@@ -38,4 +38,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $attributes = [
+        'image' => 'users_images/nouser.png',
+    ];
+
+    public function bubuk_user()
+    {
+        return $this->hasMany('App\ItemMitra');
+    }
+
+    public function details_packing()
+    {
+        return $this->hasMany('App\DetailPacking')->where('status','=', 0);
+    }
+
+    public function details_supplier()
+    {
+        return $this->hasMany('App\DetailSupplier')->where('status','=', 0);
+    }
 }

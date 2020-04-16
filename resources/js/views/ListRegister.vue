@@ -20,6 +20,7 @@
                             @removedSelected="hapusDataTerseleksi"
                             :tombolAddNew="tombolAddNew"
                             :tombolEdit="tombolEdit"
+                            :isBusy="showLoading"
                         />
                           
             </div>
@@ -87,6 +88,13 @@ export default {
         this.loadItemsData()
         // this.kosongkanForm()
     },
+
+    mounted(){
+        window.Echo.channel('capcin-reg')
+        .listen('RegisterEvent', (register) => {
+            this.loadItemsData();
+        });
+    },
     
     data() {
         return {
@@ -106,7 +114,7 @@ export default {
             per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
-            sortByDesc: false, //ASCEDING
+            sortByDesc: true, //ASCEDING
 
             editItemData: {},
             errors:[],
@@ -118,6 +126,7 @@ export default {
             // pengaturan tombol
             tombolAddNew: false,
             tombolEdit:false,
+            showLoading:false,
         }
     },
     
@@ -156,7 +165,7 @@ export default {
        },
         
         loadItemsData: async function() {
-            this.isBusy = true;
+            this.showLoading = true;
             // this.handleLoading(true);
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
@@ -170,7 +179,7 @@ export default {
             }};
             try {
                 const response = await listRegisterService.loadData(params); 
-                console.dir(response);
+                // console.dir(response);
                 let getData = response.data.data
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                 this.units = response.data.data_unit
@@ -184,12 +193,14 @@ export default {
                     from: getData.from,
                     to: getData.to 
                 }
+                this.showLoading = false;
             } catch (error) {
-                    console.log(''+error)
+                    // console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
                 });
+                this.showLoading = false;
             }
         },
 

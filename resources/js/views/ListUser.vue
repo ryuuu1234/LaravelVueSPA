@@ -20,6 +20,7 @@
                             @removedSelected="hapusDataTerseleksi"
                             :tombolAddNew="tombolAddNew"
                             :tombolEdit="tombolEdit"
+                            :isBusy="showLoading"
                         />
                           
             </div>
@@ -40,8 +41,8 @@
                                 <select class="form-control form-control-sm" id="status" name="status"
                                     v-model="editItemData.status"
                                 >
-                                    <option value="1">Konfirmasi</option>
-                                    <option value="0">Batalkan</option>
+                                    <option value="1">Activated</option>
+                                    <option value="0">In Avtivated</option>
                                 </select>
                             </div>
                         </div> 
@@ -85,6 +86,7 @@ export default {
 
     created() {
         this.loadItemsData()
+        // this.loading()
         // this.kosongkanForm()
     },
     
@@ -103,7 +105,7 @@ export default {
             items: [], //DEFAULT VALUE DARI ITEMS ADALAH KOSONG
             meta: [], //JUGA BERLAKU UNTUK META
             current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
-            per_page: 5, //DEFAULT LOAD PERPAGE ADALAH 5
+            per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 5
             search: '',
             sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
             sortByDesc: false, //ASCEDING
@@ -118,6 +120,7 @@ export default {
             // pengaturan tombol
             tombolAddNew: false,
             tombolEdit:false,
+            showLoading: false,
         }
     },
     
@@ -128,6 +131,10 @@ export default {
     },
 
     methods: {
+        // loading: function()
+        // {
+        //     this.isBusy != this.isBusy
+        // },
         // remove select
        hapusDataTerseleksi: async function(val) {
             if (!window.confirm(`Are you sure you want to delete this selection data ?` )) {
@@ -156,8 +163,7 @@ export default {
        },
         
         loadItemsData: async function() {
-            this.isBusy = true;
-            // this.handleLoading(true);
+            this.showLoading = true;
             let current_page = this.search == ''? this.current_page:1;
             let sorting = this.sortByDesc? 'DESC':'ASC';
             // let
@@ -170,8 +176,9 @@ export default {
             }};
             try {
                 const response = await listUserService.loadData(params); 
-                console.dir(response);
+                
                 let getData = response.data.data
+                console.dir(getData);
                 this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
                 this.units = response.data.data_unit
                 // console.log(this.units)
@@ -184,12 +191,14 @@ export default {
                     from: getData.from,
                     to: getData.to 
                 }
+                this.showLoading = false;
             } catch (error) {
                     console.log(''+error)
                     this.flashMessage.error({
                     message: "Some error occured, Please Refresh!",
                     time: 5000
                 });
+                this.showLoading = false;
             }
         },
 

@@ -212,6 +212,10 @@ __webpack_require__.r(__webpack_exports__);
     tombolEdit: {
       type: Boolean,
       required: true
+    },
+    isBusy: {
+      type: Boolean,
+      reguired: true
     }
   },
   data: function data() {
@@ -228,7 +232,8 @@ __webpack_require__.r(__webpack_exports__);
       allSelected: false,
       selectedRow: false,
       booleanValue: false,
-      isVisible: false
+      isVisible: false // isBusy : true,
+
     };
   },
   watch: {
@@ -253,6 +258,9 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    // toggleBusy() {
+    //     this.isBusy != this.isBusy
+    // },
     selectAllRows: function selectAllRows() {
       this.items.forEach(function (item) {
         return item = event.target.checked;
@@ -442,7 +450,8 @@ var render = function() {
             "sort-by": _vm.sortBy,
             "sort-desc": _vm.sortDesc,
             "show-empty": "",
-            responsive: "sm"
+            responsive: "sm",
+            busy: _vm.isBusy
           },
           on: {
             "update:sortBy": function($event) {
@@ -456,6 +465,9 @@ var render = function() {
             },
             "update:sort-desc": function($event) {
               _vm.sortDesc = $event
+            },
+            "update:busy": function($event) {
+              _vm.isBusy = $event
             }
           },
           scopedSlots: _vm._u([
@@ -574,7 +586,7 @@ var render = function() {
                     ? _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger btn-xsm",
+                          staticClass: "btn btn-danger btn-xxsm",
                           on: {
                             click: function($event) {
                               return _vm.konfirmStatus(row.item)
@@ -586,7 +598,7 @@ var render = function() {
                     : _c(
                         "button",
                         {
-                          staticClass: "btn btn-primary btn-xsm",
+                          staticClass: "btn btn-primary btn-xxsm",
                           on: {
                             click: function($event) {
                               return _vm.konfirmStatus(row.item)

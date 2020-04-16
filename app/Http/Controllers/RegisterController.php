@@ -8,6 +8,8 @@ use Auth;
 use App\Register;
 use App\User;
 
+use App\Events\RegisterEvent;
+
 class RegisterController extends Controller
 {
     public function list() {
@@ -31,12 +33,24 @@ class RegisterController extends Controller
         );
     }
 
+    public function notif() {
+
+        $register = Register::where('status', '<>', 1)->get();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $register,
+            // 'data_unit' => $unit
+            ]
+        );
+    }
+
     public function update_status(Request $request, Register $register) {
 
         $register->status = 1;
 
         if ($register->save()) {
             // simpan ke user
+
             $cek = User::where('email', $register->email)->first();
             if ($cek != Null) {
                 $message = [
@@ -52,7 +66,8 @@ class RegisterController extends Controller
                 $user->role = $register->role;
                 $user->status = $register->status;
                 $user->save();
-    
+                
+                event(new RegisterEvent($register));
                 return response()->json($register,200);
             }
 
@@ -71,7 +86,7 @@ class RegisterController extends Controller
 
         $request->validate([
             'name'      =>  'required|string|max:100',
-            'email'     =>  'required|string|email',
+            'email'     =>  'required|string|email|unique:users',
             'password'  =>  'required|string|confirmed',
             'role'      =>  'required|string|'
         ]);
@@ -85,9 +100,11 @@ class RegisterController extends Controller
         $register->status   = 0;
 
         if ($register->save()) {
+
+            event(new RegisterEvent($register));
             return response()->json([
                 'message'       => 'User Created Successfully',
-                'status_code'   => 201
+                'data'   => $register
             ],201);
         }else {
             return response()->json([

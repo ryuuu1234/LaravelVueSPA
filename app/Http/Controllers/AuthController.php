@@ -8,13 +8,17 @@ use App\User;
 use Auth;
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Storage;
+
 class AuthController extends Controller
-{
+{   
+
+    // register untuk admin
     public function register(Request $request) {
 
         $request->validate([
             'name'      =>  'required|string|max:100',
-            'email'     =>  'required|string|email',
+            'email'     =>  'required|string|email|unique:users',
             'password'  =>  'required|string|confirmed'
         ]);
 
@@ -113,5 +117,52 @@ class AuthController extends Controller
             'message'       => 'Not Loggedin',
             'status_code'   => 500
         ],500);
+    }
+
+    public function update_profile(Request $request, User $user)
+    {
+        $request->validate([
+            'name'=>'required',
+            'email'=>'required|email'
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($user->save()) {
+            return response()->json($user,200);
+        } else {
+            return response()->json([
+                'message'       => 'Error on Updated',
+                'status_code'   => 500
+            ],500);
+        } 
+    }
+
+    public function update_image(Request $request, User $user)
+    {
+        // dd($request->all());
+        $old_path = $user->image;
+        if($request->hasFile('image')) {
+            $request->validate([
+                'image'=>'required|image|mimes:jpeg,png,jpg'
+            ]);
+            $path = $request->file('image')->store('users_images');
+            $user->image = $path;
+
+            if ($old_path != '' || $old_path != null) {
+                Storage::delete($old_path);
+            }      
+            
+        }
+
+        if ($user->save()) {
+            return response()->json($user,200);
+        } else {
+            return response()->json([
+                'message'       => 'Error on Updated',
+                'status_code'   => 500
+            ],500);
+        } 
     }
 }
