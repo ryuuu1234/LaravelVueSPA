@@ -38,9 +38,13 @@ class OrderStatusChanged implements ShouldBroadcast
     {
         // return new Channel('capcin-tracker'); // ini yang lama untuk channel private
         // return new Channel('capcin-tracker'); // ini untuk pulic channel pusher
-        return ['capcin-tracker.'.$this->order->id, 'capcin-tracker'];
+        // return ['capcin-tracker.'.$this->order->id, 'capcin-tracker']; //subscribe
+        return new PrivateChannel ('capcin-tracker.'.$this->order->id, 'capcin-tracker');
     }
 
+    public function broadcastAs(){
+        return 'OrderStatusChanged';
+    }
     public function broadcastWith()
     {
         $extra = [

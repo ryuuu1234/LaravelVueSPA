@@ -148,6 +148,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -218,12 +220,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return hasil;
     },
     total_input_qty_bubuk: function total_input_qty_bubuk() {
-      return this.details_bubuk.reduce(function (sum, val) {
-        var qty = val.qty == '' ? 0 : parseInt(val.qty);
-        var total = sum + qty;
-        return total;
-      }, 0);
-    }
+      if (this.details_bubuk) {
+        return this.details_bubuk.reduce(function (sum, val) {
+          var qty = val.qty == '' ? 0 : parseInt(val.qty);
+          var total = sum + qty;
+          return total;
+        }, 0);
+      } else {
+        return 0;
+      }
+    },
+    jumlahBubuk: function jumlahBubuk() {
+      if (this.detail_items.length) {
+        var bubuk = this.detail_items.filter(function (e) {
+          if (e.item.nama == 'Bubuk') {
+            return true;
+          }
+        });
+        console.log(bubuk);
+        return bubuk[0].qty;
+      } else {
+        return 0;
+      }
+    } // disable(){
+    //     if(this.step==1){
+    //         if(this.total_input_qty_bubuk!=this.jumlahBubuk){
+    //             return true
+    //         }else{return false}
+    //     }else{
+    //         return false
+    //     }
+    // }
+
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("order", ["getOrderById", "updateStatusOrder"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("packing", ["getPackingAll"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("supplier", ["getSupplierAll"]), {
     updateDetailsBubuk: function () {
@@ -759,7 +787,18 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(4)
+            _vm._m(4),
+            _vm._v(" "),
+            _c("p", { staticStyle: { color: "red" } }, [
+              _c("i", [
+                _vm._v(
+                  "total input = " +
+                    _vm._s(_vm.total_input_qty_bubuk) +
+                    ", jumlah bubuk product = " +
+                    _vm._s(_vm.jumlahBubuk)
+                )
+              ])
+            ])
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -809,7 +848,7 @@ var render = function() {
                   _vm._v("Pilih Packing")
                 ]),
                 _vm._v(" "),
-                _vm._l(_vm.packings, function(packing, index) {
+                _vm._l(_vm.packings, function(packing) {
                   return _c(
                     "option",
                     { key: packing.id, domProps: { value: packing.id } },
@@ -881,7 +920,7 @@ var render = function() {
                   _vm._v("Pilih Supplier")
                 ]),
                 _vm._v(" "),
-                _vm._l(_vm.suppliers, function(supplier, index) {
+                _vm._l(_vm.suppliers, function(supplier) {
                   return _c(
                     "option",
                     { key: supplier.id, domProps: { value: supplier.id } },

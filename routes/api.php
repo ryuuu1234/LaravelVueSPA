@@ -72,6 +72,11 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('chart-orders', 'OrderController@orderFromChart');
         Route::delete('delete-charts/{chart}', 'ChartController@destroy')->name('chart.destroy'); // delete chart by id
         Route::get('notif-order', 'OrderController@notif');
+        
+        //======================== tambahan untuk session ====================
+        Route::get('session', 'OrderController@getSession'); 
+        Route::post('session-update', 'OrderController@updateSession'); 
+        
         // details order
         Route::get('detail-orders', 'DetailOrderController@index');
 
@@ -119,6 +124,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('supplier-all-with-params', 'Supplier\SupplierController@index')->name('supplier.index');
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
         Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
+        Route::get('supplier-by-id-user/{id}', 'Supplier\SupplierController@get_details_supplier_by_id_user')->name('supplier.get_by_id_user');
     });
 });
 
