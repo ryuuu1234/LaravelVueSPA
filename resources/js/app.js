@@ -17,6 +17,7 @@ import vueNumeralFilterInstaller from 'vue-numeral-filter';
 
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+
 Vue.use(FlashMessage);
 Vue.use(VueSweetalert2);
 

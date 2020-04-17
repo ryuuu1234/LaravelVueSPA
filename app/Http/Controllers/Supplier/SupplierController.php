@@ -63,7 +63,7 @@ class SupplierController extends Controller
                 ]);
         }
     }
-    // sementara
+    
     public function get_details_supplier_by_id_user($id){
 
         $data = DetailSupplier::where([

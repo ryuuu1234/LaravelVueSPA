@@ -109,6 +109,7 @@ Route::group(['prefix' => 'mitra'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('mitra-all', 'Mitra\MitraController@index')->name('mitra.index'); // bubuk get all
+        Route::get('mitra-all-select', 'Mitra\MitraController@select_all')->name('mitra.select_all'); // bubuk get all
         Route::get('mitra-items/{id}', 'Mitra\MitraController@det_item_mitra_by_id_user')->name('bubuk.mitra'); // bubuk get by mitra id
         Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
         Route::put('mitra-update-stok/{id}', 'Mitra\MitraController@update_stok_awal')->name('mitra.update');
@@ -126,6 +127,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
         Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
         Route::get('supplier-by-id-user/{id}', 'Supplier\SupplierController@get_details_supplier_by_id_user')->name('supplier.get_by_id_user');
+
+        // ini khusus Laporan
+        Route::get('mitra-laporan-penjualan', 'Mitra\MitraController@penjualan_mitra')->name('mitra.laporan_penjualan');
     });
 });
 
