@@ -8,6 +8,7 @@ import IndexBubuk from './views/bubuk/Index.vue';
 import IndexMitra from './views/mitra/Index.vue';
 import IndexPacking from './views/packing/Index.vue';
 import IndexSupplier from './views/supplier/TheIndex.vue';
+import IndexLaporanPenjualan from './views/laporan/IndexLaporanPenjualan.vue';
 import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
@@ -17,13 +18,13 @@ import store from "./store.js";
 Vue.use(Router);
 
 const routes = [{
-        path: '/home',
+        path: '/',
         component: Home,
         meta: {
             requiresAuth: true
         },
         children: [{
-                path: '',
+                path: 'dashboard',
                 name: 'dashboard',
                 meta: {
                     title: 'Dashboard'
@@ -265,6 +266,35 @@ const routes = [{
     },// akhir dari supplier
 
     {
+        path: '/laporan-penjualan-mitra',
+        name: 'laporan-penjualan-mitra',
+        component: IndexLaporanPenjualan,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'laporan-penjualan.mitra',
+            component: () => import('./views/laporan/PenjualanMitra.vue'),
+                meta: {
+                    title: 'Jurnal Penjualan',
+                    subtitle: 'Jurnal Penjualan berdasarkan Mitra'
+                },
+            },
+            // {
+            //     path: 'details-item-supplier/:id',
+            //     name: 'item-details.supplier',
+            //     component: () => import('./views/supplier/TheDetails.vue'),
+            //         meta: {
+            //             title: 'Details Packing',
+            //             subtitle: 'Proses Pengiriman yg belum selesai',
+            //         },
+            // },
+        ],
+    },// akhir dari supplier
+
+    {
         path: '/coba-coba',
         component: IndexPercobaan,
         meta: {
@@ -297,7 +327,7 @@ const routes = [{
             if (!auth.isLoggedIn()) {
                 next();
             } else {
-                next('/home');
+                next('/dashboard');
             }
         }
     },
@@ -313,6 +343,8 @@ const routes = [{
         name: 'preloader',
         component: () => import('./views/Preloader.vue')
     },
+
+    {path:'*', component: () => import('./views/NotFound.vue')}
 
 ];
 

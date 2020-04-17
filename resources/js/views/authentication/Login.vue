@@ -128,7 +128,7 @@ export default {
 
       token_scope: function(item){
         if (item == 'Admin' || item == 'Root') {
-           this.$router.push('/home');
+           this.$router.push('/dashboard');
         } else {
            this.flashMessage.error({
                 message: "Kamu Bukan Administrator, tidak bisa login",

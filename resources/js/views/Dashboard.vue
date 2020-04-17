@@ -5,7 +5,7 @@
                 <li class="breadcrumb-item active">{{ $route.meta.title }}</li>
             </ol> -->
             <div class="row">
-                
+                <h1>HALAMAN DASHBOARD</h1>
             </div>
                 
         </div>
