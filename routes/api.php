@@ -86,6 +86,7 @@ Route::group(['prefix' => 'user'], function () {
 
         // untuk route notifications
         Route::resource('notification', 'NotificationController')->except(['create', 'destroy']);
+        Route::post('notification-all', 'NotificationController@readAll');
 
         // penambahan broadcast
 

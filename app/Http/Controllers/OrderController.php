@@ -18,11 +18,12 @@ use App\StatusOrder;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-// use Illuminate\Support\Facades\Notification;
-// use App\Notifications\OrderNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\OrderNotification;
 use App\Events\OrderStatusChanged;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\Session;
 
 class OrderController extends Controller
 {
@@ -151,11 +152,12 @@ class OrderController extends Controller
                 ]);
             };
             // $this->sendEvent($request); 
-            $user = User::find(Auth::id());
-            // simpan ke session
-            $this->saveToSession($order);
-            session()->put('order',$order);
-            event(new OrderStatusChanged($order, $user));   
+            // $user = User::find(Auth::id());
+            $user = User::find($order->user_id);
+            // event(new OrderStatusChanged($order, $user));
+            // sudah OK, 
+            Notification::send($user, new OrderNotification($order, $user));
+            
             //apabila tidak terjadi error, penyimpanan diverifikasi
             DB::commit();    
             return response()->json([
@@ -223,8 +225,6 @@ class OrderController extends Controller
             //GET USER YANG ROLE-NYA SUPERADMIN DAN FINANCE
             //KENAPA? KARENA HANYA ROLE ITULAH YANG AKAN MENDAPATKAN NOTIFIKASI
             $user = User::find(Auth::id());
-            // simpan ke session
-            $this->saveToSession($order);
             event(new OrderStatusChanged($order, $user)); 
 
             //apabila tidak terjadi error, penyimpanan diverifikasi
@@ -345,12 +345,12 @@ class OrderController extends Controller
         $order->status_id = $request->status_id;
 
         if ($order->save()) {
-            $user = User::find(Auth::id());
-            event(new OrderStatusChanged($order, $user));
-            // simpan ke session
-            $this->saveToSession($order);
-            session()->put(['order' => 'haloooooooo']);
-            return response()->json($order,200);
+            // $user = User::find(Auth::id());
+            $user = User::find($order->user_id);
+            // event(new OrderStatusChanged($order, $user));
+            // sudah OK, 
+            Notification::send($user, new OrderNotification($order, $user));
+            return response()->json([$order,$user],200);
         } else {
             
             $message = [
@@ -372,32 +372,6 @@ class OrderController extends Controller
         //
     }
 //==================================================================
-    // public function saveToSession(Order $order){
-    //     session()->put('orderToNotif', $order);
-    // }
-    public function saveToSession($request){
-        session()->put('order', $request);
-        // session(['orderToNotif' => $order]);
-    }
 
-    public function getSession(){
-        $data = session()->get('order');
-        $data2 = session()->get('name');
-        $nama = session('name');  
-        return response()->json(['data' => $data, 'data2'=> $data2, 'nama'=> $nama, 'anu'=>'nyoba'],200);
-        // return response()->json(session(['orderToNotif','order','name']),200);
-    }
-
-    public function updateSession(Request $request){
-
-        $data = $request->nama;
-        session(['order'=> $data]);
-        $this->saveToSession('$data');
-
-        $request->session()->put('name', $data);
-        $value = session()->get('order');
-        $value2 = session()->get('name');
-        return response()->json(['data'=>$data, 'valie'=>$value, 'value'=>$value2] , 200);
-    }
 
 }

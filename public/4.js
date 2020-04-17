@@ -143,9 +143,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/base/BaseInput.vue */ "./resources/js/components/base/BaseInput.vue");
-/* harmony import */ var _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/base/BaseButton.vue */ "./resources/js/components/base/BaseButton.vue");
-/* harmony import */ var _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/khusus/InputNumberTwo.vue */ "./resources/js/components/khusus/InputNumberTwo.vue");
+/* harmony import */ var _services_http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/http_service */ "./resources/js/services/http_service.js");
+/* harmony import */ var _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/base/BaseInput.vue */ "./resources/js/components/base/BaseInput.vue");
+/* harmony import */ var _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/base/BaseButton.vue */ "./resources/js/components/base/BaseButton.vue");
+/* harmony import */ var _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/khusus/InputNumberTwo.vue */ "./resources/js/components/khusus/InputNumberTwo.vue");
 //
 //
 //
@@ -175,14 +176,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    BaseInput: _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    BaseButton: _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'n-input': _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    BaseInput: _components_base_BaseInput_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    BaseButton: _components_base_BaseButton_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'n-input': _components_khusus_InputNumberTwo_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
@@ -191,7 +194,8 @@ __webpack_require__.r(__webpack_exports__);
       nyentuh: 0,
       number: '',
       price: null,
-      previousPrice: null
+      previousPrice: null,
+      masuk: ''
     };
   },
   mounted: function mounted() {// let stringValue = e.target.value.toString();
@@ -205,6 +209,22 @@ __webpack_require__.r(__webpack_exports__);
     //         // console.log(jadi);
     //         this.previousPrice = jadi;
     //     },
+    coba: function coba() {
+      var data = new FormData();
+      data.append('nama', this.masuk);
+      return new Promise(function () {
+        Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post("user/session-update", data).then(function (res) {
+          console.log(res);
+        });
+      });
+    },
+    ambil: function ambil() {
+      return new Promise(function () {
+        Object(_services_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().get("user/session").then(function (res) {
+          console.log(res);
+        });
+      });
+    },
     consoleClick: function consoleClick(e) {
       // alert('ok')
       this.nyentuh = 0;
@@ -484,7 +504,41 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("br")
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.masuk,
+            expression: "masuk"
+          }
+        ],
+        attrs: { type: "text" },
+        domProps: { value: _vm.masuk },
+        on: {
+          keyup: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.coba($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.masuk = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("button", { staticClass: "btn btn-info", on: { click: _vm.ambil } }, [
+        _vm._v("ambil")
+      ])
     ],
     1
   )

@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+// use App\User;
+// use App\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,7 +24,8 @@ class OrderNotification extends Notification implements ShouldQueue
     protected $order;
     protected $user;
     
-    public function __construct()
+    // public function __construct(Order $order, User $user)
+    public function __construct($order, $user)
     {
         //ASSIGN DATA YANG DITERIMA KE DALAM GLOBAL VARIABLE
         $this->order = $order;
@@ -55,9 +58,11 @@ class OrderNotification extends Notification implements ShouldQueue
     public function toDatabase($notifiable)
     {
         return [
-            'sender_id' => $this->user->id,
-            'sender_name' => $this->user->name,
-            'order' => $this->order
+            'receiver_id' => $this->user->id,
+            'receiver_name' => $this->user->name,
+            'order' => $this->order,
+            'status' => $this->order->status->name,
+            'read'  => false
         ];
     }
 
@@ -65,9 +70,11 @@ class OrderNotification extends Notification implements ShouldQueue
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'sender_id' => $this->user->id,
-            'sender_name' => $this->user->name,
-            'order' => $this->order
+            'receiver_id' => $this->user->id,
+            'receiver_name' => $this->user->name,
+            'order' => $this->order,
+            'status' => $this->order->status->name,
+            'read'  => false
         ]);
     }
 
