@@ -361,4 +361,29 @@ class OrderController extends Controller
     {
         //
     }
+
+
+    // =======================================================================================LAPORAN PENJUALAN
+
+    public function laporan_penjualan(Request $request)
+    {
+
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        $orders = Order::whereRaw(
+            "(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"]
+            )->where('status_id', 6) // 6:status selesai
+            // ->with( ['detail_order_one.product:id,name', 'details_bubuk', 'details_bubuk.bubuk:id,nama'])
+            ->get();
+            $orders->load('user:id,name,role');
+            $orders->load('status:id,name');
+            $orders->load(['detail_order_one','detail_order_one.product:id,name']);
+        // $user = User::all();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $orders,
+            ]
+        );
+    }
 }

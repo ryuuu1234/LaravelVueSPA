@@ -5,6 +5,7 @@ import {
 
 const state = () => ({
     products: [], //UNTUK MENAMPUNG DATA products YANG DIDAPATKAN DARI DATABASE
+    products_dropdown:[],
     detail_items: [],
 
     //UNTUK MENAMPUNG VALUE DARI FORM INPUTAN NANTINYA
@@ -28,6 +29,9 @@ const mutations = {
     //MEMASUKKAN DATA KE STATE products
     ASSIGN_DATA(state, payload) {
         state.products = payload
+    },
+    ASSIGN_DROPDOWN(state, payload) {
+        state.products_dropdown = payload
     },
 //====================modifikasi========
     ASSIGN_DATA_DETAILS(state, payload) {
@@ -79,6 +83,18 @@ const mutations = {
 }
 
 const actions = {
+
+    getProducts({commit},) {
+        return new Promise((resolve, reject) => {
+            http().get(`/user/products-all`)
+                .then((response) => {
+                    let getData = response.data.data
+                    // console.dir(getData)
+                    commit('ASSIGN_DROPDOWN', getData)
+                    resolve(getData)
+                })
+        })
+    },
     //FUNGSI INI UNTUK MELAKUKAN REQUEST DATA product DARI SERVER
     getProducts({
         commit,

@@ -53,6 +53,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::get('items-data', 'ItemController@get_all_data');
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
+        Route::get('products-all', 'ProductController@products_all')->name('products.all_products');
         Route::get('charts', 'ChartController@index');// akses api get charts by user_id
         Route::post('charts', 'ChartController@store'); // tambah data chart
         Route::put('update-charts-qty/{chart}', 'ChartController@update'); // update qty chart
@@ -125,6 +126,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         // ini khusus Laporan
         Route::get('mitra-laporan-penjualan', 'Mitra\MitraController@penjualan_mitra')->name('mitra.laporan_penjualan');
+        Route::get('laporan-penjualan-products', 'OrderController@laporan_penjualan')->name('order.laporan_penjualan');
     });
 });
 

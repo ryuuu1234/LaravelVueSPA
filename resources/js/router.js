@@ -282,15 +282,15 @@ const routes = [{
                     subtitle: 'Jurnal Penjualan berdasarkan Mitra'
                 },
             },
-            // {
-            //     path: 'details-item-supplier/:id',
-            //     name: 'item-details.supplier',
-            //     component: () => import('./views/supplier/TheDetails.vue'),
-            //         meta: {
-            //             title: 'Details Packing',
-            //             subtitle: 'Proses Pengiriman yg belum selesai',
-            //         },
-            // },
+            {
+                path: 'laporan-penjualan-product',
+                name: 'laporan-penjualan.admin',
+                component: () => import('./views/laporan/PenjualanProduct.vue'),
+                    meta: {
+                        title: 'Laporan Penjualan',
+                        subtitle: 'Penjualan Seluruh Data Product By Admin'
+                    },
+            },
         ],
     },// akhir dari supplier
 

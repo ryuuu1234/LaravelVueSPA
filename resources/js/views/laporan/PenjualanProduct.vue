@@ -19,12 +19,12 @@
                         <div class="col-md-2">
                             <date-picker v-model="myDateB" lang="en" type="date" :format="momentFormat" placeholder="Tanggal Akhir"></date-picker>
                         </div>
-                        <div class="col-md-2">
+                        <!-- <div class="col-md-2">
                             <select class="form-control" v-model="selectedMitra" >
-                                <option value="">Pilih Mitra</option>
-                                <option v-for="mitra in items" :key="mitra.id" :value="mitra.id" >{{mitra.name}}</option>
+                                <option value="">Seluruh Product</option>
+                                <option v-for="product in products_dropdown" :key="product.id" :value="product.id" >{{product.name}}</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="col-md-4">
                             <button type="button" class="btn btn-success btn-xsm" @click="lihatData">
                                 <i class="fa fa-eye"></i>
@@ -36,26 +36,29 @@
                     <div class="mt-4 pageNya">
 
                         <div class="header-laporan">
-                            <h5>JURNAL DAN LAPORAN PENJUALAN BERDASARKAN MITRA</h5>
+                            <h5>LAPORAN PENJUALAN PRODUCTS</h5>
                         </div>
                         <table class="table table-bordered">
                                 <thead>
-                                    <th>Item</th>
+                                    <th>Details</th>
                                     <th>Tanggal</th>
-                                    <th>Jml</th>
+                                    <th class="text-right">Harga</th>
                                 </thead>
                                 <tbody v-if="dataLaporan.length > 0">
-                                    <template v-for="item in dataLaporan">
-                                        <tr v-for="(data, i) in item.details_stok" :key="data.id">
-                                            <td v-if="i == 0" :rowspan="item.details_stok.length">    {{item.bubuk.nama}}</td>
+                                    <!-- <template v-for="item in dataLaporan"> -->
+                                        <tr v-for="data in dataLaporan" :key="data.id">
+                                            <td>
+                                                <p class="mb-0"> <b>Refferensi</b>    : <i>{{data.reff}}</i></p>
+                                                <p class="mb-0" ><b>Product</b> : <i>{{data.detail_order_one.product.name}}</i></p>
+                                            </td>
                                             <td>{{formatterDate(data.created_at)}}</td>
-                                            <td>{{data.keluar}} CUP</td>
+                                            <td class="text-right">{{data.total | numeral(0,0)}}</td>
                                         </tr>
-                                    </template>
-                                    <tr>
+                                    <!-- </template> -->
+                                    <!-- <tr>
                                         <td colspan="2" class="text-right"><b>Jumlah Penjualan</b></td>
                                         <td><b>{{total_jumlah}} CUP</b></td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
@@ -85,12 +88,12 @@ import 'vue2-datepicker/index.css';
 
 import {http,httpFile} from '../../services/http_service';
 export default {
-    name: "PenjualanMitra",
+    name: "PenjualanProduct",
     components: { DatePicker },
     data(){
         return {
             selected:'',
-            selectedMitra:'',
+            // selectedMitra:'',
             rangePickers:[
                 {id: 1 , title :"Hari ini"},
                 {id: 2 , title :"Bulan ini"},
@@ -113,31 +116,31 @@ export default {
         }
     },
 
-    created(){
-        this.getMitraAll()
-    },
+    // created(){
+    //     this.getMitraAll()
+    // },
     computed: {
-        ...mapState("mitra", {items: state => state.items}),
+        // ...mapState("product", {products_dropdown: state => state.products_dropdown}),
 
-        cekData(){
-            if (this.myDateA == null && this.myDateB == null) {
-                return alert('pilih Periode Tanggal terlebih Dahulu')
-            } else if (this.selectedMitra == '') {
-                return alert('pilih Data Mitra terlebih dahulu')
-            }
-        },
+        // cekData(){
+        //     if (this.myDateA == null && this.myDateB == null) {
+        //         return alert('pilih Periode Tanggal terlebih Dahulu')
+        //     } else if (this.selectedMitra == '') {
+        //         return alert('pilih Data Mitra terlebih dahulu')
+        //     }
+        // },
 
-        total_jumlah() {
-            return this.dataLaporan.reduce(function (sum, val) {
-                let keluar = val.sum_keluar == null? 0:parseInt(val.sum_keluar);
-                let total = sum + keluar;
-                return total
-            }, 0)
-        },
+        // total() {
+        //     return this.dataLaporan.reduce(function (sum, val) {
+        //         let keluar = val.sum_keluar == null? 0:parseInt(val.sum_keluar);
+        //         let total = sum + keluar;
+        //         return total
+        //     }, 0)
+        // },
     },
 
     methods: {
-        ...mapActions("mitra", ["getMitraAll"]),
+        // ...mapActions("mitra", ["getMitraAll"]),
 
         formatterDate:function(date){
             return moment(date).format('D MMMM, YYYY');
@@ -161,9 +164,6 @@ export default {
             if (this.myDateA == null && this.myDateB == null) {
                 alert('pilih Periode Tanggal terlebih Dahulu')
                 return false
-            } else if (this.selectedMitra == '') {
-                alert('pilih Data Mitra terlebih dahulu')
-                return false
             } else {
                 this.getLaporan()
             }
@@ -172,15 +172,14 @@ export default {
 
         getLaporan: async function(){
              let params = { params : {
-                    user_id: this.selectedMitra,
+                    // user_id: this.selectedMitra,
                     tgl_awal: moment(this.myDateA).format("YYYY-MM-DD"),
                     tgl_akhir: moment(this.myDateB).format("YYYY-MM-DD"),
                 }};
                 try {
-                    const response = await http().get(`admin/mitra-laporan-penjualan`, params); 
+                    const response = await http().get(`admin/laporan-penjualan-products`, params); 
                     console.log(response);
                     this.dataLaporan = response.data.data;
-                    this.detailLaporan = this.dataLaporan.details_stok
                 } catch (error) {
                         console.log(''+error)
                         this.flashMessage.error({

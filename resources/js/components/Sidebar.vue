@@ -192,8 +192,16 @@
                                     :to="{ name: 'laporan-penjualan.mitra' }"
                                     class="nav-link"
                                     exact
-                                    >Laporan Penjualan Mitra</router-link
-                                >
+                                    >Laporan Penjualan Mitra
+                                </router-link>
+                            </div>
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'laporan-penjualan.admin' }"
+                                    class="nav-link"
+                                    exact
+                                    >Laporan Penjualan Product
+                                </router-link>
                             </div>
                         </nav>
                     </div>
