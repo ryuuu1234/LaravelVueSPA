@@ -93,11 +93,9 @@ export default {
     data(){
         return {
             selected:'',
-            // selectedMitra:'',
             rangePickers:[
                 {id: 1 , title :"Hari ini"},
                 {id: 2 , title :"Bulan ini"},
-                {id: 3 , title :"Tahun ini"},
             ],
 
             momentFormat: {

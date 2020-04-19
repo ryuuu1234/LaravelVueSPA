@@ -11,6 +11,9 @@ import mitra from './stores/store_mitra.js';
 import stokMitra from './stores/store_stok_mitra.js';
 import packing from './stores/store_packing.js';
 import supplier from './stores/store_supplier.js';
+import beban from './stores/store_beban.js';
+import pengeluaran from './stores/store_pengeluaran_kas.js';
+import laporan from './stores/store_laporan.js';
 import notification from './stores/store_notification.js';
 
 
@@ -29,6 +32,9 @@ export default new Vuex.Store({
         stokMitra,
         packing,
         supplier,
+        beban,
+        pengeluaran,
+        laporan,
         notification
     },
     // =====================

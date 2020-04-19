@@ -161,6 +161,15 @@
                     </div>
 
                     <div class="nav-link-ku">
+                        <router-link :to="{name: 'transaksi.pengeluaran-kas'}" class="nav-link" exact>
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <span>Tr Pengeluaran Kas</span>
+                        </router-link>
+                    </div>
+
+                    <div class="nav-link-ku">
                         <a
                             class="nav-link collapsed"
                             href="#"
@@ -203,11 +212,60 @@
                                     >Laporan Penjualan Product
                                 </router-link>
                             </div>
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'laporan-keuangan.admin' }"
+                                    class="nav-link"
+                                    exact
+                                    >Laporan Keuangan
+                                </router-link>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="nav-link-ku">
+                        <a
+                            class="nav-link collapsed"
+                            href="#"
+                            data-toggle="collapse"
+                            data-target="#collapseLayouts3"
+                            aria-expanded="false"
+                            aria-controls="collapseLayouts"
+                        >
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            Settings
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div
+                        class="collapse"
+                        id="collapseLayouts3"
+                        aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion"
+                    >
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'beban.settings' }"
+                                    class="nav-link"
+                                    exact
+                                    >settings Beban
+                                </router-link>
+                            </div>
+                            
                         </nav>
                     </div>
 
 
                 </div>
+
+                
 
 
                 

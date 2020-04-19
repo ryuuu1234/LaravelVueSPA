@@ -30,25 +30,33 @@ class PercobaanController extends Controller
          //                         "(created_at >= ? AND created_at <= ?)", 
          //                         [$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"]
          //                       )->get();
-         if (!$user_id == '') {
-            $data = 'App\ItemMitra'::where('user_id', $user_id)
-             ->with(['details_stok' => function($q) use($tgl_awal, $tgl_akhir) {
-                $q->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
-                 ->where('keterangan', 'PENJUALAN');
-               }])->get();
+         // if (!$user_id == '') {
+         //    $data = 'App\ItemMitra'::where('user_id', $user_id)
+         //     ->with(['details_stok' => function($q) use($tgl_awal, $tgl_akhir) {
+         //        $q->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
+         //         ->where('keterangan', 'PENJUALAN');
+         //       }])->get();
  
-         } else {
-             $data = 'App\ItemMitra'::with(['details_stok' => function($q) use($tgl_awal, $tgl_akhir) {
-                $q->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
-                 ->where('keterangan', 'PENJUALAN');
-               }])->get();
-         }
-             $data->load('bubuk:id,nama');
-
-         return response()->json([ 
-            'data' => $data,
+         // } else {
+         //     $data = 'App\ItemMitra'::with(['details_stok' => function($q) use($tgl_awal, $tgl_akhir) {
+         //        $q->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
+         //         ->where('keterangan', 'PENJUALAN');
+         //       }])->get();
+         // }
+         //     $data->load('bubuk:id,nama');
+         $items = 'App\Pengeluaran'::whereDate('created_at', "2020-04-19")->get();
+        // $items->load('unit:id,nama');
+        // $unit = Unit::all();
+        return response()->json([
+            'status' => 'success', 
+            'data' => $items,
             ]
-        );;
+        );
+
+      //    return response()->json([ 
+      //       'data' => $data,
+      //       ]
+      //   );;
          // echo $tgl_awal;
    }
    public function kedua(Product $product)

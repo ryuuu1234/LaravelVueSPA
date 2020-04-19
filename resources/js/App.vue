@@ -24,3 +24,12 @@ import * as auth from './services/auth_service';
     
   }
 </script>
+
+<style lang="scss">
+.content-nya {
+    border:1px solid lightgray;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top:-20px;
+}
+</style>

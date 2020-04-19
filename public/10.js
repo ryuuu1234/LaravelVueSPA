@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[10],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24,12 +24,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
 //
 //
 //
@@ -115,23 +112,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "PenjualanMitra",
+  name: "PenjualanProduct",
   components: {
     DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
     return {
       selected: '',
-      selectedMitra: '',
       rangePickers: [{
         id: 1,
         title: "Hari ini"
       }, {
         id: 2,
         title: "Bulan ini"
-      }, {
-        id: 3,
-        title: "Tahun ini"
       }],
       momentFormat: {
         stringify: function stringify(date) {
@@ -147,30 +140,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       detailLaporan: []
     };
   },
-  created: function created() {
-    this.getMitraAll();
+  // created(){
+  //     this.getMitraAll()
+  // },
+  computed: {// ...mapState("product", {products_dropdown: state => state.products_dropdown}),
+    // cekData(){
+    //     if (this.myDateA == null && this.myDateB == null) {
+    //         return alert('pilih Periode Tanggal terlebih Dahulu')
+    //     } else if (this.selectedMitra == '') {
+    //         return alert('pilih Data Mitra terlebih dahulu')
+    //     }
+    // },
+    // total() {
+    //     return this.dataLaporan.reduce(function (sum, val) {
+    //         let keluar = val.sum_keluar == null? 0:parseInt(val.sum_keluar);
+    //         let total = sum + keluar;
+    //         return total
+    //     }, 0)
+    // },
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapState"])("mitra", {
-    items: function items(state) {
-      return state.items;
-    }
-  }), {
-    cekData: function cekData() {
-      if (this.myDateA == null && this.myDateB == null) {
-        return alert('pilih Periode Tanggal terlebih Dahulu');
-      } else if (this.selectedMitra == '') {
-        return alert('pilih Data Mitra terlebih dahulu');
-      }
-    },
-    total_jumlah: function total_jumlah() {
-      return this.dataLaporan.reduce(function (sum, val) {
-        var keluar = val.sum_keluar == null ? 0 : parseInt(val.sum_keluar);
-        var total = sum + keluar;
-        return total;
-      }, 0);
-    }
-  }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("mitra", ["getMitraAll"]), {
+  methods: {
+    // ...mapActions("mitra", ["getMitraAll"]),
     formatterDate: function formatterDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_2___default()(date).format('D MMMM, YYYY');
     },
@@ -193,9 +183,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.myDateA == null && this.myDateB == null) {
         alert('pilih Periode Tanggal terlebih Dahulu');
         return false;
-      } else if (this.selectedMitra == '') {
-        alert('pilih Data Mitra terlebih dahulu');
-        return false;
       } else {
         this.getLaporan();
       }
@@ -211,25 +198,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 params = {
                   params: {
-                    user_id: this.selectedMitra,
+                    // user_id: this.selectedMitra,
                     tgl_awal: moment__WEBPACK_IMPORTED_MODULE_2___default()(this.myDateA).format("YYYY-MM-DD"),
                     tgl_akhir: moment__WEBPACK_IMPORTED_MODULE_2___default()(this.myDateB).format("YYYY-MM-DD")
                   }
                 };
                 _context.prev = 1;
                 _context.next = 4;
-                return Object(_services_http_service__WEBPACK_IMPORTED_MODULE_5__["http"])().get("admin/mitra-laporan-penjualan", params);
+                return Object(_services_http_service__WEBPACK_IMPORTED_MODULE_5__["http"])().get("admin/laporan-penjualan-products", params);
 
               case 4:
                 response = _context.sent;
                 console.log(response);
                 this.dataLaporan = response.data.data;
-                this.detailLaporan = this.dataLaporan.details_stok;
-                _context.next = 14;
+                _context.next = 13;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](1);
                 console.log('' + _context.t0);
                 this.flashMessage.error({
@@ -237,12 +223,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   time: 5000
                 });
 
-              case 14:
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 10]]);
+        }, _callee, this, [[1, 9]]);
       }));
 
       function getLaporan() {
@@ -251,15 +237,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return getLaporan;
     }()
-  })
+  }
 });
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&":
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -268,22 +254,22 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".pageNya[data-v-26233ca4] {\n  border: 1px solid lightgray;\n  padding: 1rem;\n  min-height: 20rem;\n}\n.pageNya .header-laporan[data-v-26233ca4] {\n  text-align: center;\n}\n.table td[data-v-26233ca4] {\n  padding: 0.3rem !important;\n}\n.blue-color[data-v-26233ca4] {\n  color: #17A2B8;\n}\n.red-color[data-v-26233ca4] {\n  color: #DC3545;\n}\n.green-color[data-v-26233ca4] {\n  color: #1ddd47;\n}\ntd > input[data-v-26233ca4] {\n  width: 50px;\n  text-align: center;\n}\n.mx-datepicker[data-v-26233ca4] {\n  width: 160px !important;\n}", ""]);
+exports.push([module.i, ".pageNya[data-v-aeab1754] {\n  border: 1px solid lightgray;\n  padding: 1rem;\n  min-height: 20rem;\n}\n.pageNya .header-laporan[data-v-aeab1754] {\n  text-align: center;\n}\n.table td[data-v-aeab1754] {\n  padding: 0.3rem !important;\n}\n.blue-color[data-v-aeab1754] {\n  color: #17A2B8;\n}\n.red-color[data-v-aeab1754] {\n  color: #DC3545;\n}\n.green-color[data-v-aeab1754] {\n  color: #1ddd47;\n}\ntd > input[data-v-aeab1754] {\n  width: 50px;\n  text-align: center;\n}\n.mx-datepicker[data-v-aeab1754] {\n  width: 160px !important;\n}", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&":
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--7-2!./node_modules/sass-loader/dist/cjs.js??ref--7-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&");
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -305,10 +291,10 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true&":
-/*!********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true& ***!
-  \********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -430,52 +416,6 @@ var render = function() {
               1
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-2" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.selectedMitra,
-                      expression: "selectedMitra"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.selectedMitra = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "" } }, [
-                    _vm._v("Pilih Mitra")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.items, function(mitra) {
-                    return _c(
-                      "option",
-                      { key: mitra.id, domProps: { value: mitra.id } },
-                      [_vm._v(_vm._s(mitra.name))]
-                    )
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
             _c("div", { staticClass: "col-md-4" }, [
               _c(
                 "button",
@@ -503,40 +443,36 @@ var render = function() {
               _vm.dataLaporan.length > 0
                 ? _c(
                     "tbody",
-                    [
-                      _vm._l(_vm.dataLaporan, function(item) {
-                        return _vm._l(item.details_stok, function(data, i) {
-                          return _c("tr", { key: data.id }, [
-                            i == 0
-                              ? _c(
-                                  "td",
-                                  {
-                                    attrs: { rowspan: item.details_stok.length }
-                                  },
-                                  [_vm._v("    " + _vm._s(item.bubuk.nama))]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(_vm._s(_vm.formatterDate(data.created_at)))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(data.keluar) + " CUP")])
+                    _vm._l(_vm.dataLaporan, function(data) {
+                      return _c("tr", { key: data.id }, [
+                        _c("td", [
+                          _c("p", { staticClass: "mb-0" }, [
+                            _c("b", [_vm._v("Refferensi")]),
+                            _vm._v("    : "),
+                            _c("i", [_vm._v(_vm._s(data.reff))])
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "mb-0" }, [
+                            _c("b", [_vm._v("Product")]),
+                            _vm._v(" : "),
+                            _c("i", [
+                              _vm._v(_vm._s(data.detail_order_one.product.name))
+                            ])
                           ])
-                        })
-                      }),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _vm._m(2),
+                        ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("b", [_vm._v(_vm._s(_vm.total_jumlah) + " CUP")])
+                          _vm._v(_vm._s(_vm.formatterDate(data.created_at)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "text-right" }, [
+                          _vm._v(_vm._s(_vm._f("numeral")(data.total, 0, 0)))
                         ])
                       ])
-                    ],
-                    2
+                    }),
+                    0
                   )
-                : _c("tbody", [_vm._m(3)])
+                : _c("tbody", [_vm._m(2)])
             ])
           ])
         ]),
@@ -568,7 +504,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "header-laporan" }, [
-      _c("h5", [_vm._v("JURNAL DAN LAPORAN PENJUALAN BERDASARKAN MITRA")])
+      _c("h5", [_vm._v("LAPORAN PENJUALAN PRODUCTS")])
     ])
   },
   function() {
@@ -576,19 +512,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("th", [_vm._v("Item")]),
+      _c("th", [_vm._v("Details")]),
       _vm._v(" "),
       _c("th", [_vm._v("Tanggal")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Jml")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticClass: "text-right", attrs: { colspan: "2" } }, [
-      _c("b", [_vm._v("Jumlah Penjualan")])
+      _c("th", { staticClass: "text-right" }, [_vm._v("Harga")])
     ])
   },
   function() {
@@ -608,18 +536,18 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/views/laporan/PenjualanMitra.vue":
-/*!*******************************************************!*\
-  !*** ./resources/js/views/laporan/PenjualanMitra.vue ***!
-  \*******************************************************/
+/***/ "./resources/js/views/laporan/PenjualanProduct.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/views/laporan/PenjualanProduct.vue ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true& */ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true&");
-/* harmony import */ var _PenjualanMitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PenjualanMitra.vue?vue&type=script&lang=js& */ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& */ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&");
+/* harmony import */ var _PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true& */ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true&");
+/* harmony import */ var _PenjualanProduct_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PenjualanProduct.vue?vue&type=script&lang=js& */ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& */ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -630,66 +558,66 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _PenjualanMitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _PenjualanProduct_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "26233ca4",
+  "aeab1754",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/laporan/PenjualanMitra.vue"
+component.options.__file = "resources/js/views/laporan/PenjualanProduct.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
+/***/ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanMitra.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanProduct.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& ***!
-  \*****************************************************************************************************************/
+/***/ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& ***!
+  \*******************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=style&index=0&id=26233ca4&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_style_index_0_id_26233ca4_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--7-2!../../../../node_modules/sass-loader/dist/cjs.js??ref--7-3!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=style&index=0&id=aeab1754&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_2_node_modules_sass_loader_dist_cjs_js_ref_7_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_style_index_0_id_aeab1754_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ "./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true& ***!
-  \**************************************************************************************************/
+/***/ "./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true&":
+/*!****************************************************************************************************!*\
+  !*** ./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true& ***!
+  \****************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanMitra.vue?vue&type=template&id=26233ca4&scoped=true&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/laporan/PenjualanProduct.vue?vue&type=template&id=aeab1754&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanMitra_vue_vue_type_template_id_26233ca4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PenjualanProduct_vue_vue_type_template_id_aeab1754_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

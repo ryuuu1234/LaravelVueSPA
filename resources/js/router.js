@@ -9,7 +9,9 @@ import IndexMitra from './views/mitra/Index.vue';
 import IndexPacking from './views/packing/Index.vue';
 import IndexSupplier from './views/supplier/TheIndex.vue';
 import IndexLaporanPenjualan from './views/laporan/IndexLaporanPenjualan.vue';
-import IndexPercobaan from './views/cobacoba/Index.vue';
+import IndexSettings from './views/settings/IndexSettings.vue';
+import IndexTransaksi from './views/transaksi/IndexTransaksi.vue';
+// import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
 
@@ -164,6 +166,34 @@ const routes = [{
     },// akhir dari orders
 
     {
+        path: '/transaksi-kas-keluar',
+        component: IndexTransaksi,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'transaksi.pengeluaran-kas',
+            component: () => import('./views/transaksi/PengeluaranKas.vue'),
+            meta: {
+                title: 'Transaksi Kas Keluar',
+                subtitle: 'Input Pengeluaran Kas Hari ini'
+                } 
+            },
+            // {
+            //     path: 'status/:id',
+            //     name: 'orders.status',
+            //     component: () => import('./views/orders/Status.vue'),
+            //     meta: {
+            //         title: 'Edit Status Order',
+            //         subtitle: 'With Details Product Order'
+            //     }
+            // }
+        ],
+    },// akhir dari transaksi
+
+    {
         path: '/data-bubuk',
         component: IndexBubuk,
         meta: {
@@ -291,26 +321,36 @@ const routes = [{
                         subtitle: 'Penjualan Seluruh Data Product By Admin'
                     },
             },
+            {
+                path: 'laporan-keuangan',
+                name: 'laporan-keuangan.admin',
+                component: () => import('./views/laporan/Keuangan.vue'),
+                    meta: {
+                        title: 'Laporan Keuangan',
+                        subtitle: 'Rugi Laba Laporan kas masuk & kas keluar'
+                    },
+            },
         ],
     },// akhir dari supplier
 
     {
-        path: '/coba-coba',
-        component: IndexPercobaan,
+        path: '/settings-beban',
+        component: IndexSettings,
         meta: {
             requiresAuth: true
         },
         children: [
             {
             path: '',
-            name: 'coba-coba.data',
-            component: () => import('./views/cobacoba/PercobaanPage.vue'),
+            name: 'beban.settings',
+            component: () => import('./views/settings/Beban.vue'),
                 meta: {
-                    title: 'Manage Percobaan',
+                    title: 'Manage Beban',
+                    subtitle: 'Settings data nama beban'
                 },
             },
         ],
-    },// akhir dari percobaan
+    },// akhir dari settings
 
     // INI TANPA META AUTH
     {

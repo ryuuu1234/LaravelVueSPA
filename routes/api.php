@@ -130,6 +130,29 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
+Route::group(['prefix' => 'settings'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::resource('bebans', 'BebanController');
+        Route::get('bebans-with-params', 'BebanController@beban_with_params')->name('beban.all_with_params');
+    });
+});
+
+Route::group(['prefix' => 'transaksi'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('pengeluaran-kas-input', 'KasController@pengeluaran_kas_input')->name('kas.pengeluaran_input');
+        Route::get('pengeluaran-kas-edit/{id}/edit', 'KasController@edit')->name('kas.edit');
+        Route::put('pengeluaran-kas-update/{id}', 'KasController@update')->name('kas.update');
+        Route::delete('pengeluaran-kas-delete/{id}', 'KasController@destroy')->name('kas.destroy');
+        Route::get('pengeluaran-kas-with-params', 'KasController@pengeluaran_kas_with_params')->name('kas.all_with_params');
+    });
+});
+
+Route::group(['prefix' => 'laporan'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('laporan-beban', 'BebanController@laporan_beban')->name('beban.laporan');
+    });
+});
+
 
 
 //untuk register selain root dan admin

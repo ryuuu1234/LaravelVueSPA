@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[24],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/orders/Order.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/orders/Order.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -140,81 +140,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "DataOrders",
-  components: {},
+  name: "DataMitra",
   created: function created() {
-    this.getOrders();
+    this.getMitra();
   },
   data: function data() {
     return {
       fields: [{
-        key: 'reff',
+        key: 'name',
+        label: 'Nama Mitra',
         sortable: true
       }, {
-        key: 'created_at',
-        sortable: true
-      }, // {key: 'unit.nama', label:'Satuan'},
-      {
-        key: 'total',
-        label: 'Total',
-        "class": 'text-right'
-      }, {
-        key: 'status_id',
-        label: 'Status Order',
+        key: 'actions',
+        label: 'Options',
         "class": 'text-right'
       }],
       search: '',
@@ -222,12 +162,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       isInfo: false,
       isDanger: false,
       isSuccess: true,
-      isWarning: false
+      isWarning: false,
+      method: 'Add',
+      id_item: ''
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])("order", {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])("mitra", {
     items: function items(state) {
-      return state.orders;
+      return state.items;
     },
     meta: function meta(state) {
       return state.meta;
@@ -235,122 +177,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }), {
     page: {
       get: function get() {
-        //MENGAMBIL VALUE PAGE DARI VUEX MODULE order
-        return this.$store.state.order.page;
+        return this.$store.state.mitra.page;
       },
       set: function set(val) {
-        //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE PAGE
-        //DI VUEX JUGA AKAN DIUBAH
-        this.$store.commit("order/SET_PAGE", val);
+        this.SET_PAGE(val);
       }
     },
     per_page: {
       get: function get() {
-        //MENGAMBIL VALUE PAGE DARI VUEX MODULE order
-        return this.$store.state.order.per_page;
+        return this.$store.state.mitra.per_page;
       },
       set: function set(val) {
-        //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE PER_PAGE
-        //DI VUEX JUGA AKAN DIUBAH
-        this.$store.commit("order/SET_PER_PAGE", val);
+        this.SET_PER_PAGE(val);
       }
     },
     sortBy: {
       get: function get() {
-        //MENGAMBIL VALUE PAGE DARI VUEX MODULE order
-        return this.$store.state.order.sortBy;
+        return this.$store.state.mitra.sortBy;
       },
       set: function set(val) {
-        //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE SORT
-        //DI VUEX JUGA AKAN DIUBAH
-        this.$store.commit("order/SET_SORT_BY", val);
+        this.SET_SORT_BY(val);
       }
     },
     sortByDesc: {
       get: function get() {
-        //MENGAMBIL VALUE PAGE DARI VUEX MODULE order
-        return this.$store.state.order.sortByDesc;
+        return this.$store.state.mitra.sortByDesc;
       },
       set: function set(val) {
-        //APABILA TERJADI PERUBAHAN VALUE DARI PAGE, MAKA STATE PAGE
-        //DI VUEX JUGA AKAN DIUBAH
-        this.$store.commit("order/SET_SORT_BY_DESC", val);
+        this.SET_SORT_BY_DESC(val);
       }
     }
   }),
   watch: {
     page: function page() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
-      this.getOrders();
+      this.getMitra();
     },
     per_page: function per_page() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
-      this.getOrders();
+      this.getMitra();
     },
     sortBy: function sortBy() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
-      this.getOrders();
+      this.getMitra();
     },
     sortByDesc: function sortByDesc() {
-      //APABILA VALUE DARI PAGE BERUBAH, MAKA AKAN MEMINTA DATA DARI SERVER
-      this.getOrders();
+      this.getMitra();
     },
-    search: function search() {
-      //APABILA VALUE DARI SEARCH BERUBAH MAKA AKAN MEMINTA DATA
-      //SESUAI DENGAN DATA YANG SEDANG DICARI
-      this.getOrders(this.search);
-    }
+    search: 'getMitra'
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])("order", ["getOrders"]), {
-    conditionalClass: function conditionalClass(val) {
-      switch (val) {
-        case 2:
-          //proses produksi
-          return 'btn-info';
-          break;
-
-        case 3:
-          //Proses Packing
-          return 'btn-primary';
-          break;
-
-        case 4:
-          //Proses Pengiriman
-          return 'btn-success';
-          break;
-
-        case 5:
-          //Proses terkirim
-          return 'btn-danger';
-          break;
-
-        case 6:
-          //selesai order
-          return 'btn-dark';
-          break;
-
-        default:
-          return 'btn-warning';
-          break;
-      }
-    }
-  }),
-  mounted: function mounted() {
-    var _this = this;
-
-    window.Echo.channel('capcin-tracker').listen('OrderStatusChanged', function (order) {
-      // console.log(order);
-      _this.getOrders();
-    });
-  }
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('mitra', ['getMitra']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])("mitra", ['SET_PAGE', 'SET_PER_PAGE', 'SET_SORT_BY', 'SET_SORT_BY_DESC']))
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa&":
-/*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa& ***!
-  \**********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130& ***!
+  \*********************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -476,27 +357,29 @@ var render = function() {
                 },
                 scopedSlots: _vm._u([
                   {
-                    key: "cell(status_id)",
+                    key: "cell(actions)",
                     fn: function(row) {
                       return [
                         _c(
-                          "b-link",
+                          "router-link",
                           {
-                            staticClass: "btn btn-xxsm btn-flat",
-                            class: _vm.conditionalClass(row.item.status_id),
+                            directives: [
+                              {
+                                name: "b-tooltip",
+                                rawName: "v-b-tooltip.hover",
+                                modifiers: { hover: true }
+                              }
+                            ],
+                            staticClass: "btn btn-xxsm btn-flat btn-warning",
                             attrs: {
                               to: {
-                                name: "orders.status",
+                                name: "item-detail.mitra",
                                 params: { id: row.item.id }
-                              }
+                              },
+                              title: "Stok Data"
                             }
                           },
-                          [
-                            _vm._v(
-                              _vm._s(row.item.status.name) +
-                                "\n                            "
-                            )
-                          ]
+                          [_vm._v("Stok Items Mitra")]
                         )
                       ]
                     }
@@ -509,21 +392,41 @@ var render = function() {
                   _c("div", { staticClass: "col-md-6" }),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-md-6 text-right" }, [
-                    _c(
-                      "p",
-                      { staticStyle: { color: "grey", "font-size": "11px" } },
-                      [
-                        _vm._v(
-                          "\n                                    Halaman ke - " +
-                            _vm._s(_vm.meta.from) +
-                            " dari " +
-                            _vm._s(_vm.meta.to) +
-                            " data\n                                    ditemukan, dan dari " +
-                            _vm._s(_vm.meta.total) +
-                            " data\n                                    keseluruhan\n                                "
-                        )
-                      ]
-                    )
+                    _vm.items.data && _vm.items.data.length > 0
+                      ? _c("div", [
+                          _c(
+                            "p",
+                            {
+                              staticStyle: {
+                                color: "grey",
+                                "font-size": "11px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                        Halaman ke - " +
+                                  _vm._s(_vm.meta.from) +
+                                  " dari " +
+                                  _vm._s(_vm.meta.to) +
+                                  " data\n                                        ditemukan, dan dari " +
+                                  _vm._s(_vm.meta.total) +
+                                  " data\n                                        keseluruhan\n                                    "
+                              )
+                            ]
+                          )
+                        ])
+                      : _c("div", [
+                          _c(
+                            "p",
+                            {
+                              staticStyle: {
+                                color: "grey",
+                                "font-size": "11px"
+                              }
+                            },
+                            [_vm._v("Data is Empty")]
+                          )
+                        ])
                   ])
                 ])
               ])
@@ -575,17 +478,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/views/orders/Order.vue":
-/*!*********************************************!*\
-  !*** ./resources/js/views/orders/Order.vue ***!
-  \*********************************************/
+/***/ "./resources/js/views/mitra/Mitra.vue":
+/*!********************************************!*\
+  !*** ./resources/js/views/mitra/Mitra.vue ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Order.vue?vue&type=template&id=252cfbfa& */ "./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa&");
-/* harmony import */ var _Order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Order.vue?vue&type=script&lang=js& */ "./resources/js/views/orders/Order.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Mitra.vue?vue&type=template&id=77ef7130& */ "./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130&");
+/* harmony import */ var _Mitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Mitra.vue?vue&type=script&lang=js& */ "./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -595,9 +498,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Mitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -607,38 +510,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/orders/Order.vue"
+component.options.__file = "resources/js/views/mitra/Mitra.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/orders/Order.vue?vue&type=script&lang=js&":
-/*!**********************************************************************!*\
-  !*** ./resources/js/views/orders/Order.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************/
+/***/ "./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Order.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/orders/Order.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Order_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Mitra.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/mitra/Mitra.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Mitra_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa& ***!
-  \****************************************************************************/
+/***/ "./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130& ***!
+  \***************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Order.vue?vue&type=template&id=252cfbfa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/orders/Order.vue?vue&type=template&id=252cfbfa&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Mitra.vue?vue&type=template&id=77ef7130& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/mitra/Mitra.vue?vue&type=template&id=77ef7130&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Order_vue_vue_type_template_id_252cfbfa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Mitra_vue_vue_type_template_id_77ef7130___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
