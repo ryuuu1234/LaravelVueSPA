@@ -20,6 +20,7 @@ class NotificationController extends Controller
         //EDIT RECORD NOTIFIKASI BERDASARKAN ID YANG DITERIMA
         //NOTIFIKASI YANG SUDAH/BELUM DIREAD DITANDAI DENGAN read_at YANG MASIH NULL
         $user->unreadNotifications()->where('id', $request->id)->update(['read_at' => now()]);
+        $user->notifications()->where('id', $request->id)->delete();
         return response()->json(['status' => 'success', 'data'=>$user->unreadNotifications]);
         // return response()->json($request,200);
     }

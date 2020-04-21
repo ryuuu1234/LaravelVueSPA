@@ -57,25 +57,103 @@ class OrderNotification extends Notification implements ShouldQueue
     //FORM DATA YANG DISIMPAN KE DALAM DATABASE
     public function toDatabase($notifiable)
     {
-        return [
-            'receiver_id' => $this->user->id,
-            'receiver_name' => $this->user->name,
+        $status=$this->order->status_id;
+        if($status==1){
+            return [
+            'sender_id' => $this->user->id,
+            'sender_name' => $this->user->name,
+            'sender_role' => $this->user->role,
             'order' => $this->order,
             'status' => $this->order->status->name,
             'read'  => false
         ];
+        }else if($status==3){
+            return [
+            'sender_id' => $this->user->id,
+            'sender_name' => $this->user->name,
+            'sender_role' => $this->user->role,
+            'order' => $this->order,
+            'status' => $this->order->status->name,
+            'packing' => $this->order->packing->status,
+            'read'  => false
+        ];
+        }else if($status==4){
+            return [
+                'sender_id' => $this->user->id,
+                'sender_name' => $this->user->name,
+                'sender_role' => $this->user->role,
+                'order' => $this->order,
+                'status' => $this->order->status->name,
+                'supplier' => $this->order->supplier->status,
+                'read'  => false
+            ];
+
+        }else{
+            return [
+                'sender_id' => $this->user->id,
+                'sender_name' => $this->user->name,
+                'sender_role' => $this->user->role,
+                'order' => $this->order,
+                'status' => $this->order->status->name,
+                'read'  => false
+            ];
+        }
     }
 
     //FORM DATA YANG AKAN DI BROADCAST
     public function toBroadcast($notifiable)
     {
-        return new BroadcastMessage([
-            'receiver_id' => $this->user->id,
-            'receiver_name' => $this->user->name,
+        $status=$this->order->status_id;
+        if($status==1){
+            return new BroadcastMessage([
+            'sender_id' => $this->user->id,
+            'sender_name' => $this->user->name,
+            'sender_role' => $this->user->role,
             'order' => $this->order,
             'status' => $this->order->status->name,
             'read'  => false
         ]);
+        }else if($status==3){
+            return new BroadcastMessage([
+            'sender_id' => $this->user->id,
+            'sender_name' => $this->user->name,
+            'sender_role' => $this->user->role,
+            'order' => $this->order,
+            'status' => $this->order->status->name,
+            'packing' => $this->order->packing->status,
+            'read'  => false
+        ]);
+        }else if($status==4){
+            return new BroadcastMessage([
+                'sender_id' => $this->user->id,
+                'sender_name' => $this->user->name,
+                'sender_role' => $this->user->role,
+                'order' => $this->order,
+                'status' => $this->order->status->name,
+                'supplier' => $this->order->supplier->status,
+                'read'  => false
+            ]);
+
+        }else{
+            return new BroadcastMessage([
+                'sender_id' => $this->user->id,
+                'sender_name' => $this->user->name,
+                'sender_role' => $this->user->role,
+                'order' => $this->order,
+                'status' => $this->order->status->name,
+                'read'  => false
+            ]);
+        }
+        // return new BroadcastMessage([
+        //     'sender_id' => $this->user->id,
+        //     'sender_name' => $this->user->name,
+        //     'sender_role' => $this->user->role,
+        //     'order' => $this->order,
+        //     'status' => $this->order->status->name,
+        //     'packing' => $this->order->packing->status,
+        //     'supplier' => $this->order->supplier->status,
+        //     'read'  => false
+        // ]);
     }
 
     //SEBENARNYA JIKA TIDAK ADA PERBEDAAN FORM DATA, KITA BISA LANGSUNG MENGGUNAKAN SATU METHOD SAJA YAKNI toArray()

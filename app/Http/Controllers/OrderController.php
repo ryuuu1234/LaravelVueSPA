@@ -151,18 +151,25 @@ class OrderController extends Controller
                     'qty'=>0,
                 ]);
             };
+            
             // $this->sendEvent($request); 
-            // $user = User::find(Auth::id());
-            $user = User::find($order->user_id);
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
+            // $user = User::find($order->user_id);
             // event(new OrderStatusChanged($order, $user));
             // sudah OK, 
-            Notification::send($user, new OrderNotification($order, $user));
-            
+            //======================== notiifkasi diganti
+            // Notification::send($user, new OrderNotification($order, $user));
+            foreach($admins as $admin){
+                Notification::send($admin, new OrderNotification($order, $user));
+
+            }
             //apabila tidak terjadi error, penyimpanan diverifikasi
             DB::commit();    
             return response()->json([
                 'status'=>'sukses',
                 'data'=>$order,
+                'admin'=>$admin
                 // 'message'=>$order->reff,
                 ], 200);    
 
@@ -172,7 +179,8 @@ class OrderController extends Controller
             //pesan gagal akan di-return
             return response()->json([
                 'status' => 'failed',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'order'=>$order
             ], 400);
         }
        
@@ -345,16 +353,40 @@ class OrderController extends Controller
         $order->status_id = $request->status_id;
 
         if ($order->save()) {
-            // $user = User::find(Auth::id());
+            // sudah OK,
+            $admin = User::find(Auth::id());
             $user = User::find($order->user_id);
-            // event(new OrderStatusChanged($order, $user));
-            // sudah OK, 
-            Notification::send($user, new OrderNotification($order, $user));
+
+            Notification::send($user, new OrderNotification($order, $admin));
+            
+            //  masih testing
+            $packing=$request->user_packing;
+            
+            $supplier=$request->user_supplier;
+
+            if($packing!=''&&$supplier==''){
+            
+                $karyawan=User::find($packing);
+            
+                Notification::send($karyawan, new OrderNotification($order, $admin));
+            
+            }else if($packing!=''&&$supplier!=''){
+            
+                $karyawan=User::find($supplier);
+            
+                Notification::send($karyawan, new OrderNotification($order, $admin));
+            
+            }
+            
+            // Notification::send($karyawan, new OrderNotification($order, $admin));
+            // kirim ke admin yang melakukan update data
+            // Notification::send($admin, new OrderNotification($order, $admin));
             return response()->json([$order,$user],200);
         } else {
             
             $message = [
                 'message'=>'some errors occured, Please try again',
+                'order'=>$order,
                 'status_code'=>500
             ];
             return response()->json($message,500);

@@ -164,7 +164,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     total_jumlah: function total_jumlah() {
       return this.dataLaporan.reduce(function (sum, val) {
-        var keluar = val.sum_keluar == '' ? 0 : parseInt(val.sum_keluar);
+        var keluar = val.sum_keluar == null ? 0 : parseInt(val.sum_keluar);
         var total = sum + keluar;
         return total;
       }, 0);
@@ -464,7 +464,7 @@ var render = function() {
                     _vm._v("Pilih Mitra")
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.items, function(mitra, index) {
+                  _vm._l(_vm.items, function(mitra) {
                     return _c(
                       "option",
                       { key: mitra.id, domProps: { value: mitra.id } },

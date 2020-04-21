@@ -22,7 +22,7 @@
                         <div class="col-md-2">
                             <select class="form-control" v-model="selectedMitra" >
                                 <option value="">Pilih Mitra</option>
-                                <option v-for="(mitra, index) in items" :key="mitra.id" :value="mitra.id" >{{mitra.name}}</option>
+                                <option v-for="mitra in items" :key="mitra.id" :value="mitra.id" >{{mitra.name}}</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -129,7 +129,7 @@ export default {
 
         total_jumlah() {
             return this.dataLaporan.reduce(function (sum, val) {
-                let keluar = val.sum_keluar == ''? 0:parseInt(val.sum_keluar);
+                let keluar = val.sum_keluar == null? 0:parseInt(val.sum_keluar);
                 let total = sum + keluar;
                 return total
             }, 0)

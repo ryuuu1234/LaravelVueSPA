@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Packing;
 
-use App\Http\Controllers\Controller;
+use Auth;
+use App\User;
+use App\Bubuk;
+
+use App\Order;
+use App\ItemMitra;
+use App\DetailPacking;
+
+use App\DetailBubukOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use App\User;
-use App\ItemMitra;
-use App\Bubuk;
-use App\DetailBubukOrder;
-use App\DetailPacking;
+use App\Http\Controllers\Controller;
+use App\Notifications\OrderNotification;
+use Illuminate\Support\Facades\Notification;
 
 class PackingController extends Controller
 {
@@ -72,7 +77,7 @@ class PackingController extends Controller
             ['user_id', '=', $id],
             ['status', '=', 0]])->get();
         
-        $data->load(['order', 'order.detail_order_one', 'order.detail_order_one.product']);
+        $data->load(['order', 'order.detail_order_one.product.detail_items.item.unit', 'order.details_bubuk.bubuk']);
         
             return response()->json([
                 'status' => 'success', 
@@ -80,5 +85,67 @@ class PackingController extends Controller
                 ]
             );   
 
+    }
+    //===================== notifikasi aja ========================
+    public function packing_selesai(Request $request){
+        $request->validate([
+            'status'=>'required|integer',
+            'order_id'=>'required|integer'
+        ]);
+
+        $detail = DetailPacking::updateOrInsert(
+            ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
+            ['status'=>$request->status, 'keterangan'=>''] //ini value yg ingin di masukkan atau update
+        );
+
+        if($detail){
+            // $extra = DetailPacking::where([['order_id','=',$request->order_id]])->get();
+            $orders = Order::where([
+                    ['id', '=', $request->order_id]
+                ])->get();
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
+            
+            // $orders[0]->details = $extra[0];
+            
+            foreach($admins as $admin){
+                Notification::send($admin, new OrderNotification($orders[0], $user));
+            }
+
+            return response()->json([
+                'status' => 'success',
+                // 'order'=>$orders[0]
+            ]);
+        }
+    }
+
+    public function packing_batal(Request $request){
+        $request->validate([
+            'status'=>'required|integer',
+            'order_id'=>'required|integer',
+            'keterangan'=>'required|'
+        ]);
+
+        $detail = DetailPacking::updateOrCreate(
+            ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
+            ['status'=>$request->status, 'keterangan'=>$request->keterangan] //ini value yg ingin di masukkan atau update
+        );
+
+        if($detail){
+            $orders = Order::where([
+                    ['id', '=', $request->order_id]
+                ])->get();
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
+            
+            foreach($admins as $admin){
+                Notification::send($admin, new OrderNotification($orders[0], $user));
+            }
+
+            return response()->json([
+                'status' => 'success',
+            
+            ]);
+        }
     }
 }

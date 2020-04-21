@@ -123,11 +123,13 @@ class AuthController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'email'=>'required|email'
+            'email'=>'required|email',
+            'alamat'=>'required'
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->alamat = $request->alamat;
 
         if ($user->save()) {
             return response()->json($user,200);

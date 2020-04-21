@@ -121,12 +121,18 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('packing-all', 'Packing\PackingController@get_packing_all')->name('packing.get_all');
         Route::post('packing-update-created', 'Packing\PackingController@create_or_update')->name('packing.create_or_update');
         Route::get('packing-by-id-user/{id}', 'Packing\PackingController@get_details_packing_by_id_user')->name('packing.get_by_id_user');
+        // wawan bikin
+        Route::post('packing_selesai', 'Packing\PackingController@packing_selesai')->name('packing.packing_selesai');
+        Route::post('packing_batal', 'Packing\PackingController@packing_batal')->name('packing.packing_batal');
 
         // supplier
         Route::get('supplier-all-with-params', 'Supplier\SupplierController@index')->name('supplier.index');
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
         Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
         Route::get('supplier-by-id-user/{id}', 'Supplier\SupplierController@get_details_supplier_by_id_user')->name('supplier.get_by_id_user');
+        // wawan bikin
+        Route::post('supplier_selesai', 'Supplier\SupplierController@supplier_selesai')->name('supplier.supplier_selesai');
+        Route::post('supplier_batal', 'Supplier\SupplierController@supplier_batal')->name('supplier.supplier_batal');
 
         // ini khusus Laporan
         Route::get('mitra-laporan-penjualan', 'Mitra\MitraController@penjualan_mitra')->name('mitra.laporan_penjualan');
