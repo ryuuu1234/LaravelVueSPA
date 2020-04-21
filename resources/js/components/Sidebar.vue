@@ -116,14 +116,14 @@
                         data-parent="#sidenavAccordion"
                     >
                         <nav class="sb-sidenav-menu-nested nav">
-                            <div class="nav-link-ku">
+                            <!-- <div class="nav-link-ku">
                                 <router-link
                                     :to="{ name: 'categories' }"
                                     class="nav-link"
                                     exact
                                     >Categories</router-link
                                 >
-                            </div>
+                            </div> -->
                             <div class="nav-link-ku">
                                 <router-link
                                     :to="{ name: 'data-items' }"

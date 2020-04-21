@@ -265,7 +265,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".pageNya[data-v-26233ca4] {\n  border: 1px solid lightgray;\n  padding: 1rem;\n  min-height: 20rem;\n}\n.pageNya .header-laporan[data-v-26233ca4] {\n  text-align: center;\n}\n.table td[data-v-26233ca4] {\n  padding: 0.3rem !important;\n}\n.blue-color[data-v-26233ca4] {\n  color: #17A2B8;\n}\n.red-color[data-v-26233ca4] {\n  color: #DC3545;\n}\n.green-color[data-v-26233ca4] {\n  color: #1ddd47;\n}\ntd > input[data-v-26233ca4] {\n  width: 50px;\n  text-align: center;\n}\n.mx-datepicker[data-v-26233ca4] {\n  width: 160px !important;\n}", ""]);
+exports.push([module.i, ".pageNya[data-v-26233ca4] {\n  border: 1px solid lightgray;\n  padding: 1rem;\n  min-height: 20rem;\n}\n.pageNya .header-laporan[data-v-26233ca4] {\n  text-align: center;\n}\n.table td[data-v-26233ca4] {\n  padding: 0.3rem !important;\n}\n.blue-color[data-v-26233ca4] {\n  color: #17A2B8;\n}\n.red-color[data-v-26233ca4] {\n  color: #DC3545;\n}\n.green-color[data-v-26233ca4] {\n  color: #1ddd47;\n}\ntd > input[data-v-26233ca4] {\n  width: 50px;\n  text-align: center;\n}\n.mx-datepicker[data-v-26233ca4] {\n  width: 100% !important;\n}", ""]);
 
 // exports
 
@@ -331,7 +331,7 @@ var render = function() {
         _c("hr", { staticClass: "batas-dark" }),
         _vm._v(" "),
         _c("div", { staticClass: "px-4 m-0" }, [
-          _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "row justify-content-md-start" }, [
             _c("div", { staticClass: "col-md-2" }, [
               _c(
                 "select",

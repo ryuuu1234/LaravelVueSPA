@@ -34,6 +34,12 @@ const mutations = {
     },
 };
 
+const getters = {
+    jumlah_mitra: state => {
+        return state.items.length;
+    },
+}
+
 const actions = {
     getMitra({commit, state}, payload) {
         //MENGECEK PAYLOAD ADA ATAU TIDAK
@@ -87,6 +93,7 @@ export default {
     namespaced: true,
     state,
     actions,
+    getters,
     mutations
 }
 

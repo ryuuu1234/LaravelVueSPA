@@ -15,6 +15,9 @@ import VueSweetalert2 from 'vue-sweetalert2';
 
 import vueNumeralFilterInstaller from 'vue-numeral-filter';
 
+// import Chartkick from 'vue-chartkick'
+// import Chart from 'chart.js'
+
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
@@ -22,6 +25,8 @@ Vue.use(FlashMessage);
 Vue.use(VueSweetalert2);
 
 Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
+
+// Vue.use(Chartkick.use(Chart))
 
 // export const bus = new Vue(); //
 

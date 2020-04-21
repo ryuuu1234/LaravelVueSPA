@@ -6,7 +6,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{ $route.meta.subtitle }}</h6>
                 <hr class="batas-dark"/>
                 <div class="px-4 m-0">
-                    <div class="row">
+                    <div class="row justify-content-md-start">
                         <div class="col-md-2">
                             <select class="form-control" v-model="selected" @change="pilihRange">
                                 <option value="">Pilih Periode</option>
@@ -223,7 +223,7 @@ td > input{
 }
 
 .mx-datepicker {
-    width:160px !important;
+    width:100% !important;
 }
 </style>
 

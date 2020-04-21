@@ -25,7 +25,7 @@ import Footer from "../components/Footer.vue";
         Footer
         },
         created() {
-            document.querySelector("body").style.backgroundColor = "#fff";
+            document.querySelector("body").style.backgroundColor = "#EEEEEE";
         }
     }
 </script>

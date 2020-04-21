@@ -39,6 +39,12 @@ const mutations = {
     },
 };
 
+const getters = {
+    jumlah_packing: state => {
+        return state.packings.length;
+    },
+}
+
 const actions = {
     getPacking({commit, state}, payload) {
         //MENGECEK PAYLOAD ADA ATAU TIDAK
@@ -76,7 +82,7 @@ const actions = {
             http().get(`/admin/packing-all`)
                 .then((response) => {
                     let getData = response.data.data
-                    // console.log(getData)
+                    console.log(getData)
                     //SIMPAN DATA KE STATE MELALUI MUTATIONS
                     commit('ASSIGN_DATA', getData)
                     resolve(getData)
@@ -101,6 +107,7 @@ export default {
     namespaced: true,
     state,
     actions,
+    getters,
     mutations
 }
 

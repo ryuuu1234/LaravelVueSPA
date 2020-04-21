@@ -2,11 +2,13 @@ import { http } from '../services/http_service';
 import moment from 'moment';
 
 const state = () => ({
+    tgl_awal: '',
+    tgl_akhir: '',
     laporan_bebans : [],
     penjualan_products: [],
 
-    tgl_awal: '',
-    tgl_akhir: '',
+    //=================================
+    users: [],
 });
 
 const mutations = {
@@ -40,6 +42,21 @@ const getters = {
                 sum += total;
           });
         return sum;
+    },
+    // untuk charts
+    charts_penjualan : state => {
+       return state.penjualan_products.map(o => {
+        // let newData = {};
+        //    newData[moment(o.created_at).format("D MMM")] = o.total;
+        //    Object.values(newData);
+        //    return Object.keys(newData) + "," + Object.values(newData);
+        // return Object.entries(newData);
+        // return o.total
+        // return o.totalNya = moment(o.created_at).format("D MMM")
+        return moment(o.created_at).format("D MMM");
+        // return newData;
+       });
+
     },
 }
 
@@ -79,7 +96,7 @@ const actions = {
             const response = await http().get(`admin/laporan-penjualan-products`, params) 
             .then((response) => {
                 let getData = response.data.data
-                console.log(getData)
+                // console.log(getData)
                 //SIMPAN DATA KE STATE MELALUI MUTATIONS
                 commit('ASSIGN_LAP_PRODUCT', getData)
             })
@@ -88,6 +105,8 @@ const actions = {
                 
         }
    },
+
+   
 };
 
 export default {
