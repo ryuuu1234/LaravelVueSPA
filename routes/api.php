@@ -53,6 +53,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::resource('items', 'ItemController'); // seluruh route items masuk middleware
         Route::get('items-data', 'ItemController@get_all_data');
         Route::resource('products', 'ProductController'); // seluruh route product masuk middleware
+        Route::get('products-all', 'ProductController@products_all')->name('products.all_products');
         Route::get('charts', 'ChartController@index');// akses api get charts by user_id
         Route::post('charts', 'ChartController@store'); // tambah data chart
         Route::put('update-charts-qty/{chart}', 'ChartController@update'); // update qty chart
@@ -72,6 +73,11 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('chart-orders', 'OrderController@orderFromChart');
         Route::delete('delete-charts/{chart}', 'ChartController@destroy')->name('chart.destroy'); // delete chart by id
         Route::get('notif-order', 'OrderController@notif');
+        
+        //======================== tambahan untuk session ====================
+        Route::get('session', 'OrderController@getSession'); 
+        Route::post('session-update', 'OrderController@updateSession'); 
+        
         // details order
         Route::get('detail-orders', 'DetailOrderController@index');
 
@@ -81,6 +87,7 @@ Route::group(['prefix' => 'user'], function () {
 
         // untuk route notifications
         Route::resource('notification', 'NotificationController')->except(['create', 'destroy']);
+        Route::post('notification-all', 'NotificationController@readAll');
 
         // penambahan broadcast
 
@@ -103,6 +110,7 @@ Route::group(['prefix' => 'mitra'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('mitra-all', 'Mitra\MitraController@index')->name('mitra.index'); // bubuk get all
+        Route::get('mitra-all-select', 'Mitra\MitraController@select_all')->name('mitra.select_all'); // bubuk get all
         Route::get('mitra-items/{id}', 'Mitra\MitraController@det_item_mitra_by_id_user')->name('bubuk.mitra'); // bubuk get by mitra id
         Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
         Route::put('mitra-update-stok/{id}', 'Mitra\MitraController@update_stok_awal')->name('mitra.update');
@@ -114,12 +122,45 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('packing-all', 'Packing\PackingController@get_packing_all')->name('packing.get_all');
         Route::post('packing-update-created', 'Packing\PackingController@create_or_update')->name('packing.create_or_update');
         Route::get('packing-by-id-user/{id}', 'Packing\PackingController@get_details_packing_by_id_user')->name('packing.get_by_id_user');
+        // wawan bikin
+        Route::post('packing_selesai', 'Packing\PackingController@packing_selesai')->name('packing.packing_selesai');
+        Route::post('packing_batal', 'Packing\PackingController@packing_batal')->name('packing.packing_batal');
 
         // supplier
         Route::get('supplier-all-with-params', 'Supplier\SupplierController@index')->name('supplier.index');
         Route::get('supplier-all', 'Supplier\SupplierController@get_supplier_all')->name('supplier.get_all');
         Route::post('supplier-update-created', 'Supplier\SupplierController@create_or_update')->name('supplier.create_or_update');
         Route::get('supplier-by-id-user/{id}', 'Supplier\SupplierController@get_details_supplier_by_id_user')->name('supplier.get_by_id_user');
+        // wawan bikin
+        Route::post('supplier_selesai', 'Supplier\SupplierController@supplier_selesai')->name('supplier.supplier_selesai');
+        Route::post('supplier_batal', 'Supplier\SupplierController@supplier_batal')->name('supplier.supplier_batal');
+
+        // ini khusus Laporan
+        Route::get('mitra-laporan-penjualan', 'Mitra\MitraController@penjualan_mitra')->name('mitra.laporan_penjualan');
+        Route::get('laporan-penjualan-products', 'OrderController@laporan_penjualan')->name('order.laporan_penjualan');
+    });
+});
+
+Route::group(['prefix' => 'settings'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::resource('bebans', 'BebanController');
+        Route::get('bebans-with-params', 'BebanController@beban_with_params')->name('beban.all_with_params');
+    });
+});
+
+Route::group(['prefix' => 'transaksi'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('pengeluaran-kas-input', 'KasController@pengeluaran_kas_input')->name('kas.pengeluaran_input');
+        Route::get('pengeluaran-kas-edit/{id}/edit', 'KasController@edit')->name('kas.edit');
+        Route::put('pengeluaran-kas-update/{id}', 'KasController@update')->name('kas.update');
+        Route::delete('pengeluaran-kas-delete/{id}', 'KasController@destroy')->name('kas.destroy');
+        Route::get('pengeluaran-kas-with-params', 'KasController@pengeluaran_kas_with_params')->name('kas.all_with_params');
+    });
+});
+
+Route::group(['prefix' => 'laporan'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('laporan-beban', 'BebanController@laporan_beban')->name('beban.laporan');
     });
 });
 

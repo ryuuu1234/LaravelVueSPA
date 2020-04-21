@@ -12,10 +12,10 @@
 |
 */
 
-// Route::get('coba', [
-//     'uses' => 'PercobaanController@pertama',
-//     'name' => 'coba.pertama'
-// ]);
+Route::get('coba', [
+    'uses' => 'PercobaanController@pertama',
+    'name' => 'coba.pertama'
+]);
 // Route::get('coba/product/{product}', [
 //     'uses' => 'PercobaanController@kedua',
 //     'name' => 'coba.kedua'
@@ -29,3 +29,9 @@
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
+
+
+Route::get('/check', function(){
+    $data = ['sesi'=> session('order'), 'sesi2'=>session('orderToNotif'), 'anu'=>'Nyoba'];
+    return $data;
+});

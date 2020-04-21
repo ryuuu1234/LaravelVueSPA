@@ -116,14 +116,14 @@
                         data-parent="#sidenavAccordion"
                     >
                         <nav class="sb-sidenav-menu-nested nav">
-                            <div class="nav-link-ku">
+                            <!-- <div class="nav-link-ku">
                                 <router-link
                                     :to="{ name: 'categories' }"
                                     class="nav-link"
                                     exact
                                     >Categories</router-link
                                 >
-                            </div>
+                            </div> -->
                             <div class="nav-link-ku">
                                 <router-link
                                     :to="{ name: 'data-items' }"
@@ -159,7 +159,116 @@
                             <span class="badge" v-if="notif_orders.length > 0">{{notif_orders.length}}</span>
                         </router-link>
                     </div>
+
+                    <div class="nav-link-ku">
+                        <router-link :to="{name: 'transaksi.pengeluaran-kas'}" class="nav-link" exact>
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <span>Tr Pengeluaran Kas</span>
+                        </router-link>
+                    </div>
+
+                    <div class="nav-link-ku">
+                        <a
+                            class="nav-link collapsed"
+                            href="#"
+                            data-toggle="collapse"
+                            data-target="#collapseLayouts2"
+                            aria-expanded="false"
+                            aria-controls="collapseLayouts"
+                        >
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            Laporan & Jurnal
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div
+                        class="collapse"
+                        id="collapseLayouts2"
+                        aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion"
+                    >
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'laporan-penjualan.mitra' }"
+                                    class="nav-link"
+                                    exact
+                                    >Laporan Penjualan Mitra
+                                </router-link>
+                            </div>
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'laporan-penjualan.admin' }"
+                                    class="nav-link"
+                                    exact
+                                    >Laporan Penjualan Product
+                                </router-link>
+                            </div>
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'laporan-keuangan.admin' }"
+                                    class="nav-link"
+                                    exact
+                                    >Laporan Keuangan
+                                </router-link>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <div class="nav-link-ku">
+                        <a
+                            class="nav-link collapsed"
+                            href="#"
+                            data-toggle="collapse"
+                            data-target="#collapseLayouts3"
+                            aria-expanded="false"
+                            aria-controls="collapseLayouts"
+                        >
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            Settings
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    <div
+                        class="collapse"
+                        id="collapseLayouts3"
+                        aria-labelledby="headingOne"
+                        data-parent="#sidenavAccordion"
+                    >
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <div class="nav-link-ku">
+                                <router-link
+                                    :to="{ name: 'beban.settings' }"
+                                    class="nav-link"
+                                    exact
+                                    >settings Beban
+                                </router-link>
+                            </div>
+                            
+                        </nav>
+                    </div>
+
+
                 </div>
+
+                
+
+
+                
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
@@ -170,7 +279,6 @@
 </template>
 
 <script>
-import * as auth from "../services/auth_service";
 import { mapActions, mapState } from "vuex";
 export default {
     created(){
@@ -178,6 +286,7 @@ export default {
         this.getOrderNotif();
     },
     methods: {
+        
         logout: async function() {
             auth.logout();
             this.$router.push("/login");
@@ -195,6 +304,7 @@ export default {
     },
 
     mounted(){
+        
         window.Echo.channel('capcin-reg')
         .listen('RegisterEvent', (register) => {
             this.getRegNotif();

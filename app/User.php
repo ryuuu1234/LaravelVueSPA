@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.'.$this->id;
+    }
+    
     /**
      * The attributes that are mass assignable. 
      *

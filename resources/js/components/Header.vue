@@ -15,10 +15,28 @@
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
       <li class="nav-item dropdown">
-        <a class="mega-link">
+        <a class="mega-link"  @click="notif">
             <span class="mega-icon"><i class="fa fa-bell"></i></span>
-            <span class="badge">{{ notifications.length }}</span>
+            <span class="badge" v-if="notifications.length>0">{{ notifications.length }}</span>
         </a>
+
+        <div class="vd_mega-menu-content  width-xs-2  left-xs left-sm"
+            v-if="notifMenu"
+        >
+          <div class="child-menu"> 
+            <div class="content-list content-menu batas">
+              
+                  <ul class="list-wrapper pd-lr-10">
+                      <li v-for="(notifData, n) in notifications" :key="n"> <notifikasi :data="notifData"></notifikasi> </li>
+                      
+                      <li class="line"></li>
+                      
+                      
+                  </ul>
+              </div> 
+          </div>
+        </div>
+
       </li>
       <li class="nav-item dropdown">
         <a 
@@ -59,11 +77,14 @@
   import { mapState, mapActions } from 'vuex';
   import moment from 'moment'
   export default {
-   
+    components:{
+      'notifikasi':()=>import(/* webpackChunkName: "notifikasi" */ './Notifikasi')
+    },
     data(){
       return {
         dropMenu: false,
-        displayImage: ''
+        displayImage: '',
+        notifMenu:false
       }
     },
     created() {
@@ -92,7 +113,7 @@
         }
     },
     methods: {
-        ...mapActions('notification', ['readNotification']), //DEFINISIKAN FUNGSI UNTUK READ NOTIF
+        ...mapActions('notification', ['readNotification','getNotifications', "getOrderNotif"]), //DEFINISIKAN FUNGSI UNTUK READ NOTIF
         
         //KETIKA NOTIFIKASI DI KLIK MAKA AKAN MENJALANKAN FUNGSI INI
         readNotif(row) {
@@ -122,8 +143,31 @@
       hideSidebar: function(e) {
         e.preventDefault();
         document.querySelector("body").classList.toggle("sb-sidenav-toggled");
+      },
+      notif(){
+        this.notifMenu = !this.notifMenu
+        // this.$router.push('/notifikasi')
       }
+    },
+    mounted(){
+      let userId = auth.getUserId()
+      this.getNotifications()
+        console.log('User Id', userId)
+        Echo.private("App.User." + userId).notification(data => {
+          this.getNotifications()
+          this.getOrderNotif()
+        // store.commit("setNotification", data);
+        // store.commit("order/setOrderFocus", data);
+        console.log(data.type);
+        console.log("data ", data);
+      });
     }
 
   }
 </script>
+<style scoped>
+.batas{
+  height: 600px;
+  overflow: auto;
+}
+</style>

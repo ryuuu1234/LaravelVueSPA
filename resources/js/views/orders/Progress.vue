@@ -64,6 +64,7 @@
             
             
             <p style="color:red"><i>Pastikan total input (jumlah total bubuk) = jumlah bubuk product</i></p>
+            <p style="color:red"><i>total input = {{total_input_qty_bubuk}}, jumlah bubuk product = {{jumlahBubuk}}</i></p>
         </section>
         <!-- step 2 ================================================================================================== -->
         <section v-if="step == 2">
@@ -72,7 +73,7 @@
             <select class="form-control" v-model="order.user_packing" @change="savePacking">
                 <option value="">Pilih Packing</option>
                 <option 
-                    :key="packing.id" v-for="(packing, index) in packings" 
+                    :key="packing.id" v-for="packing in packings" 
                     :value="packing.id"
                 >{{packing.name}}</option>
             </select>
@@ -88,7 +89,7 @@
             <select class="form-control" v-model="order.user_supplier" @change="saveSupplier">
                 <option value="">Pilih Supplier</option>
                 <option 
-                    :key="supplier.id" v-for="(supplier, index) in suppliers" 
+                    :key="supplier.id" v-for="supplier in suppliers" 
                     :value="supplier.id"
                 >{{supplier.name}}</option>
             </select>
@@ -105,6 +106,7 @@
             v-if="step != 1"
             @click="prevStep"
         > previous</button>
+            <!-- :disabled="disable" -->
         <button class="btn btn-xsm btn-info" 
             v-if="step != totalStep"
             @click="nextStep"
@@ -165,13 +167,40 @@ import * as detailOrderServices from "../../services/details_order_service";
             return hasil;
         },
 
-         total_input_qty_bubuk() {
+        total_input_qty_bubuk() {
+            if(this.details_bubuk){
+
             return this.details_bubuk.reduce(function (sum, val) {
                 let qty = val.qty == ''? 0:parseInt(val.qty);
                 let total = sum + qty;
                 return total
             }, 0)
+            } else{
+                return 0
+            }
         },
+        jumlahBubuk(){
+            if(this.detail_items.length){
+            let bubuk = this.detail_items.filter(e=>{
+                if(e.item.nama=='Bubuk'){
+                    return true
+                }
+            })
+            console.log(bubuk)
+            return bubuk[0].qty
+            }else{
+                return 0
+            }
+        },
+        // disable(){
+        //     if(this.step==1){
+        //         if(this.total_input_qty_bubuk!=this.jumlahBubuk){
+        //             return true
+        //         }else{return false}
+        //     }else{
+        //         return false
+        //     }
+        // }
       },
 
       methods: {
@@ -243,24 +272,25 @@ import * as detailOrderServices from "../../services/details_order_service";
                 });
             })
         },
-          nextStep(){
-              if (this.step == 2) {
-                  if (!this.order.user_packing) {
-                      alert('Pilih Bagian Packing Terlebih Dahulu!!!');
-                      return false;
-                  }
-              }
-              this.step++;
-              this.activeStep++;
-          },
-          prevStep(){
-              this.step--;
-              this.activeStep--;
-          },
-          finishStep(){
-              alert('finishSetep');
-          }
-      },
+        nextStep(){
+            
+            if (this.step == 2) {
+                if (!this.order.user_packing) {
+                    alert('Pilih Bagian Packing Terlebih Dahulu!!!');
+                    return false;
+                }
+            }
+            this.step++;
+            this.activeStep++;
+        },
+        prevStep(){
+            this.step--;
+            this.activeStep--;
+        },
+        finishStep(){
+            alert('finishSetep');
+        }
+    },
       watch:{
         //   totalStep(){
         //       console.log(this.formSteps);

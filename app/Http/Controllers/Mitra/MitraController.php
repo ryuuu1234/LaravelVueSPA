@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mitra;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 // use App\Mitra;
 use App\User;
@@ -30,6 +31,17 @@ class MitraController extends Controller
             ]
         );
         
+    }
+
+    public function select_all(){
+
+        $role = 'Mitra';
+        $data = User::Where([['role', $role],['status', 1]])->get(); 
+        return response()->json([
+            'status' => 'success', 
+            'data' => $data,
+            ]
+        );
     }
 
     public function det_item_mitra_by_id_user($id){
@@ -108,7 +120,7 @@ class MitraController extends Controller
             $stok = new DetailStokMitra();
             foreach($input as $key=> $row ){
                 $stok->create([
-                    'reff' => 'bbbbbbbbbbbbbbbbbbs',// ini nanti di ganti str_random
+                    'reff' => Str::random(),// ini nanti di ganti str_random
                     'keluar'=> $row['keluar'],
                     'item_mitra_id'=> $row['item_mitra_id'],
                     'keterangan'=> 'PENJUALAN',
@@ -138,6 +150,28 @@ class MitraController extends Controller
         }else{
             return response()->json(['status'=>'failed'], 500); 
         }
+
+    }
+
+    // KHUSUS LAPORAN
+    public function penjualan_mitra(Request $request){
+
+        $user_id = $request->user_id;
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+
+        $sumKeluar = DetailStokMitra::selectRaw('sum(keluar)')
+                ->whereColumn('item_mitra_id', 't_items_mitra.id')
+                ->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
+                ->getQuery();
+
+        $data = ItemMitra::select('t_items_mitra.*')->where('user_id', $user_id)
+                ->with(['details_stok' => function($q) use($tgl_awal, $tgl_akhir) {
+               $q->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])
+                ->where('keterangan', 'PENJUALAN');
+         }])->selectSub($sumKeluar, 'sum_keluar')->get();
+        $data->load('bubuk:id,nama');
+        return response()->json(['status'=>'sukses', 'data'=>$data], 200);
 
     }
 }

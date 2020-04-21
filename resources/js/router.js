@@ -8,7 +8,10 @@ import IndexBubuk from './views/bubuk/Index.vue';
 import IndexMitra from './views/mitra/Index.vue';
 import IndexPacking from './views/packing/Index.vue';
 import IndexSupplier from './views/supplier/TheIndex.vue';
-import IndexPercobaan from './views/cobacoba/Index.vue';
+import IndexLaporanPenjualan from './views/laporan/IndexLaporanPenjualan.vue';
+import IndexSettings from './views/settings/IndexSettings.vue';
+import IndexTransaksi from './views/transaksi/IndexTransaksi.vue';
+// import IndexPercobaan from './views/cobacoba/Index.vue';
 
 import * as auth from './services/auth_service';
 
@@ -17,13 +20,13 @@ import store from "./store.js";
 Vue.use(Router);
 
 const routes = [{
-        path: '/home',
+        path: '/',
         component: Home,
         meta: {
             requiresAuth: true
         },
         children: [{
-                path: '',
+                path: 'dashboard',
                 name: 'dashboard',
                 meta: {
                     title: 'Dashboard'
@@ -163,6 +166,34 @@ const routes = [{
     },// akhir dari orders
 
     {
+        path: '/transaksi-kas-keluar',
+        component: IndexTransaksi,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'transaksi.pengeluaran-kas',
+            component: () => import('./views/transaksi/PengeluaranKas.vue'),
+            meta: {
+                title: 'Transaksi Kas Keluar',
+                subtitle: 'Input Pengeluaran Kas Hari ini'
+                } 
+            },
+            // {
+            //     path: 'status/:id',
+            //     name: 'orders.status',
+            //     component: () => import('./views/orders/Status.vue'),
+            //     meta: {
+            //         title: 'Edit Status Order',
+            //         subtitle: 'With Details Product Order'
+            //     }
+            // }
+        ],
+    },// akhir dari transaksi
+
+    {
         path: '/data-bubuk',
         component: IndexBubuk,
         meta: {
@@ -265,22 +296,61 @@ const routes = [{
     },// akhir dari supplier
 
     {
-        path: '/coba-coba',
-        component: IndexPercobaan,
+        path: '/laporan-penjualan-mitra',
+        name: 'laporan-penjualan-mitra',
+        component: IndexLaporanPenjualan,
         meta: {
             requiresAuth: true
         },
         children: [
             {
             path: '',
-            name: 'coba-coba.data',
-            component: () => import('./views/cobacoba/PercobaanPage.vue'),
+            name: 'laporan-penjualan.mitra',
+            component: () => import('./views/laporan/PenjualanMitra.vue'),
                 meta: {
-                    title: 'Manage Percobaan',
+                    title: 'Jurnal Penjualan',
+                    subtitle: 'Jurnal Penjualan berdasarkan Mitra'
+                },
+            },
+            {
+                path: 'laporan-penjualan-product',
+                name: 'laporan-penjualan.admin',
+                component: () => import('./views/laporan/PenjualanProduct.vue'),
+                    meta: {
+                        title: 'Laporan Penjualan',
+                        subtitle: 'Penjualan Seluruh Data Product By Admin'
+                    },
+            },
+            {
+                path: 'laporan-keuangan',
+                name: 'laporan-keuangan.admin',
+                component: () => import('./views/laporan/Keuangan.vue'),
+                    meta: {
+                        title: 'Laporan Keuangan',
+                        subtitle: 'Rugi Laba Laporan kas masuk & kas keluar'
+                    },
+            },
+        ],
+    },// akhir dari supplier
+
+    {
+        path: '/settings-beban',
+        component: IndexSettings,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+            path: '',
+            name: 'beban.settings',
+            component: () => import('./views/settings/Beban.vue'),
+                meta: {
+                    title: 'Manage Beban',
+                    subtitle: 'Settings data nama beban'
                 },
             },
         ],
-    },// akhir dari percobaan
+    },// akhir dari settings
 
     // INI TANPA META AUTH
     {
@@ -297,7 +367,7 @@ const routes = [{
             if (!auth.isLoggedIn()) {
                 next();
             } else {
-                next('/home');
+                next('/dashboard');
             }
         }
     },
@@ -313,6 +383,13 @@ const routes = [{
         name: 'preloader',
         component: () => import('./views/Preloader.vue')
     },
+    {
+        path: '/notifikasi',
+        name: 'notifikasi',
+        component: () => import(/* webpackChunkName: "notifikasi" */ './views/Notifications.vue')
+    },
+
+    {path:'*', component: () => import('./views/NotFound.vue')}
 
 ];
 

@@ -25,6 +25,17 @@ export function login(user) {
     });
 }
 
+export function getUserId() {
+    const token = localStorage.getItem("Laravel-vue-spa-token");
+        if (!token) {
+            return null;
+        }
+
+    const tokenData = jwt.decode(token);
+    console.log("data", tokenData);
+    return tokenData.user.user.id;
+}
+
 function setToken(user) {
 
     const token = jwt.sign({ user: user }, 'secretkeynyajwtpluginokee2020');

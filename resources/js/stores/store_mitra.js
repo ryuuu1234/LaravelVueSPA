@@ -34,6 +34,12 @@ const mutations = {
     },
 };
 
+const getters = {
+    jumlah_mitra: state => {
+        return state.items.length;
+    },
+}
+
 const actions = {
     getMitra({commit, state}, payload) {
         //MENGECEK PAYLOAD ADA ATAU TIDAK
@@ -67,12 +73,27 @@ const actions = {
                 })
         })
     },
+
+    getMitraAll({commit, state}, payload) {
+        // ===========================================================
+        return new Promise((resolve, reject) => {
+            http().get(`/admin/mitra-all-select`)
+                .then((response) => {
+                    let getData = response.data.data
+                    // console.log(getData)
+                    //SIMPAN DATA KE STATE MELALUI MUTATIONS
+                    commit('ASSIGN_DATA', getData)
+                    resolve(getData)
+                })
+        })
+    },
 };
 
 export default {
     namespaced: true,
     state,
     actions,
+    getters,
     mutations
 }
 
