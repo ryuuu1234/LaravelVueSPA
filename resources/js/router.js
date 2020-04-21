@@ -383,11 +383,6 @@ const routes = [{
         name: 'preloader',
         component: () => import('./views/Preloader.vue')
     },
-    {
-        path: '/notifikasi',
-        name: 'notifikasi',
-        component: () => import(/* webpackChunkName: "notifikasi" */ './views/Notifications.vue')
-    },
 
     {path:'*', component: () => import('./views/NotFound.vue')}
 
