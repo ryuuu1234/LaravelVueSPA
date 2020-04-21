@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Supplier;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
+use Auth;
 use App\User;
-use App\ItemMitra;
 use App\Bubuk;
-use App\DetailBubukOrder;
+
+use App\Order;
+use App\ItemMitra;
 use App\DetailSupplier;
+use App\DetailBubukOrder;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Notifications\OrderNotification;
+use Illuminate\Support\Facades\Notification;
 
 class SupplierController extends Controller
 {
@@ -63,14 +67,14 @@ class SupplierController extends Controller
                 ]);
         }
     }
-
+    
     public function get_details_supplier_by_id_user($id){
 
         $data = DetailSupplier::where([
             ['user_id', '=', $id],
             ['status', '=', 0]])->get();
         
-        $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role', 'order.detail_order_one.product']);
+        $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role,alamat', 'order.detail_order_one.product']);
         
             return response()->json([
                 'status' => 'success', 
@@ -78,5 +82,65 @@ class SupplierController extends Controller
                 ]
             );   
 
+    }
+
+    //===================== notifikasi aja ========================
+    public function supplier_selesai(Request $request){
+        $request->validate([
+            'status'=>'required|integer',
+            'order_id'=>'required|integer'
+        ]);
+
+        $detail = DetailSupplier::updateOrInsert(
+            ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
+            ['status'=>$request->status, 'keterangan'=>''] //ini value yg ingin di masukkan atau update
+        );
+
+        if($detail){
+            $orders = Order::where([
+                    ['id', '=', $request->order_id]
+                ])->get();
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
+            
+            foreach($admins as $admin){
+                Notification::send($admin, new OrderNotification($orders[0], $user));
+            }
+
+            return response()->json([
+                'status' => 'success',
+                // 'order'=>$orders[0]
+            ]);
+        }
+    }
+
+    public function supplier_batal(Request $request){
+        $request->validate([
+            'status'=>'required|integer',
+            'order_id'=>'required|integer',
+            'keterangan'=>'required|'
+        ]);
+
+        $detail = DetailSupplier::updateOrCreate(
+            ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
+            ['status'=>$request->status, 'keterangan'=>$request->keterangan] //ini value yg ingin di masukkan atau update
+        );
+
+        if($detail){
+            $orders = Order::where([
+                    ['id', '=', $request->order_id]
+                ])->get();
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
+            
+            foreach($admins as $admin){
+                Notification::send($admin, new OrderNotification($orders[0], $user));
+            }
+
+            return response()->json([
+                'status' => 'success',
+            
+            ]);
+        }
     }
 }

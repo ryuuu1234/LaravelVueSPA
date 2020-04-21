@@ -23,12 +23,13 @@
             <input type="number" v-model="price" @input="handleInput">
             {{ previousPrice }}
         </div> -->
-         
+        <input type="text" class="" v-model="masuk" @keyup.enter="coba">
+        <button class="btn btn-info" @click="ambil">ambil</button>
     </div>
 
 </template>
 <script>
-
+import {http} from '../../services/http_service'
 import BaseInput from '../../components/base/BaseInput.vue';
 import BaseButton from '../../components/base/BaseButton.vue';
 import InputNumberTwo from '../../components/khusus/InputNumberTwo.vue';
@@ -46,6 +47,7 @@ export default {
         number: '',
         price:null,
         previousPrice: null,
+        masuk:''
         };
     },
 
@@ -61,6 +63,24 @@ export default {
     //         // console.log(jadi);
     //         this.previousPrice = jadi;
     //     },
+    coba(){
+        let data = new FormData
+        data.append('nama', this.masuk)
+        return new Promise(()=>{
+            http().post(`user/session-update`,data)
+            .then(res=>{
+                console.log(res)
+            })
+        })
+    },
+    ambil(){
+        return new Promise(()=>{
+            http().get(`user/session`)
+            .then(res=>{
+                console.log(res)
+            })
+        })
+    },
         consoleClick(e){
             // alert('ok')
             this.nyentuh = 0;

@@ -279,7 +279,6 @@
 </template>
 
 <script>
-import * as auth from "../services/auth_service";
 import { mapActions, mapState } from "vuex";
 export default {
     created(){
@@ -287,6 +286,7 @@ export default {
         this.getOrderNotif();
     },
     methods: {
+        
         logout: async function() {
             auth.logout();
             this.$router.push("/login");
@@ -304,6 +304,7 @@ export default {
     },
 
     mounted(){
+        
         window.Echo.channel('capcin-reg')
         .listen('RegisterEvent', (register) => {
             this.getRegNotif();

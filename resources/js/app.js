@@ -33,7 +33,7 @@ Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 import { mapState, mapGetters, mapActions } from 'vuex';
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
-
+import * as auth from './services/auth_service.js'
 new Vue({
     el: "#app",
     router,
@@ -44,13 +44,13 @@ new Vue({
             broadcaster: 'pusher',
             key: process.env.MIX_PUSHER_APP_KEY,
             cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-            // forceTLS: true
+            forceTLS: true,
             // authEndpoint: "/broadcasting/auth",
-            // auth: {
-            //     headers: {
-            //         Authorization: 'Bearer ' + this.token
-            //     },
-            // },
+            auth: {
+                headers: {
+                    Authorization: 'Bearer ' + auth.getAccessToken()
+                },
+            },
         });
         // this.consoleToken();
     },

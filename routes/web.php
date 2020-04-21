@@ -29,3 +29,9 @@ Route::get('coba', [
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
+
+
+Route::get('/check', function(){
+    $data = ['sesi'=> session('order'), 'sesi2'=>session('orderToNotif'), 'anu'=>'Nyoba'];
+    return $data;
+});
