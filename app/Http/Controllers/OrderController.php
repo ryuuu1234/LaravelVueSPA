@@ -72,10 +72,10 @@ class OrderController extends Controller
         
             $orders = Order::orderBy('created_at', 'DESC')
             ->when(request()->q, function($orders) {
-                $orders = $orders->where([['user_id', request()->q], ['status_id', '<>', 6]]);
+                $orders = $orders->where([['user_id', request()->q], ['status_id', '=', 5]]);
             })->get();
             
-        // $orders->load('status:id,name');
+        $orders->load('status:id,name');
         // $user = User::all();
         //====coba masukan key baru==========
         foreach($orders as $key){
@@ -326,8 +326,8 @@ class OrderController extends Controller
         )->first();
         $order->load('user:id,name,role');
         $order->load('status:id,name');
-        $order->load('packing:id,user_id,order_id');
-        $order->load('supplier:id,user_id,order_id');
+        $order->load('packing:id,user_id,order_id,status,keterangan');
+        $order->load('supplier:id,user_id,order_id,status,keterangan');
         // $order->load('detail_order_one.product:id,name');
         
         $status = StatusOrder::all();
@@ -337,6 +337,22 @@ class OrderController extends Controller
         ], 200);
     }
 
+    public function sendNotifToAdmin(Request $request, Order $order){
+        $request->validate([
+            'status_id'=>'required|numeric',
+            'order_id'=>'required|numeric',
+        ]);
+        $user = User::find(Auth::id());
+        
+        $admins = User::where('role','Admin')->get();
+        
+        foreach($admins as $admin){
+        
+            Notification::send($admin, new OrderNotification($request->pesan, $user));
+
+        }
+
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -360,21 +376,33 @@ class OrderController extends Controller
             Notification::send($user, new OrderNotification($order, $admin));
             
             //  masih testing
-            $packing=$request->user_packing;
-            
-            $supplier=$request->user_supplier;
+            if($request->status_id==3){
+                $packing=$request->user_packing;
 
-            if($packing!=''&&$supplier==''){
-            
                 $karyawan=User::find($packing);
             
                 Notification::send($karyawan, new OrderNotification($order, $admin));
+            }
+
             
-            }else if($packing!=''&&$supplier!=''){
-            
+            if($request->status_id==4){
+                $supplier=$request->user_supplier;
+
                 $karyawan=User::find($supplier);
             
                 Notification::send($karyawan, new OrderNotification($order, $admin));
+            
+            }
+            if($request->status_id==6){
+                $user = User::find(Auth::id());
+                
+                $admins = User::where('role','Admin')->get();
+                
+                foreach($admins as $admin){
+                
+                    Notification::send($admin, new OrderNotification($order, $user));
+
+                }
             
             }
             

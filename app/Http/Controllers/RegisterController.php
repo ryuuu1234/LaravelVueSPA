@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+
+use App\User;
+use App\Register;
 use Illuminate\Http\Request;
 
-use Auth;
-use App\Register;
-use App\User;
-
 use App\Events\RegisterEvent;
+// use App\Notifications\RegisterNotification;
+// use Illuminate\Support\Facades\Notification;
 
 class RegisterController extends Controller
 {
@@ -68,6 +70,8 @@ class RegisterController extends Controller
                 $user->save();
                 
                 event(new RegisterEvent($register));
+                // coba
+                // Notification::send($register, new RegisterNotification($register));
                 return response()->json($register,200);
             }
 

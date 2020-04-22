@@ -12,6 +12,10 @@ use Laravel\Passport\HasApiTokens;
 class Register extends Model
 {   
     use Notifiable, HasApiTokens;
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.Register.'.$this->id;
+    }
     /**
      * The attributes that are mass assignable.
      *

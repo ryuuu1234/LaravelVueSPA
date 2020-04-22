@@ -60,7 +60,7 @@ const mutations = {
             user_role   : payload.user.role,
             product_id  : payload.detail_order_one.product_id,
             product_name: payload.detail_order_one.product.name,
-            user_packing: payload.supplier == null? '': payload.packing.user_id,
+            user_packing: payload.packing == null? '': payload.packing.user_id,
             user_supplier: payload.supplier == null? '': payload.supplier.user_id,
             
         }
@@ -158,7 +158,7 @@ const actions = {
                 .then((response) => {
                     let getData = response.data.data
                     let getStatus = response.data.status
-                    console.log(getData)
+                    console.log('order',getData)
                     //APABIL BERHASIL, DI ASSIGN KE FORM
                     commit('ASSIGN_DATA', getData)
                     commit('ASSIGN_FORM', getData)
@@ -182,13 +182,14 @@ const actions = {
                 })
         })
     },
-    updateStatusOrder({state,commit}, payload) {
+    updateStatusOrder({state,dispatch}, payload) {
         return new Promise((resolve, reject) => {
             //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE DIURL
             //DAN MENGIRIMKAN DATA TERBARU YANG TELAH DIEDIT
             //MELALUI STATE order
             http().put(`/user/orders/${payload}`, state.order)
                 .then((response) => {
+                    dispatch('getOrderById',payload)
                     resolve(response.data)
                 })
         })

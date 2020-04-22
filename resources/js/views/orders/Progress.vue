@@ -81,6 +81,10 @@
             <div>
                 <button class="btn btn-info btn-xsm" @click="updateStatusToPacking">Simpan</button>
             </div>
+            <p v-if="!statusPacking">Belum ada yang ditugaskan </p>
+            <p v-else-if="statusPacking.status==0">Packing sedang dalam proses </p>
+            <p v-else-if="statusPacking.status==1">Packing sudah selesai </p>
+            <p v-else-if="statusPacking.status==2">Packing dibatalkan, silahkan pilih packing yag lain </p>
         </section>
         <!-- step 3 ================================================================================================== -->
         <section v-if="step == 3">
@@ -96,7 +100,28 @@
             <br>
             <div>
                 <button class="btn btn-info btn-xsm" @click="updateStatusToDikirim">Simpan</button>
+                <button v-if="statusSupplier && statusSupplier.status==1" class="btn btn-info btn-xsm" @click="updateStatusToTerkirim">Konfirmasi Terkirim</button>
             </div>
+            <div >
+            <p v-if="!statusSupplier">Belum ada yang ditugaskan </p>
+            <p v-else-if="statusSupplier.status==0"> Barang sedang dalam proses pengantaran ke Mitra  </p>
+            <p v-else-if="statusSupplier.status==1"> Barang sudah sampai ke Mitra </p>
+            <p v-else-if="statusSupplier.status==2">Supplier dibatalkan, silahkan pilih Supplier yag lain </p>
+        </div>
+        </section>
+        <!-- step 4 ================================================================================================== -->
+        <section v-if="step == 4">
+            <h6><u>Order Sudah sampai ke Mitra</u></h6>
+            <p>Menunggu Konfirmasi barang dari Mitra</p>
+            
+            <br>
+            <div>
+                <button v-if="order.status_id==5" class="btn btn-info btn-xsm" @click="kirimLagi">Kirim ulang notifikasi pada mitra</button>
+            </div>
+          <div >
+            <p v-if="order.status_id==5">Barang sudah sampai ke Mitra yang bersangkutan </p>
+            <p v-if="order.status_id==6">Mitra sudah mengkonfirmasi pengiriman </p>
+          </div>
         </section>
         
     </div>
@@ -110,12 +135,14 @@
         <button class="btn btn-xsm btn-info" 
             v-if="step != totalStep"
             @click="nextStep"
+            :disabled="nextDisable"
         >
         Next
         </button>
         <button class="btn btn-xsm btn-info" 
             v-if="step == totalStep"
             @click="finishStep"
+            :disabled="beforeFinish"
         >
         Finish
         </button>
@@ -192,6 +219,41 @@ import * as detailOrderServices from "../../services/details_order_service";
                 return 0
             }
         },
+        statusPacking(){
+          let packing=this.orders.packing
+          // if
+
+          return packing
+        },
+        statusSupplier(){
+          let supplier=this.orders.supplier
+          // if
+
+          return supplier
+        },
+        nextDisable(){
+          if(this.step==2){
+            if(this.orders.packing != null){
+              if( this.orders.packing.status==1){
+                return false
+              }else {return true}
+            }else{return true}
+          }else if(this.step==3){
+            if(this.orders.supplier != null){
+              if( this.orders.supplier.status==1){
+                return false
+              }else{return true}
+            }else{return true}
+          }else{
+            return false
+          }
+            // return false
+        },
+        beforeFinish(){
+          if(this.order.status_id==6){
+            return false
+          } else return true
+        }
         // disable(){
         //     if(this.step==1){
         //         if(this.total_input_qty_bubuk!=this.jumlahBubuk){
@@ -261,7 +323,7 @@ import * as detailOrderServices from "../../services/details_order_service";
             })
         },
 
-         updateStatusToDikirim(){
+        updateStatusToDikirim(){
             this.order.status_id = 4;
             let id = this.$route.params.id;
             this.updateStatusOrder(id).then(() => {
@@ -272,6 +334,29 @@ import * as detailOrderServices from "../../services/details_order_service";
                 });
             })
         },
+        updateStatusToTerkirim(){
+            this.order.status_id = 5;
+            let id = this.$route.params.id;
+            this.updateStatusOrder(id).then(() => {
+                //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
+                this.flashMessage.success({
+                    message: "Status sukses Berubah ke Terkirim...!",
+                    time: 5000
+                });
+            })
+        },
+        kirimLagi(){
+            this.order.status_id = 5;
+            let id = this.$route.params.id;
+            this.updateStatusOrder(id).then(() => {
+                //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
+                this.flashMessage.success({
+                    message: "Notifikasi dikirimkan lagi...!",
+                    time: 5000
+                });
+            })
+        },
+
         nextStep(){
             
             if (this.step == 2) {
@@ -308,7 +393,7 @@ import * as detailOrderServices from "../../services/details_order_service";
             }else if (status == 4) {
                 this.step = 3
                 this.activeStep = 2;
-            }else if (status == 6) {
+            }else if (status == 5 || status == 6) {
                 this.step = 4
                 this.activeStep = 3;
             }
