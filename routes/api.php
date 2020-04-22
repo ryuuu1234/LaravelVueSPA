@@ -115,6 +115,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('mitra-bubuk-all', 'Mitra\MitraController@get_all_bubuk')->name('bubuk.all'); // bubuk get by mitra id
         Route::put('mitra-update-stok/{id}', 'Mitra\MitraController@update_stok_awal')->name('mitra.update');
         Route::post('mitra-input-penjualan', 'Mitra\MitraController@input_penjualan')->name('mitra.penjualan');
+        Route::post('mitra-input-pembelian', 'Mitra\MitraController@input_pembelian')->name('mitra.pembelian');
         Route::put('mitra-update-qty-bubuk/{id}', 'Mitra\MitraController@update_qty_bubuk_pengiriman')->name('mitra.pengiriman');
 
         // packing

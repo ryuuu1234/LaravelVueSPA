@@ -47,7 +47,9 @@
                                     <input class="text-right" type="number" 
                                         ref="qtyBubuk"
                                         v-model="bubuk.qty" 
-                                        @change.prevent="updateDetailsBubuk(bubuk.id, bubuk.qty)">
+                                        @change.prevent="updateDetailsBubuk(bubuk.id, bubuk.qty)"
+                                        :disabled="disableProduksi"
+                                        >
                                 </td>
                             </tr>
                         </tbody>
@@ -70,7 +72,7 @@
         <section v-if="step == 2">
             <h6><u>Packing</u></h6>
             <p>pilih bagian packing</p>
-            <select class="form-control" v-model="order.user_packing" @change="savePacking">
+            <select class="form-control" v-model="order.user_packing" @change="savePacking" :disabled="disablePacking">
                 <option value="">Pilih Packing</option>
                 <option 
                     :key="packing.id" v-for="packing in packings" 
@@ -79,7 +81,7 @@
             </select>
             <br>
             <div>
-                <button class="btn btn-info btn-xsm" @click="updateStatusToPacking">Simpan</button>
+                <button class="btn btn-info btn-xsm" @click="updateStatusToPacking" :disabled="disablePacking">Simpan</button>
             </div>
             <p v-if="!statusPacking">Belum ada yang ditugaskan </p>
             <p v-else-if="statusPacking.status==0">Packing sedang dalam proses </p>
@@ -90,7 +92,7 @@
         <section v-if="step == 3">
             <h6><u>Supplier</u></h6>
             <p>pilih bagian Supplier</p>
-            <select class="form-control" v-model="order.user_supplier" @change="saveSupplier">
+            <select class="form-control" v-model="order.user_supplier" @change="saveSupplier" :disabled="disableSupplier">
                 <option value="">Pilih Supplier</option>
                 <option 
                     :key="supplier.id" v-for="supplier in suppliers" 
@@ -99,8 +101,8 @@
             </select>
             <br>
             <div>
-                <button class="btn btn-info btn-xsm" @click="updateStatusToDikirim">Simpan</button>
-                <button v-if="statusSupplier && statusSupplier.status==1" class="btn btn-info btn-xsm" @click="updateStatusToTerkirim">Konfirmasi Terkirim</button>
+                <button class="btn btn-info btn-xsm" @click="updateStatusToDikirim" :disabled="disableSupplier">Simpan</button>
+                <button v-if="statusSupplier && statusSupplier.status==1" class="btn btn-info btn-xsm" @click="updateStatusToTerkirim" :disabled="disableSupplier">Konfirmasi Terkirim</button>
             </div>
             <div >
             <p v-if="!statusSupplier">Belum ada yang ditugaskan </p>
@@ -142,7 +144,7 @@
         <button class="btn btn-xsm btn-info" 
             v-if="step == totalStep"
             @click="finishStep"
-            :disabled="beforeFinish"
+            :disabled="beforeFinish || submitting||order.status_id==7"
         >
         Finish
         </button>
@@ -164,7 +166,7 @@ import * as detailOrderServices from "../../services/details_order_service";
                   ],
               step: 1,
               activeStep: 0,
-              selected: '',
+              submitting:false
           }
       },
       created(){
@@ -253,7 +255,22 @@ import * as detailOrderServices from "../../services/details_order_service";
           if(this.order.status_id==6){
             return false
           } else return true
-        }
+        },
+        disableProduksi(){
+          if(this.order.status_id==1){
+            return false
+          } else return true
+        },
+        disablePacking(){
+          if(this.order.status_id==3){
+            return false
+          } else return true
+        },
+        disableSupplier(){
+          if(this.order.status_id==4){
+            return false
+          } else return true
+        },
         // disable(){
         //     if(this.step==1){
         //         if(this.total_input_qty_bubuk!=this.jumlahBubuk){
@@ -267,7 +284,7 @@ import * as detailOrderServices from "../../services/details_order_service";
 
       methods: {
           
-        ...mapActions("order", ["getOrderById", "updateStatusOrder"]),
+        ...mapActions("order", ["getOrderById", "updateStatusOrder", "finishOrder"]),
         ...mapActions("packing", ["getPackingAll"]),
         ...mapActions("supplier", ["getSupplierAll"]),
 
@@ -356,6 +373,17 @@ import * as detailOrderServices from "../../services/details_order_service";
                 });
             })
         },
+        selesai(){
+            this.order.status_id = 7;
+            let id = this.$route.params.id;
+            this.updateStatusOrder(id).then(() => {
+                //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
+                this.flashMessage.success({
+                    message: "Notifikasi dikirimkan lagi...!",
+                    time: 5000
+                });
+            })
+        },
 
         nextStep(){
             
@@ -373,7 +401,20 @@ import * as detailOrderServices from "../../services/details_order_service";
             this.activeStep--;
         },
         finishStep(){
-            alert('finishSetep');
+          this.submitting=true
+          let input=[]
+          this.items.forEach(data=>{
+            let temp = this.details_bubuk.filter(e=>{
+              if(e.bubuk_id==data.bubuk_id){
+              input.push({'item_mitra_id':data.id,'masuk':e.qty})
+                return {'item_mitra_id':data.id,'masuk':e.qty}
+              }
+            })
+          })
+          this.finishOrder(input).then(()=>{
+            this.selesai()
+          })
+          console.log('input', input)
         }
     },
       watch:{

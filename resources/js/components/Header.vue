@@ -27,7 +27,7 @@
             <div class="content-list content-menu batas">
               
                   <ul class="list-wrapper pd-lr-10">
-                      <li v-for="(notifData, n) in notifications" :key="n"> <notifikasi :data="notifData"></notifikasi> </li>
+                      <li v-for="(notifData, n) in notifications" :key="n"> <notifikasi :data="notifData" @tutup='tutup'></notifikasi> </li>
                       
                       <li class="line"></li>
                       
@@ -146,6 +146,10 @@
       },
       notif(){
         this.notifMenu = !this.notifMenu
+        // this.$router.push('/notifikasi')
+      },
+      tutup(){
+        this.notifMenu = false
         // this.$router.push('/notifikasi')
       }
     },

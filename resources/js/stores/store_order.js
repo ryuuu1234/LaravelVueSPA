@@ -77,6 +77,16 @@ const mutations = {
 }
 
 const actions = {
+    // finishing order, memasukkan nilai stok mitra dari order
+    finishOrder({dispatch},payload){
+        return new Promise(resolve=>{
+            http().post('admin/mitra-input-pembelian', payload)
+            .then(res=>{
+                resolve(res.data)
+                console.log('res',res)
+            })
+        })
+    },
     //FUNGSI INI UNTUK MELAKUKAN REQUEST DATA order DARI SERVER
     getOrders({commit, state}, payload) {
         //MENGECEK PAYLOAD ADA ATAU TIDAK

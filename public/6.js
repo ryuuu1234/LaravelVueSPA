@@ -177,6 +177,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -201,7 +203,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }],
       step: 1,
       activeStep: 0,
-      selected: ''
+      submitting: false
     };
   },
   created: function created() {
@@ -310,6 +312,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.order.status_id == 6) {
         return false;
       } else return true;
+    },
+    disableProduksi: function disableProduksi() {
+      if (this.order.status_id == 1) {
+        return false;
+      } else return true;
+    },
+    disablePacking: function disablePacking() {
+      if (this.order.status_id == 3) {
+        return false;
+      } else return true;
+    },
+    disableSupplier: function disableSupplier() {
+      if (this.order.status_id == 4) {
+        return false;
+      } else return true;
     } // disable(){
     //     if(this.step==1){
     //         if(this.total_input_qty_bubuk!=this.jumlahBubuk){
@@ -321,7 +338,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // }
 
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("order", ["getOrderById", "updateStatusOrder"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("packing", ["getPackingAll"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("supplier", ["getSupplierAll"]), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("order", ["getOrderById", "updateStatusOrder", "finishOrder"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("packing", ["getPackingAll"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])("supplier", ["getSupplierAll"]), {
     updateDetailsBubuk: function () {
       var _updateDetailsBubuk = _asyncToGenerator(
       /*#__PURE__*/
@@ -500,6 +517,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       });
     },
+    selesai: function selesai() {
+      var _this5 = this;
+
+      this.order.status_id = 7;
+      var id = this.$route.params.id;
+      this.updateStatusOrder(id).then(function () {
+        //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
+        _this5.flashMessage.success({
+          message: "Notifikasi dikirimkan lagi...!",
+          time: 5000
+        });
+      });
+    },
     nextStep: function nextStep() {
       if (this.step == 2) {
         if (!this.order.user_packing) {
@@ -516,7 +546,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.activeStep--;
     },
     finishStep: function finishStep() {
-      alert('finishSetep');
+      var _this6 = this;
+
+      this.submitting = true;
+      var input = [];
+      this.items.forEach(function (data) {
+        var temp = _this6.details_bubuk.filter(function (e) {
+          if (e.bubuk_id == data.bubuk_id) {
+            input.push({
+              'item_mitra_id': data.id,
+              'masuk': e.qty
+            });
+            return {
+              'item_mitra_id': data.id,
+              'masuk': e.qty
+            };
+          }
+        });
+      });
+      this.finishOrder(input).then(function () {
+        _this6.selesai();
+      });
+      console.log('input', input);
     }
   }),
   watch: {
@@ -840,7 +891,10 @@ var render = function() {
                             ref: "qtyBubuk",
                             refInFor: true,
                             staticClass: "text-right",
-                            attrs: { type: "number" },
+                            attrs: {
+                              type: "number",
+                              disabled: _vm.disableProduksi
+                            },
                             domProps: { value: bubuk.qty },
                             on: {
                               change: function($event) {
@@ -914,6 +968,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                attrs: { disabled: _vm.disablePacking },
                 on: {
                   change: [
                     function($event) {
@@ -960,6 +1015,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-info btn-xsm",
+                  attrs: { disabled: _vm.disablePacking },
                   on: { click: _vm.updateStatusToPacking }
                 },
                 [_vm._v("Simpan")]
@@ -998,6 +1054,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                attrs: { disabled: _vm.disableSupplier },
                 on: {
                   change: [
                     function($event) {
@@ -1044,6 +1101,7 @@ var render = function() {
                 "button",
                 {
                   staticClass: "btn btn-info btn-xsm",
+                  attrs: { disabled: _vm.disableSupplier },
                   on: { click: _vm.updateStatusToDikirim }
                 },
                 [_vm._v("Simpan")]
@@ -1054,6 +1112,7 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-info btn-xsm",
+                      attrs: { disabled: _vm.disableSupplier },
                       on: { click: _vm.updateStatusToTerkirim }
                     },
                     [_vm._v("Konfirmasi Terkirim")]
@@ -1148,7 +1207,10 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-xsm btn-info",
-              attrs: { disabled: _vm.beforeFinish },
+              attrs: {
+                disabled:
+                  _vm.beforeFinish || _vm.submitting || _vm.order.status_id == 7
+              },
               on: { click: _vm.finishStep }
             },
             [_vm._v("\r\n        Finish\r\n        ")]

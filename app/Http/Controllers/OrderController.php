@@ -337,22 +337,6 @@ class OrderController extends Controller
         ], 200);
     }
 
-    public function sendNotifToAdmin(Request $request, Order $order){
-        $request->validate([
-            'status_id'=>'required|numeric',
-            'order_id'=>'required|numeric',
-        ]);
-        $user = User::find(Auth::id());
-        
-        $admins = User::where('role','Admin')->get();
-        
-        foreach($admins as $admin){
-        
-            Notification::send($admin, new OrderNotification($request->pesan, $user));
-
-        }
-
-    }
     /**
      * Update the specified resource in storage.
      *

@@ -138,6 +138,33 @@ class MitraController extends Controller
             ], 400);
         }
     }
+    public function input_pembelian(Request $request){
+
+        $input=$request->all();
+
+        DB::beginTransaction();
+        try {
+            $stok = new DetailStokMitra();
+            foreach($input as $key=> $row ){
+                $stok->create([
+                    'reff' => Str::random(),// ini nanti di ganti str_random
+                    'masuk'=> $row['masuk'],
+                    'item_mitra_id'=> $row['item_mitra_id'],
+                    'keterangan'=> 'PEMBELIAN',
+                ]);
+            }
+        DB::commit();    
+            return response()->json(['status'=>'sukses'], 200); 
+
+        } catch (\Exception $e) {  
+            
+        DB::rollback();
+            return response()->json([
+                'status' => 'failed',
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
 
     public function update_qty_bubuk_pengiriman(Request $request, $id){
         $request->validate([

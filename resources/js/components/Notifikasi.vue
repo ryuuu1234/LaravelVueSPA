@@ -3,6 +3,7 @@
   <h5 class="menu-text"><B>{{type}}</B></h5>
   <a href='' @click.prevent="pindah" :disabled="disable">
    <div class="menu-text" v-if="type=='Order Baru'" >Ada Order Baru dengan Reff : {{data.data.order.reff}}</div>
+   <div class="menu-text" v-if="type=='Terkonfirmasi'" > Order dengan Reff : {{data.data.order.reff}} sudah dikonfirmasi</div>
    <div class="menu-text" v-if="type=='Packing'" >Packing dengan Reff : {{data.data.order.reff}} <B>{{status}} </B></div>
    <div class="menu-text" v-if="type=='Supplier'" >Pengiriman dengan Reff : {{data.data.order.reff}} <B>{{status}}</B></div>
   </a>
@@ -26,7 +27,9 @@ export default {
    let data = this.data.data.sender_role
    switch (data) {
     case 'Mitra':
+      if(this.data.data.status=='Order'){
      return 'Order Baru'
+      }else{ return 'Terkonfirmasi'}
      break;
     case 'Packing':
      return 'Packing'
@@ -70,6 +73,7 @@ export default {
   ...mapActions('notification',['readNotification']),
   ...mapActions("order", ["getOrderById"]),
   pindah(){
+    this.$emit('tutup')
    this.disable=true
    this.readNotification(this.data.id)
    this.getOrderById(this.data.data.order.id)

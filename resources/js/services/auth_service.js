@@ -25,6 +25,31 @@ export function login(user) {
     });
 }
 
+function denger(user) {
+  // console.log("user", user);
+  let userId = user.user.id;
+  window.Pusher = require("pusher-js");
+  let echo = new Echo({
+    broadcaster: "pusher",
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true,
+    auth: {
+      headers: {
+        Authorization: "Bearer " + user.access_token
+      }
+    }
+  });
+
+  echo.private("App.User." + userId).notification(data => {
+    store.dispatch("notification/getNotifications")
+    store.dispatch("notification/getOrderNotif")
+          
+  });
+  store.dispatch("notification/getNotifications");
+}
+
+
 export function getUserId() {
     const token = localStorage.getItem("Laravel-vue-spa-token");
         if (!token) {
