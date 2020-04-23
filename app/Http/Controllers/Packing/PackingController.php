@@ -75,7 +75,7 @@ class PackingController extends Controller
 
         $data = DetailPacking::where([
             ['user_id', '=', $id],
-            ['status', '=', 0]])->get();
+            ['status', '<>', 1]])->get();
         
         $data->load(['order', 'order.detail_order_one.product.detail_items.item.unit', 'order.details_bubuk.bubuk']);
         
