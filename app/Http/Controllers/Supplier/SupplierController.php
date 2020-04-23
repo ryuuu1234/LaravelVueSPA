@@ -72,7 +72,7 @@ class SupplierController extends Controller
 
         $data = DetailSupplier::where([
             ['user_id', '=', $id],
-            ['status', '=', 0]])->get();
+            ['status', '<>', 1]])->get();
         
         $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role,alamat', 'order.detail_order_one.product']);
         

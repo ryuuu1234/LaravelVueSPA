@@ -40,7 +40,7 @@
                                 <th class="text-right" width="30%">Qty</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="details_bubuk">
                             <tr v-for="(bubuk, row) in details_bubuk" :key="row">
                                 <td>{{bubuk.bubuk.nama}}</td>
                                 <td class="text-right">
@@ -66,7 +66,7 @@
             
             
             <p style="color:red"><i>Pastikan total input (jumlah total bubuk) = jumlah bubuk product</i></p>
-            <p style="color:red"><i>total input = {{total_input_qty_bubuk}}, jumlah bubuk product = {{jumlahBubuk}}</i></p>
+            <!-- <p style="color:red"><i>total input = {{total_input_qty_bubuk}}, jumlah bubuk product = {{jumlahBubuk}}</i></p> -->
         </section>
         <!-- step 2 ================================================================================================== -->
         <section v-if="step == 2">
@@ -102,7 +102,7 @@
             <br>
             <div>
                 <button class="btn btn-info btn-xsm" @click="updateStatusToDikirim" :disabled="disableSupplier">Simpan</button>
-                <button v-if="statusSupplier && statusSupplier.status==1" class="btn btn-info btn-xsm" @click="updateStatusToTerkirim" :disabled="disableSupplier">Konfirmasi Terkirim</button>
+                <button v-if="statusSupplier && statusSupplier.status==1" :disabled="order.status_id>=5" class="btn btn-info btn-xsm" @click="updateStatusToTerkirim" >Konfirmasi Terkirim</button>
             </div>
             <div >
             <p v-if="!statusSupplier">Belum ada yang ditugaskan </p>
@@ -114,7 +114,8 @@
         <!-- step 4 ================================================================================================== -->
         <section v-if="step == 4">
             <h6><u>Order Sudah sampai ke Mitra</u></h6>
-            <p>Menunggu Konfirmasi barang dari Mitra</p>
+            <p v-if="order.status_id == 5">Menunggu Konfirmasi barang dari Mitra</p>
+            <p v-if="order.status_id == 7">Proses sudah selesai. Stok mitra sudah ditambahkan</p>
             
             <br>
             <div>
@@ -122,7 +123,7 @@
             </div>
           <div >
             <p v-if="order.status_id==5">Barang sudah sampai ke Mitra yang bersangkutan </p>
-            <p v-if="order.status_id==6">Mitra sudah mengkonfirmasi pengiriman </p>
+            <p v-if="order.status_id==6">Mitra sudah mengkonfirmasi pengiriman. re-load laman jika dalam waktu satu menit tombol finish belum bisa di tekan </p>
           </div>
         </section>
         
@@ -144,7 +145,7 @@
         <button class="btn btn-xsm btn-info" 
             v-if="step == totalStep"
             @click="finishStep"
-            :disabled="beforeFinish || submitting||order.status_id==7"
+            :disabled=" submitting || order.status_id==7 || belumSiap"
         >
         Finish
         </button>
@@ -184,13 +185,28 @@ import * as detailOrderServices from "../../services/details_order_service";
         }),
         ...mapState("order", {
             order: state=>state.order,
-            orders: state=>state.orders,
-            details_bubuk: state=>state.orders.details_bubuk
+            orders: state=>state.orders
+            // ini error kalo tak kosongkan di awal create component
+            // details_bubuk: state=>state.orders.details_bubuk
         }),
+        details_bubuk(){
+          if(this.orders){
+            return this.orders.details_bubuk
+          }else{
+            return []
+          }
+        },
         ...mapState("product", {detail_items: state => state.detail_items}),
         ...mapState("packing", {packings: state => state.packings}),
         ...mapState("supplier", {suppliers: state => state.suppliers}),
-
+        belumSiap(){
+          return (this.items.length && this.details_bubuk.length) ? false : true
+          // if(!this.items.length && !this.details_bubuk){
+          //   return true
+          // }else{
+          //   return false
+          // }
+        },
         totalStep(){
             let hasil = this.formSteps.length;
             return hasil;
@@ -198,7 +214,6 @@ import * as detailOrderServices from "../../services/details_order_service";
 
         total_input_qty_bubuk() {
             if(this.details_bubuk){
-
             return this.details_bubuk.reduce(function (sum, val) {
                 let qty = val.qty == ''? 0:parseInt(val.qty);
                 let total = sum + qty;
@@ -208,53 +223,47 @@ import * as detailOrderServices from "../../services/details_order_service";
                 return 0
             }
         },
-        jumlahBubuk(){
-            if(this.detail_items.length){
-            let bubuk = this.detail_items.filter(e=>{
-                if(e.item.nama=='Bubuk'){
-                    return true
-                }
-            })
-            console.log(bubuk)
-            return bubuk[0].qty
-            }else{
-                return 0
-            }
-        },
+        // jumlahBubuk(){
+        //     if(this.detail_items.length){
+        //     let bubuk = this.detail_items.filter(e=>{
+        //         if(e.item.nama=='Bubuk'){
+        //             return true
+        //         }
+        //     })
+        //     console.log(bubuk)
+        //     return bubuk[0].qty
+        //     }else{
+        //         return 0
+        //     }
+        // },
         statusPacking(){
-          let packing=this.orders.packing
-          // if
+          if(this.orders){
+            let packing=this.orders.packing
+            return packing
 
-          return packing
+          }else return []
         },
         statusSupplier(){
-          let supplier=this.orders.supplier
-          // if
-
-          return supplier
+          if(this.orders){
+            let supplier=this.orders.supplier
+            return supplier
+          } else return []
         },
         nextDisable(){
-          if(this.step==2){
-            if(this.orders.packing != null){
-              if( this.orders.packing.status==1){
-                return false
-              }else {return true}
-            }else{return true}
-          }else if(this.step==3){
-            if(this.orders.supplier != null){
-              if( this.orders.supplier.status==1){
-                return false
-              }else{return true}
-            }else{return true}
+          if(this.step==2 && this.orders){
+
+            return this.orders.packing!=null? (this.orders.packing.status==1? false:true) :true            
+          
+          }else if(this.step==3 && this.orders){
+            return this.orders.supplier!=null? (this.orders.supplier.status==1? false:true) :true
+            
           }else{
             return false
           }
             // return false
         },
         beforeFinish(){
-          if(this.order.status_id==6){
-            return false
-          } else return true
+          return this.order.status_id >= 6? true: false;
         },
         disableProduksi(){
           if(this.order.status_id==1){
@@ -262,14 +271,10 @@ import * as detailOrderServices from "../../services/details_order_service";
           } else return true
         },
         disablePacking(){
-          if(this.order.status_id==3){
-            return false
-          } else return true
+          return (this.order.status_id >= 3 && this.orders) ? (this.orders.packing? (this.orders.packing.status==1? true:false) :false) : false;
         },
         disableSupplier(){
-          if(this.order.status_id==4){
-            return false
-          } else return true
+          return (this.order.status_id >= 4 && this.orders) ?  (this.orders.supplier? (this.orders.supplier.status==1? true:false) :false) : false;
         },
         // disable(){
         //     if(this.step==1){
@@ -379,7 +384,7 @@ import * as detailOrderServices from "../../services/details_order_service";
             this.updateStatusOrder(id).then(() => {
                 //APABILA BERHASIL MAKA AKAN DI-DIRECT KEMBALI
                 this.flashMessage.success({
-                    message: "Notifikasi dikirimkan lagi...!",
+                    message: "Order Selesai, Stok mitra sudah ditambahkan...!",
                     time: 5000
                 });
             })
@@ -434,7 +439,7 @@ import * as detailOrderServices from "../../services/details_order_service";
             }else if (status == 4) {
                 this.step = 3
                 this.activeStep = 2;
-            }else if (status == 5 || status == 6) {
+            }else if (status == 5 || status == 6 || status == 7) {
                 this.step = 4
                 this.activeStep = 3;
             }

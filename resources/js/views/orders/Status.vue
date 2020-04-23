@@ -66,11 +66,11 @@
 </template>
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
-import Progress from './Progress';
+// import Progress from './Progress';
 export default {
     name: "DetailStatusOrder",
     components:{
-        Progress
+        Progress:()=>import(/* webpackChunkName: "Progress" */'./Progress')
     },
     created(){
         this.getOrderById(this.$route.params.id)

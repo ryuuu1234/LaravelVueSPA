@@ -30,6 +30,11 @@ const mutations = {
         state.orders = payload,
         state.meta = payload
     },
+    //Hapus STATE orders
+    DELETE_DATA(state, payload) {
+        state.orders = payload,
+        state.meta = payload
+    },
      //MEMASUKKAN DATA STATUS KE STATE status_orders
      ASSIGN_STATUS(state, payload) {
         state.status_orders = payload
@@ -162,6 +167,8 @@ const actions = {
 
     //UNTUK MENGAMBIL SINGLE DATA DARI SERVER BERDASARKAN CODE order
     getOrderById({commit}, payload) {
+        // bersihkan dulu data order
+        commit('DELETE_DATA')
         return new Promise((resolve, reject) => {
             //MELAKUKAN REQUEST DENGAN MENGIRIMKAN CODE order DI URL
             http().get(`user/orders/${payload}/edit`)
