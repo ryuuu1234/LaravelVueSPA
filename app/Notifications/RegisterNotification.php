@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Register;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -21,7 +22,7 @@ class RegisterNotification extends Notification
         protected $register;
     public function __construct($register)
     {
-        $this->$register = $register;
+        $this->register = $register;
     }
 
     /**

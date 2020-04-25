@@ -24,16 +24,13 @@
             v-if="notifMenu"
         >
           <div class="child-menu"> 
-            <div class="content-list content-menu batas">
-              
-                  <ul class="list-wrapper pd-lr-10">
-                      <li v-for="(notifData, n) in notifications" :key="n"> <notifikasi :data="notifData" @tutup='tutup'></notifikasi> </li>
-                      
-                      <li class="line"></li>
-                      
-                      
+            <div class="content-list content-menu batas ">
+                  <ul class="list-wrapper pd-lr-10 ">
+                      <li v-for="(notifData, n) in notifications" :key="n"> 
+                        <notifikasi :data="notifData" @tutup='tutup'></notifikasi> 
+                      </li>
                   </ul>
-              </div> 
+            </div> 
           </div>
         </div>
 
@@ -173,5 +170,10 @@
 .batas{
   height: 600px;
   overflow: auto;
+}
+.listnya{
+  display: flex;
+  flex-direction: column-reverse;
+
 }
 </style>

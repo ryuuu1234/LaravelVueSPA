@@ -153,13 +153,13 @@ class OrderController extends Controller
             };
             
             // $this->sendEvent($request); 
-            $user=User::find(Auth::id());
-            $admins = User::where('role','Admin')->get();
             // $user = User::find($order->user_id);
             // event(new OrderStatusChanged($order, $user));
             // sudah OK, 
             //======================== notiifkasi diganti
             // Notification::send($user, new OrderNotification($order, $user));
+            $user=User::find(Auth::id());
+            $admins = User::where('role','Admin')->get();
             foreach($admins as $admin){
                 Notification::send($admin, new OrderNotification($order, $user));
 

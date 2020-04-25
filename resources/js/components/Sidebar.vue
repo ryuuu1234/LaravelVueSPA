@@ -305,16 +305,18 @@ export default {
 
     mounted(){
         
-        window.Echo.channel('capcin-reg')
-        .listen('RegisterEvent', (register) => {
-            this.getRegNotif();
-        });
+        // window.Echo.channel('capcin-reg')
+        // .listen('RegisterEvent', register => {
+        //     this.getRegNotif();
+        //     console.log('Register ',register)
+        //     // this.$store.commit('notification/ASSIGN_DATA', register)
+        // });
         // echo channel order
-        window.Echo.channel('capcin-tracker')
-        .listen('OrderStatusChanged', (order) => {
-            // console.log(order);
-            this.getOrderNotif();
-        });
+        // window.Echo.channel('capcin-tracker')
+        // .listen('OrderStatusChanged', (order) => {
+        //     // console.log(order);
+        //     this.getOrderNotif();
+        // });
     },
     computed: {
          ...mapState("notification", {

@@ -1,11 +1,15 @@
 <template>
  <div class="notifikasi">
   <h5 class="menu-text"><B>{{type}}</B></h5>
-  <a href='' @click.prevent="pindah" :disabled="disable">
+  <a href='' @click.prevent="pindah" :disabled="disable" v-if="type!='regestrasi'">
    <div class="menu-text" v-if="type=='Order Baru'" >Ada Order Baru dengan Reff : {{data.data.order.reff}}</div>
    <div class="menu-text" v-if="type=='Terkonfirmasi'" > Order dengan Reff : {{data.data.order.reff}} sudah dikonfirmasi</div>
    <div class="menu-text" v-if="type=='Packing'" >Packing dengan Reff : {{data.data.order.reff}} <B>{{status}} </B></div>
    <div class="menu-text" v-if="type=='Supplier'" >Pengiriman dengan Reff : {{data.data.order.reff}} <B>{{status}}</B></div>
+  </a>
+  <a href='' @click.prevent="regis" :disabled="disable" v-if="type=='Regestrasi'">
+   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==0" >Ada regestrasi baru : Nama: <b>{{data.data.register.name}}</b>, email: {{data.data.register.email}}</div>
+   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==1" >Regestrasi atas nama: <b>{{data.data.register.name}}</b>, email: {{data.data.register.email}} <b>sudah Aktif</b></div>
   </a>
 
  </div>
@@ -24,6 +28,7 @@ export default {
  },
  computed:{
   type(){
+    if(this.data.data.sender_role){
    let data = this.data.data.sender_role
    switch (data) {
     case 'Mitra':
@@ -42,8 +47,12 @@ export default {
      return ''
      break;
    }
+    }else return 'Regestrasi'
   },
+  
   status(){
+    if(this.data.data.sender_role){
+
     let data = this.data.data.sender_role
     let packing = this.data.data.packing
     let supplier = this.data.data.supplier
@@ -51,7 +60,7 @@ export default {
       if(packing==1){
         return 'sudah selesai'
       }else if(packing==2){
-        return 'dibataklan karyawan dengan alasan ' + this.data.data.order.packing.keterangan
+        return 'dibataklan ' + this.data.data.order.packing.keterangan
       }else{
         return 'masih dalam proses'
       }
@@ -59,7 +68,7 @@ export default {
       if(supplier==1){
         return 'sudah selesai'
       }else if(supplier==2){
-        return 'dibataklan karyawan dengan alasan ' + this.data.data.order.supplier.keterangan
+        return 'dibataklan  ' + this.data.data.order.supplier.keterangan
       }else{
         return 'masih dalam proses'
       }
@@ -67,10 +76,11 @@ export default {
       return ''
     }
     
+    }else return 'regestrasi'
   }
  },
  methods:{
-  ...mapActions('notification',['readNotification']),
+  ...mapActions('notification',['readNotification','getRegNotif']),
   ...mapActions("order", ["getOrderById"]),
   pindah(){
     this.$emit('tutup')
@@ -80,6 +90,15 @@ export default {
    .then(()=>{
     this.$router.push({ name: "orders.status", params:{id:this.data.data.order.id} }, () => {});
    })
+  },
+  regis(){
+    this.$emit('tutup')
+   this.readNotification(this.data.id)
+    this.getRegNotif().then(()=>{
+      this.$router.push({ name: "register-list" }, () => {});
+
+    })
+   
   }
  }
 }
