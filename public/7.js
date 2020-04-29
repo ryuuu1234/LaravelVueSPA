@@ -215,7 +215,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         height: "".concat(this.height, "px"),
         position: 'relative'
       };
-    }
+    },
+    chartOptions: function chartOptions() {}
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])("mitra", ["getMitraAll"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])("packing", ["getPackingAll"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])("laporan", ["getLaporanPenjualanProduct"]), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapMutations"])("laporan", ["SET_TGL_AWAL", "SET_TGL_AKHIR"]), {
     thisMonth: function thisMonth() {

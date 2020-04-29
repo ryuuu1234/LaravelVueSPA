@@ -198,6 +198,9 @@ class MitraController extends Controller
                 ->where('keterangan', 'PENJUALAN');
          }])->selectSub($sumKeluar, 'sum_keluar')->get();
         $data->load('bubuk:id,nama');
+        foreach($data as $key){
+            $key->tampil=false;
+        }
         return response()->json(['status'=>'sukses', 'data'=>$data], 200);
 
     }

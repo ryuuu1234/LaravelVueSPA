@@ -118,44 +118,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 3:
                 response = _context.sent;
-                this.token_scope(response.token_scope);
+
+                // console.log('login res', response)
+                if (response) {
+                  this.token_scope(response.token_scope); // this.denger(response)
+                }
+
                 this.errors = {};
-                _context.next = 21;
+                _context.next = 22;
                 break;
 
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
+
+                if (!_context.t0) {
+                  _context.next = 22;
+                  break;
+                }
+
                 _context.t1 = _context.t0.response.status;
-                _context.next = _context.t1 === 422 ? 13 : _context.t1 === 500 ? 15 : _context.t1 === 401 ? 17 : 19;
+                _context.next = _context.t1 === 422 ? 14 : _context.t1 === 500 ? 16 : _context.t1 === 401 ? 18 : 20;
                 break;
 
-              case 13:
+              case 14:
                 this.errors = _context.t0.response.data.errors;
-                return _context.abrupt("break", 21);
+                return _context.abrupt("break", 22);
 
-              case 15:
+              case 16:
                 this.flashMessage.error({
                   message: _context.t0.response.data.message,
                   time: 5000
                 });
-                return _context.abrupt("break", 21);
+                return _context.abrupt("break", 22);
 
-              case 17:
+              case 18:
                 this.flashMessage.error({
                   message: _context.t0.response.data.message,
                   time: 5000
                 });
-                return _context.abrupt("break", 21);
+                return _context.abrupt("break", 22);
 
-              case 19:
+              case 20:
                 this.flashMessage.error({
                   message: "Some error occured, Please Try Again!",
                   time: 5000
                 });
-                return _context.abrupt("break", 21);
+                return _context.abrupt("break", 22);
 
-              case 21:
+              case 22:
               case "end":
                 return _context.stop();
             }
@@ -196,6 +207,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     token_scope: function token_scope(item) {
       if (item == 'Admin' || item == 'Root') {
         this.$router.push('/dashboard');
+        location.reload();
       } else {
         this.flashMessage.error({
           message: "Kamu Bukan Administrator, tidak bisa login",
@@ -203,6 +215,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
         this.logout();
       }
+    },
+    denger: function denger(data) {
+      //   console.log("data", data.user.id);
+      //   console.log("data", data.access_token);
+      var userId = data.user.id;
+      window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
+      var echo = new Echo({
+        broadcaster: "pusher",
+        key: "ebfe3f8ff45ad9c3ad4c",
+        cluster: "ap1",
+        forceTLS: true,
+        auth: {
+          headers: {
+            Authorization: "Bearer " + data.access_token
+          }
+        }
+      });
+      echo["private"]("App.User." + userId).notification(function (mum) {
+        var type = mum.type.split('\\');
+
+        if (type[type.length - 1] == 'OrderNotification') {
+          store.dispatch("notification/getOrderNotif");
+        } else {
+          store.dispatch("notification/getRegNotif");
+        }
+
+        store.dispatch("notification/getNotifications");
+      });
+      store.dispatch("notification/getNotifications");
     }
   },
   created: function created() {

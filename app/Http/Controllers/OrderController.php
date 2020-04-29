@@ -427,7 +427,7 @@ class OrderController extends Controller
 
         $orders = Order::whereRaw(
             "(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"]
-            )->where('status_id', 6) // 6:status selesai
+            )->where('status_id', '>=', 6) // 6:status selesai
             // ->with( ['detail_order_one.product:id,name', 'details_bubuk', 'details_bubuk.bubuk:id,nama'])
             ->get();
             $orders->load('user:id,name,role');

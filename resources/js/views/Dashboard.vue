@@ -137,7 +137,8 @@ export default {
                 height: `${this.height}px`,
                 position: 'relative'
             }
-        }
+        },
+        chartOptions(){}
     },
     methods:{
         ...mapActions("mitra", ["getMitraAll"]),

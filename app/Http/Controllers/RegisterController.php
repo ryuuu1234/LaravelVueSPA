@@ -72,11 +72,11 @@ class RegisterController extends Controller
                 event(new RegisterEvent($register));
                 // coba
                 // Notification::send($register, new RegisterNotification($register));
-                $admins = User::where('role','Admin')->get();
-            foreach($admins as $admin){
-                Notification::send($admin, new RegisterNotification($register));
+            //     $admins = User::where('role','Admin')->get();
+            // foreach($admins as $admin){
+            //     Notification::send($admin, new RegisterNotification($register));
 
-            }
+            // }
                 return response()->json($register,200);
             }
 
@@ -110,7 +110,7 @@ class RegisterController extends Controller
 
         if ($register->save()) {
 
-            event(new RegisterEvent($register));
+            // event(new RegisterEvent($register));
              $admins = User::where('role','Admin')->get();
             foreach($admins as $admin){
                 Notification::send($admin, new RegisterNotification($register));

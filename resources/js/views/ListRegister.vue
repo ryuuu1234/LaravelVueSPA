@@ -77,6 +77,7 @@ import Datatable from '../components/khusus/Datatable.vue'
 // import InputNumber from '../components/khusus/InputNumber.vue'
 // import axios from 'axios';
 import * as listRegisterService from "../services/list_register_service";
+import { mapState } from 'vuex';
 
 export default {
     
@@ -84,16 +85,16 @@ export default {
         'app-datatable': Datatable, //REGISTER COMPONENT DATATABLE 
     },
 
-    created() {
-        this.loadItemsData()
-        // this.kosongkanForm()
-    },
+    // created() {
+    //     this.loadItemsData()
+    //     // this.kosongkanForm()
+    // },
 
     mounted(){
-        window.Echo.channel('capcin-reg')
-        .listen('RegisterEvent', (register) => {
-            this.loadItemsData();
-        });
+        // window.Echo.channel('capcin-reg')
+        // .listen('RegisterEvent', (register) => {
+        //     this.loadItemsData();
+        // });
     },
     
     data() {
@@ -131,11 +132,20 @@ export default {
     },
     
     computed: {
+        ...mapState('notification',{
+            regestrasi: state=>state.reg_notif
+        }),
         textButton: function() {
            return this.methodForms == "Add"? "Save":"Update"
         },
     },
-
+    watch:{
+        regestrasi:{
+            handler:'loadItemsData',
+            immediate:true,
+            deep:true
+        }
+    },
     methods: {
         // remove select
        hapusDataTerseleksi: async function(val) {
@@ -381,6 +391,8 @@ export default {
                     message: "Item Updated successfully!",
                     time: 5000
                 });
+                
+                this.$store.dispatch("notification/getRegNotif")
             } catch (error) {
                 console.log('' + error);
                 this.flashMessage.error({

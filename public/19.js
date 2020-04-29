@@ -13,17 +13,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/khusus/Datatable.vue */ "./resources/js/components/khusus/Datatable.vue");
 /* harmony import */ var _services_list_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/list_register_service */ "./resources/js/services/list_register_service.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 //
 //
@@ -103,20 +104,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 // import axios from 'axios';
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     'app-datatable': _components_khusus_Datatable_vue__WEBPACK_IMPORTED_MODULE_1__["default"] //REGISTER COMPONENT DATATABLE 
 
   },
-  created: function created() {
-    this.loadItemsData(); // this.kosongkanForm()
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    window.Echo.channel('capcin-reg').listen('RegisterEvent', function (register) {
-      _this.loadItemsData();
-    });
+  // created() {
+  //     this.loadItemsData()
+  //     // this.kosongkanForm()
+  // },
+  mounted: function mounted() {// window.Echo.channel('capcin-reg')
+    // .listen('RegisterEvent', (register) => {
+    //     this.loadItemsData();
+    // });
   },
   data: function data() {
     return {
@@ -160,9 +161,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       showLoading: false
     };
   },
-  computed: {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapState"])('notification', {
+    regestrasi: function regestrasi(state) {
+      return state.reg_notif;
+    }
+  }), {
     textButton: function textButton() {
       return this.methodForms == "Add" ? "Save" : "Update";
+    }
+  }),
+  watch: {
+    regestrasi: {
+      handler: 'loadItemsData',
+      immediate: true,
+      deep: true
     }
   },
   methods: {
@@ -449,11 +461,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   message: "Item Updated successfully!",
                   time: 5000
                 });
-                _context4.next = 20;
+                this.$store.dispatch("notification/getRegNotif");
+                _context4.next = 21;
                 break;
 
-              case 16:
-                _context4.prev = 16;
+              case 17:
+                _context4.prev = 17;
                 _context4.t0 = _context4["catch"](7);
                 console.log('' + _context4.t0);
                 this.flashMessage.error({
@@ -461,12 +474,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   time: 5000
                 });
 
-              case 20:
+              case 21:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, this, [[7, 16]]);
+        }, _callee4, this, [[7, 17]]);
       }));
 
       function updateStatus(_x3) {

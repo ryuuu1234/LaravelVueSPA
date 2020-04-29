@@ -1,14 +1,14 @@
 <template>
- <div class="notifikasi">
+ <div class="notifik">
   <h5 class="menu-text"><B>{{type}}</B></h5>
   <a href='' @click.prevent="pindah" :disabled="disable" v-if="type!='regestrasi'">
-   <div class="menu-text" v-if="type=='Order Baru'" >Ada Order Baru dengan Reff : {{data.data.order.reff}}</div>
-   <div class="menu-text" v-if="type=='Terkonfirmasi'" > Order dengan Reff : {{data.data.order.reff}} sudah dikonfirmasi</div>
-   <div class="menu-text" v-if="type=='Packing'" >Packing dengan Reff : {{data.data.order.reff}} <B>{{status}} </B></div>
-   <div class="menu-text" v-if="type=='Supplier'" >Pengiriman dengan Reff : {{data.data.order.reff}} <B>{{status}}</B></div>
+   <div class="menu-text" v-if="type=='Order Baru'" >Ada Order Baru Reff : {{data.data.order.reff}}</div>
+   <div class="menu-text" v-if="type=='Terkonfirmasi'" > Order Reff : {{data.data.order.reff}} sudah dikonfirmasi</div>
+   <div class="menu-text" v-if="type=='Packing'" >Packing Reff : {{data.data.order.reff}} <B>{{status}} </B></div>
+   <div class="menu-text" v-if="type=='Supplier'" >Pengiriman Reff : {{data.data.order.reff}} <B>{{status}}</B></div>
   </a>
   <a href='' @click.prevent="regis" :disabled="disable" v-if="type=='Regestrasi'">
-   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==0" >Ada regestrasi baru : Nama: <b>{{data.data.register.name}}</b>, email: {{data.data.register.email}}</div>
+   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==0" >Ada regestrasi baru dari <b>{{data.data.register.name}}</b></div>
    <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==1" >Regestrasi atas nama: <b>{{data.data.register.name}}</b>, email: {{data.data.register.email}} <b>sudah Aktif</b></div>
   </a>
 
@@ -102,4 +102,12 @@ export default {
   }
  }
 }
-</script>
+</script> 
+<style lang="scss" scoped>
+.notifik:hover{
+  color: white;
+  a{
+    color: white; 
+  }
+}
+</style>

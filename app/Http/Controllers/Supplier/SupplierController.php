@@ -74,7 +74,7 @@ class SupplierController extends Controller
             ['user_id', '=', $id],
             ['status', '<>', 1]])->get();
         
-        $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role,alamat', 'order.detail_order_one.product']);
+        $data->load(['order', 'order.detail_order_one', 'order.user:id,name,role,alamat,tlp', 'order.detail_order_one.product']);
         
             return response()->json([
                 'status' => 'success', 
@@ -84,6 +84,17 @@ class SupplierController extends Controller
 
     }
 
+// KHUSUS LAPORAN
+    public function laporan_supplier(Request $request){
+
+        $user_id = $request->user_id;
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+        $data = DetailSupplier::where([['user_id','=',$user_id],['status','=',1]])->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])->get();
+        $data->load(['order','order.user:id,name,role,alamat,tlp']);
+        return response()->json(['status'=>'sukses', 'data'=>$data], 200);
+
+    }
     //===================== notifikasi aja ========================
     public function supplier_selesai(Request $request){
         $request->validate([
@@ -91,7 +102,7 @@ class SupplierController extends Controller
             'order_id'=>'required|integer'
         ]);
 
-        $detail = DetailSupplier::updateOrInsert(
+        $detail = DetailSupplier::updateOrCreate(
             ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
             ['status'=>$request->status, 'keterangan'=>''] //ini value yg ingin di masukkan atau update
         );

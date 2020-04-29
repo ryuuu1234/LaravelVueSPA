@@ -56,7 +56,7 @@
                     <li class="line"></li>
                     
                     <li> <a href="javascript:void(0)"> <div class="menu-icon"><i class="  fa fa-key"></i></div> <div class="menu-text">Lock</div> </a> </li>
-                    <li> <a href="javascript:void(0)" @click="logout"> <div class="menu-icon"><i class=" fa fa-sign-out"></i></div>  <div class="menu-text">Sign Out</div> </a> </li>
+                    <li> <a href="javascript:void(0)" @click="logout"> <div class="menu-icon"><i class=" fas fa-sign-out-alt"></i></div>  <div class="menu-text">Sign Out</div> </a> </li>
                     
                 </ul>
             </div> 
@@ -110,7 +110,7 @@
         }
     },
     methods: {
-        ...mapActions('notification', ['readNotification','getNotifications', "getOrderNotif"]), //DEFINISIKAN FUNGSI UNTUK READ NOTIF
+        ...mapActions('notification', ['readNotification','getNotifications','getRegNotif', "getOrderNotif"]), //DEFINISIKAN FUNGSI UNTUK READ NOTIF
         
         //KETIKA NOTIFIKASI DI KLIK MAKA AKAN MENJALANKAN FUNGSI INI
         readNotif(row) {
@@ -152,16 +152,26 @@
     },
     mounted(){
       let userId = auth.getUserId()
+      let token = auth.getAccessToken()
+      if(token){
+        auth.laraEcho(userId,token)
+      }
       this.getNotifications()
-        console.log('User Id', userId)
-        Echo.private("App.User." + userId).notification(data => {
-          this.getNotifications()
-          this.getOrderNotif()
-        // store.commit("setNotification", data);
-        // store.commit("order/setOrderFocus", data);
-        console.log(data.type);
-        console.log("data ", data);
-      });
+      // console.log(userId,token)
+      //   console.log('User Id', userId)
+      //   Echo.private("App.User." + userId).notification(data => {
+      //     let type = data.type.split('\\')
+      //     if(type[type.length-1]=='OrderNotification'){
+      //       this.getOrderNotif()
+      //     }else{
+      //       this.getRegNotif()
+      //     }
+      //     this.getNotifications()
+      //   // store.commit("setNotification", data);
+      //   // store.commit("order/setOrderFocus", data);
+      //   console.log('type', type[type.length-1]);
+      //   console.log("data ", data);
+      // });
     }
 
   }
@@ -176,4 +186,5 @@
   flex-direction: column-reverse;
 
 }
+
 </style>

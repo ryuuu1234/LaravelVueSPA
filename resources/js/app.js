@@ -31,7 +31,7 @@ Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 // export const bus = new Vue(); //
 
 import { mapState, mapGetters, mapActions } from 'vuex';
-import Echo from 'laravel-echo'
+// import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import * as auth from './services/auth_service.js'
 new Vue({
@@ -39,21 +39,21 @@ new Vue({
     router,
     store,
     render: h => h(App),
-    created(){
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: process.env.MIX_PUSHER_APP_KEY,
-            cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-            forceTLS: true,
-            // authEndpoint: "/broadcasting/auth",
-            auth: {
-                headers: {
-                    Authorization: 'Bearer ' + auth.getAccessToken()
-                },
-            },
-        });
+    // created(){
+        // window.Echo = new Echo({
+        //     broadcaster: 'pusher',
+        //     key: process.env.MIX_PUSHER_APP_KEY,
+        //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+        //     forceTLS: true,
+        //     // authEndpoint: "/broadcasting/auth",
+        //     auth: {
+        //         headers: {
+        //             Authorization: 'Bearer ' + auth.getAccessToken()
+        //         },
+        //     },
+        // });
         // this.consoleToken();
-    },
+    // },
     // mounted(){
     //     window.Echo.channel('capcin-tracker')
     //     .listen('OrderStatusChanged', (e) => {

@@ -124,11 +124,13 @@ class AuthController extends Controller
         $request->validate([
             'name'=>'required',
             'email'=>'required|email',
+            'tlp'=>'required',
             'alamat'=>'required'
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->tlp = $request->tlp;
         $user->alamat = $request->alamat;
 
         if ($user->save()) {

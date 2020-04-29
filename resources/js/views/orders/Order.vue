@@ -299,7 +299,10 @@ export default {
                 case 5: //Proses terkirim
                     return 'btn-danger'
                     break;
-                case 6: //selesai order
+                case 6: //Konfirmasi
+                    return 'btn-light'
+                    break;            
+                case 7: //selesai order
                     return 'btn-dark'
                     break;            
                 default:

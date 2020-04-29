@@ -28,11 +28,11 @@ const mutations = {
 const actions = {
     getNotifications({ commit }) {
         // hapus state yang ada
-        commit('delData')
         return new Promise((resolve, reject) => {
             //REQUEST KE SERVER UNTUK MENGAMBIL NOTIFIKASI
             http().get(`user/notification`)
             .then((response) => {
+                commit('delData')
                 //DATA YANG DITERIMA DI COMMIT KE MUTATIONS ASSING_DATA
                 let notif = response.data.data
                 console.log('res', response.data, "notif", notif)

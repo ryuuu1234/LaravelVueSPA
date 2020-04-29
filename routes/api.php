@@ -139,6 +139,8 @@ Route::group(['prefix' => 'admin'], function () {
         // ini khusus Laporan
         Route::get('mitra-laporan-penjualan', 'Mitra\MitraController@penjualan_mitra')->name('mitra.laporan_penjualan');
         Route::get('laporan-penjualan-products', 'OrderController@laporan_penjualan')->name('order.laporan_penjualan');
+        Route::get('laporan-packing', 'Packing\PackingController@laporan_packing')->name('packing.laporan_packing');
+        Route::get('laporan-supplier', 'Supplier\SupplierController@laporan_supplier')->name('supplier.laporan_supplier');
     });
 });
 

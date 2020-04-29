@@ -91,33 +91,40 @@ export default {
       login: async function() {
           try {
             const response = await auth.login(this.user);
-            this.token_scope(response.token_scope);
+            // console.log('login res', response)
+            if(response){
+              this.token_scope(response.token_scope);
+              // this.denger(response)
+            }
             this.errors = {};
           } catch (error) {
-            //   console.log(''+error); // ini untuk cek errornya apa
-             switch (error.response.status) 
-            {
-                case 422:
-                    this.errors = error.response.data.errors;
-                    break;
-                case 500:
-                    this.flashMessage.error({
-                        message: error.response.data.message,
-                        time: 5000
-                    });
-                    break;
-                case 401:
-                    this.flashMessage.error({
-                        message: error.response.data.message,
-                        time: 5000
-                    });
-                    break;     
-                default:
-                    this.flashMessage.error({
-                        message: "Some error occured, Please Try Again!",
-                        time: 5000
-                    });
-                    break;
+              // console.log(''+error); // ini untuk cek errornya apa
+              if(error){
+
+                switch (error.response.status) 
+                {
+                  case 422:
+                      this.errors = error.response.data.errors;
+                      break;
+                  case 500:
+                      this.flashMessage.error({
+                          message: error.response.data.message,
+                          time: 5000
+                      });
+                      break;
+                  case 401:
+                      this.flashMessage.error({
+                          message: error.response.data.message,
+                          time: 5000
+                      });
+                      break;     
+                  default:
+                      this.flashMessage.error({
+                          message: "Some error occured, Please Try Again!",
+                          time: 5000
+                      });
+                      break;
+                }
             }         
           }
       },
@@ -129,6 +136,7 @@ export default {
       token_scope: function(item){
         if (item == 'Admin' || item == 'Root') {
            this.$router.push('/dashboard');
+           location.reload();
         } else {
            this.flashMessage.error({
                 message: "Kamu Bukan Administrator, tidak bisa login",
@@ -136,7 +144,38 @@ export default {
             });
           this.logout();
         }
+      },
+      denger(data) {
+//   console.log("data", data.user.id);
+//   console.log("data", data.access_token);
+  let userId = data.user.id;
+  window.Pusher = require("pusher-js");
+  let echo = new Echo({
+    broadcaster: "pusher",
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: true,
+    auth: {
+      headers: {
+        Authorization: "Bearer " + data.access_token
       }
+    }
+  });
+
+  echo.private("App.User." + userId).notification(mum => {
+    let type = mum.type.split('\\')
+        if(type[type.length-1]=='OrderNotification'){
+            store.dispatch("notification/getOrderNotif")
+        }else{
+            store.dispatch("notification/getRegNotif")
+        }
+    store.dispatch("notification/getNotifications")
+          
+  });
+  store.dispatch("notification/getNotifications");
+  
+}
+
   },
   created() {
     document.querySelector("body").style.backgroundColor = "#343a40";

@@ -1,6 +1,6 @@
 import {http, httpFile} from './http_service';
 import jwt from 'jsonwebtoken';
-
+import Echo from 'laravel-echo'
 import store from '../store';
 
 export function register(user) {
@@ -18,16 +18,23 @@ export function updateImage(id, data) {
 export function login(user) {
     return http().post('/auth/login', user)
         .then(response => {
+            // console.log('resopon', response)
             if (response.status === 200) {
                 setToken(response.data);
+                // denger(response.data.user.id, response.data.access_token);
             }
             return response.data;
     });
 }
 
-function denger(user) {
-  // console.log("user", user);
-  let userId = user.user.id;
+export function laraEcho(user,token){
+    denger(user,token)
+}
+
+function denger(userId,token) {
+//   console.log("data", data.user.id);
+//   console.log("data", data.access_token);
+//   let userId = data.user.id;
   window.Pusher = require("pusher-js");
   let echo = new Echo({
     broadcaster: "pusher",
@@ -36,17 +43,24 @@ function denger(user) {
     forceTLS: true,
     auth: {
       headers: {
-        Authorization: "Bearer " + user.access_token
+        Authorization: "Bearer " + token
       }
     }
   });
 
-  echo.private("App.User." + userId).notification(data => {
+  echo.private("App.User." + userId).notification(mum => {
+    let type = mum.type.split('\\')
+        if(type[type.length-1]=='OrderNotification'){
+            store.dispatch("notification/getOrderNotif")
+        }else{
+            store.dispatch("notification/getRegNotif")
+        }
+        console.log('get notification')
     store.dispatch("notification/getNotifications")
-    store.dispatch("notification/getOrderNotif")
           
   });
-  store.dispatch("notification/getNotifications");
+//   store.dispatch("notification/getNotifications");
+  
 }
 
 
@@ -57,7 +71,7 @@ export function getUserId() {
         }
 
     const tokenData = jwt.decode(token);
-    console.log("data", tokenData);
+    console.log("get user id  data", tokenData);
     return tokenData.user.user.id;
 }
 
@@ -67,6 +81,7 @@ function setToken(user) {
     localStorage.setItem('Laravel-vue-spa-token', token);
 
     store.dispatch('authenticate', user.user)
+    
 }
 
 export function isLoggedIn() {

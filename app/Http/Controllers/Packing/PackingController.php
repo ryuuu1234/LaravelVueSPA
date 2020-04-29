@@ -86,6 +86,18 @@ class PackingController extends Controller
             );   
 
     }
+    // KHUSUS LAPORAN
+    public function laporan_packing(Request $request){
+
+        $user_id = $request->user_id;
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+        $data = DetailPacking::where([['user_id','=',$user_id],['status','=',1]])->whereRaw("(created_at >= ? AND created_at <= ?)",[$tgl_awal." 00:00:00", $tgl_akhir." 23:59:59"])->get();
+        $data->load(['order']);
+        return response()->json(['status'=>'sukses', 'data'=>$data], 200);
+
+    }
+
     //===================== notifikasi aja ========================
     public function packing_selesai(Request $request){
         $request->validate([
@@ -93,7 +105,7 @@ class PackingController extends Controller
             'order_id'=>'required|integer'
         ]);
 
-        $detail = DetailPacking::updateOrInsert(
+        $detail = DetailPacking::updateOrCreate(
             ['order_id'=>$request->order_id], //ini attributnya jika ditemukan
             ['status'=>$request->status, 'keterangan'=>''] //ini value yg ingin di masukkan atau update
         );
