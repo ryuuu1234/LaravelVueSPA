@@ -1,21 +1,40 @@
 <template>
  <div class="notifik">
-  <h5 class="menu-text"><B>{{type}}</B></h5>
+  <!-- <p class="menu-text">{{type}}</p> -->
   <a href='' @click.prevent="pindah" :disabled="disable" v-if="type!='regestrasi'">
-   <div class="menu-text" v-if="type=='Order Baru'" >Ada Order Baru Reff : {{data.data.order.reff}}</div>
-   <div class="menu-text" v-if="type=='Terkonfirmasi'" > Order Reff : {{data.data.order.reff}} sudah dikonfirmasi</div>
-   <div class="menu-text" v-if="type=='Packing'" >Packing Reff : {{data.data.order.reff}} <B>{{status}} </B></div>
-   <div class="menu-text" v-if="type=='Supplier'" >Pengiriman Reff : {{data.data.order.reff}} <B>{{status}}</B></div>
+    <div class="menu-text" v-if="type=='Order Baru'" >
+      Ada Order Baru
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
+    <div class="menu-text" v-if="type=='Terkonfirmasi'" > 
+      Konfirmasi order
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
+    <div class="menu-text" v-if="type=='Packing'" >
+      Packing selesai
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
+    <div class="menu-text" v-if="type=='Supplier'" >
+      Pengiriman selesai
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
   </a>
   <a href='' @click.prevent="regis" :disabled="disable" v-if="type=='Regestrasi'">
-   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==0" >Ada regestrasi baru dari <b>{{data.data.register.name}}</b></div>
-   <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==1" >Regestrasi atas nama: <b>{{data.data.register.name}}</b>, email: {{data.data.register.email}} <b>sudah Aktif</b></div>
+    <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==0" >
+      Ada regestrasi baru 
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
+    <div class="menu-text" v-if="type=='Regestrasi' && data.data.register.status==1" >
+      User sudah Aktif
+      <p style="color:gray; font-size:10px !important;"><i>{{perbedaan(data.created_at)}} yang lalu</i></p> 
+    </div>
   </a>
 
  </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import moment from 'moment'
 export default {
  name:'notifikasi',
  data(){
@@ -82,6 +101,12 @@ export default {
  methods:{
   ...mapActions('notification',['readNotification','getRegNotif']),
   ...mapActions("order", ["getOrderById"]),
+  perbedaan(from) {
+      moment.locale("id");
+      // let to = Date.now();
+      let durations = moment.duration(moment().diff(moment(from))).humanize();
+      return durations;
+    },
   pindah(){
     this.$emit('tutup')
    this.disable=true

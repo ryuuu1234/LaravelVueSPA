@@ -178,7 +178,7 @@
 </script>
 <style scoped>
 .batas{
-  height: 600px;
+  height: 250px;
   overflow: auto;
 }
 .listnya{
